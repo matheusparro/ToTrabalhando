@@ -16,4 +16,12 @@ model User {
   email   String   @unique
   name    String?
   password String
+  company Company[]
+}
+
+model Company {
+  id  Int      @id @default(autoincrement())
+  cpnj String
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     @unique
 }
