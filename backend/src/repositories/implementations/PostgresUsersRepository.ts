@@ -15,13 +15,14 @@ export class PostgresUsersRepository implements IUsersRepository {
   }
 
   async save(user: UserEntity): Promise<void> {
-    // const userCreated = await this.prisma.user.create({
-    //   data:{
-    //     name:user.name,
-    //     password:user.password,
-    //     email:user.email
-    //   }
-    // })
+    console.log(user.email)
+     await this.prisma.user.create({
+      data:{
+          name:user.name,
+          password:user.password,
+          email:user.email
+       }
+     })
   }
 
   async findUserByPassword(email: string, oldPassword): Promise<UserEntity> {

@@ -19,7 +19,7 @@ export class UpdateUserController {
   
       return response.status(200).send();  
     } catch (err) {
-      return response.status(204).json({
+      return response.status(404).json({
         message: err.message || 'Unexpected error.'
       })
     }

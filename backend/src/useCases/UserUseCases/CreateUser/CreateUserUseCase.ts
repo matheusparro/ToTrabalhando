@@ -1,6 +1,6 @@
 import { IUsersRepository } from "../../../repositories/IUsersRepository";
 import { IUserDTO } from "../IUserDTO";
-import { User } from "../../../entities/User";
+import { UserEntity } from "../../../entities/User";
 import { IMailProvider } from "../../../providers/IMailProvider";
 
 export class CreateUserUseCase {
@@ -16,7 +16,11 @@ export class CreateUserUseCase {
       throw new Error('User already exists.');
     }
 
-    const user = new User(data);
+    const user = new UserEntity({
+      name:data.name,
+      email:data.email,
+      password:data.password
+    });
 
     await this.usersRepository.save(user);
 

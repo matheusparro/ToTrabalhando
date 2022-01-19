@@ -7,8 +7,8 @@ export class UserEntity implements User{
   public email: string;
   public password: string;
 
-  constructor(props) {
-    Object.assign(props);
+  constructor(props: Omit<UserEntity,'id'>) {
+    Object.assign(this,props);
   }
 
 

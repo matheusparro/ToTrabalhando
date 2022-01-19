@@ -1,6 +1,6 @@
 import { IUsersRepository } from "../../../repositories/IUsersRepository";
 import { IUserUpdatePassword } from "../IUserDTO";
-import { User } from "../../../entities/User";
+import { UserEntity } from "../../../entities/User";
 import { IMailProvider } from "../../../providers/IMailProvider";
 
 export class UpdateUserUseCase {
