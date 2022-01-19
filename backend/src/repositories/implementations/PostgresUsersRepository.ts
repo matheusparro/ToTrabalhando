@@ -1,20 +1,20 @@
 import { IUsersRepository } from "../IUsersRepository";
-import { User } from "../../entities/User";
+import { UserEntity } from "../../entities/User";
 import { PrismaClient } from "@prisma/client";
 export class PostgresUsersRepository implements IUsersRepository {
   constructor(
     private prisma = new PrismaClient()
   ){}
 
-  private users: User[] = [];
+  private users: UserEntity[] = [];
  
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<UserEntity> {
     const user = this.users.find(user => user.email === email);
 
     return user;
   }
 
-  async save(user: User): Promise<void> {
+  async save(user: UserEntity): Promise<void> {
     // const userCreated = await this.prisma.user.create({
     //   data:{
     //     name:user.name,
@@ -24,36 +24,25 @@ export class PostgresUsersRepository implements IUsersRepository {
     // })
   }
 
-  async findUserByPassword(email: string, oldPassword): Promise<User> {
+  async findUserByPassword(email: string, oldPassword): Promise<UserEntity> {
     const userPrismaFound = await this.prisma.user.findFirst({
       where: {email:email,password :oldPassword },
     })
     
-    const user:User = {
-      id: userPrismaFound.id,
-      name: userPrismaFound.name,
-      email: userPrismaFound.email,
-      password: userPrismaFound.password,
-    }
 
-    return user
+    return userPrismaFound
   }
 
-  async updateUserByPassword(email: string, newPassword: string): Promise<User> {
+  async updateUserByPassword(email: string, newPassword: string): Promise<UserEntity> {
     const userPrismaUpdated= await this.prisma.user.update({
       where: {email:email},
       data: {
         password: newPassword,
       },
     })
-    const user:User = {
-      id: userPrismaUpdated.id,
-      name: userPrismaUpdated.name,
-      email: userPrismaUpdated.email,
-      password: userPrismaUpdated.password,
-    }
 
-    return user
+
+    return userPrismaUpdated
   }
 
   
