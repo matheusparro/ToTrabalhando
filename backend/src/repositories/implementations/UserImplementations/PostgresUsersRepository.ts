@@ -1,10 +1,11 @@
-import { IUsersRepository } from "../IUsersRepository";
-import { UserEntity } from "../../entities/User";
+import { IUsersRepository } from "./IUsersRepository";
+import { UserEntity } from "../../../entities/User";
 import { PrismaClient } from "@prisma/client";
 export class PostgresUsersRepository implements IUsersRepository {
   constructor(
     private prisma = new PrismaClient()
   ){}
+
 
   private users: UserEntity[] = [];
  
@@ -25,18 +26,19 @@ export class PostgresUsersRepository implements IUsersRepository {
      })
   }
 
-  async findUserByPassword(email: string, oldPassword): Promise<UserEntity> {
+  async findUserByPassword(id: number, oldPassword): Promise<UserEntity> {
+    
     const userPrismaFound = await this.prisma.user.findFirst({
-      where: {email:email,password :oldPassword },
+      where: {id:id,password :oldPassword },
     })
     
 
     return userPrismaFound
   }
 
-  async updateUserByPassword(email: string, newPassword: string): Promise<UserEntity> {
+  async updateUserByPassword(id: number, newPassword: string): Promise<UserEntity> {
     const userPrismaUpdated= await this.prisma.user.update({
-      where: {email:email},
+      where: {id:id},
       data: {
         password: newPassword,
       },
@@ -45,6 +47,8 @@ export class PostgresUsersRepository implements IUsersRepository {
 
     return userPrismaUpdated
   }
-
+  async deleteUser(id: number): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   
 }

@@ -1,11 +1,11 @@
 interface IUserDTO {
   name: string;
-  email: string;
+  email:string
   password: string;
 }
 
 interface IUserUpdatePassword{
-  email: string;
+  id: number;
   oldPassword: string;
   newPassword:string;
 }

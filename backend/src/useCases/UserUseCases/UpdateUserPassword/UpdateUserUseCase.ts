@@ -1,4 +1,4 @@
-import { IUsersRepository } from "../../../repositories/IUsersRepository";
+import { IUsersRepository } from "../../../repositories/implementations/UserImplementations/IUsersRepository";
 import { IUserUpdatePassword } from "../IUserDTO";
 import { UserEntity } from "../../../entities/User";
 import { IMailProvider } from "../../../providers/IMailProvider";
@@ -10,12 +10,12 @@ export class UpdateUserUseCase {
   ) {}
 
   async execute(data: IUserUpdatePassword) { // USUARIO JÁ ESTA LOGADO NESSE PONTO
-    const userAlreadyExists = await this.usersRepository.findUserByPassword(data.email,data.oldPassword);
+    const userAlreadyExists = await this.usersRepository.findUserByPassword(data.id,data.oldPassword);
 
     if (!userAlreadyExists) {
       throw new Error('Password Wrong, try again');
     }
-    const userUpdated = this.usersRepository.updateUserByPassword(data.email,data.newPassword)
+    const userUpdated = this.usersRepository.updateUserByPassword(data.id,data.newPassword)
     if (!userUpdated) {
       throw new Error('User not Updated');
     }

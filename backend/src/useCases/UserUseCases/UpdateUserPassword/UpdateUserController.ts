@@ -6,13 +6,15 @@ export class UpdateUserController {
     private UpdateUserUseCase: UpdateUserUseCase,
   ) {}
 
+  
   async handle(request: Request, response: Response): Promise<Response> {
-    const { email, newPassword,oldPassword } = request.body;
+  
+    const id  = request.params as unknown as number;
+    const { newPassword,oldPassword } = request.body;
 
     try {
       await this.UpdateUserUseCase.execute({
-
-        email,
+        id,
         newPassword,
         oldPassword
       })
