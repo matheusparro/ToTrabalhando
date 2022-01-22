@@ -1,6 +1,9 @@
 import { client } from "../../prisma/client";
 import { IAuthenticationRepository } from "../../repositories/implementations/AuthenticationImplementations/IAuthenticationRepository";
 import {sign} from "jsonwebtoken"
+import { GenerateRefreshToken } from "../../providers/implementations/GenerateRefreshToken";
+import { GenerateTokenProvider } from "../../providers/implementations/GenerateTokenProvider";
+
 interface IRequest{
   email:string;
   password:string;
@@ -14,12 +17,14 @@ export class AuthenticateUserUseCase {
     if (!userFind) {
       throw new Error(`Email or password incorrect`)
     }
-    const token = sign({},'1f6ef3008b9fe8894fa1f0ae5c73d033',{
-      subject:String(userFind.id),
-      expiresIn:'20s'
-    })
+  
+    const generateTokenProvider = new GenerateTokenProvider()
+
+    const token = await generateTokenProvider.execute(userFind.id)
+    const generateRefreshToken = new GenerateRefreshToken()
     
-    return token
+    const refreshToken = await generateRefreshToken.execute(userFind.id)
+    return {token,refreshToken}
   }
 
 
