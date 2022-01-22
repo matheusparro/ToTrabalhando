@@ -7,7 +7,7 @@ export class CreateCompanyController {
   ) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const userId = request.params.id as unknown as number
+    const userId = parseInt(request.params.id)
     const { cnpj, fantasyName} = request.body;
 
     try {

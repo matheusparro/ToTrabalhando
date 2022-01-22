@@ -8,7 +8,7 @@ export class DeleteUserController {
 
   async handle(request: Request, response: Response): Promise<Response> {
    
-    const id = request.params.id as unknown as number
+    const id = parseInt(request.params.id)
 
     try {
       await this.deleteUserUseCase.execute(id)

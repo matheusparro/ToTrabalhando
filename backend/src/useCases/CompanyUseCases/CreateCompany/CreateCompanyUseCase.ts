@@ -1,3 +1,4 @@
+import { CompanyEntity } from "../../../entities/Company";
 import { ICompanyRepository } from "../../../repositories/implementations/CompanyImplementations/ICompanyRepository";
 import { ICompanyDTO } from "../ICompanyDTO";
 
@@ -8,8 +9,15 @@ export class CreateCompanyUseCase {
   ) {}
 
   async execute(data: ICompanyDTO) {
-    
-
+    const newCompany = new CompanyEntity({
+      cpnj:data.cnpj,
+      userId:data.userId,
+      fantasyName:data.fantasyName
+    }) 
+    const companyCreated = await this.companyRepository.save(newCompany)
+    if (!companyCreated){
+      throw new Error('Company not created')
+    }
    
   }
 }

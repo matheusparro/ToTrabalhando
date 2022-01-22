@@ -1,10 +1,9 @@
 import { IUsersRepository } from "./IUsersRepository";
 import { UserEntity } from "../../../entities/User";
 import { PrismaClient } from "@prisma/client";
+import { client } from "../../../prisma/client";
 export class PostgresUsersRepository implements IUsersRepository {
-  constructor(
-    private prisma = new PrismaClient()
-  ){}
+  
 
 
   private users: UserEntity[] = [];
@@ -17,7 +16,7 @@ export class PostgresUsersRepository implements IUsersRepository {
 
   async save(user: UserEntity): Promise<void> {
     console.log(user.email)
-     await this.prisma.user.create({
+     await client.user.create({
       data:{
           name:user.name,
           password:user.password,
@@ -26,28 +25,7 @@ export class PostgresUsersRepository implements IUsersRepository {
      })
   }
 
-  async findUserByPassword(id: number, oldPassword): Promise<UserEntity> {
-    
-    const userPrismaFound = await this.prisma.user.findFirst({
-      where: {id:id,password :oldPassword },
-    })
-    
-
-    return userPrismaFound
-  }
-
-  async updateUserByPassword(id: number, newPassword: string): Promise<UserEntity> {
-    const userPrismaUpdated= await this.prisma.user.update({
-      where: {id:id},
-      data: {
-        password: newPassword,
-      },
-    })
-
-
-    return userPrismaUpdated
-  }
-  async deleteUser(id: number): Promise<void> {
+  async deleteUser(id: number): Promise<UserEntity> {
     throw new Error("Method not implemented.");
   }
   

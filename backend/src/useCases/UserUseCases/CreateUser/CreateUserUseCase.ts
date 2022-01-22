@@ -1,7 +1,8 @@
-import { IUsersRepository } from "../../../repositories/IUsersRepository";
+import { IUsersRepository } from "../../../repositories/implementations/UserImplementations/IUsersRepository";
 import { IUserDTO } from "../IUserDTO";
 import { UserEntity } from "../../../entities/User";
 import { IMailProvider } from "../../../providers/IMailProvider";
+import { hash } from "bcrypt";
 
 export class CreateUserUseCase {
   constructor(
@@ -15,11 +16,10 @@ export class CreateUserUseCase {
     if (userAlreadyExists) {
       throw new Error('User already exists.');
     }
-
-    const user = new UserEntity({
+    const user =  new UserEntity({
       name:data.name,
       email:data.email,
-      password:data.password
+      password: await hash(data.password,8)
     });
 
     await this.usersRepository.save(user);
