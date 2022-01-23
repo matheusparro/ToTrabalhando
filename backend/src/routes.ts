@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
 import {authenticateUserController } from "./useCases/authenticateUser/";
+import { createCompanyController } from "./useCases/CompanyUseCases/CreateCompany";
 import { refreshTokenUserController } from "./useCases/RefreshToken";
 import { createUserController } from "./useCases/UserUseCases/CreateUser";
 
@@ -20,8 +21,8 @@ router.post('/refresh-token', (request, response) => {
   return refreshTokenUserController.handle(request, response);
 });
 
-router.get('/teste', ensureAuthenticated,(request, response) => {
-  return response.json({message:"Oi amanda"})
+router.post('/users/:id/company', ensureAuthenticated,(request, response) => {
+  return createCompanyController.handle(request, response);
 });
 
 

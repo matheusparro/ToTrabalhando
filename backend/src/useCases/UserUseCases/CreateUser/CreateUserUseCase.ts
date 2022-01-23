@@ -17,6 +17,7 @@ export class CreateUserUseCase {
     const user =  new UserEntity({
       name:data.name,
       email:data.email,
+      isAdmin:data.isAdmin,
       password: await hash(data.password,8)
     });
 

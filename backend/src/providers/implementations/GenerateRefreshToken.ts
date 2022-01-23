@@ -5,7 +5,7 @@ export class GenerateRefreshToken{
     await client.refreshToken.deleteMany({
       where:{userId}
     })
-    const expiresIn = dayjs().add(10,"second").unix()
+    const expiresIn = dayjs().add(60,"second").unix()
     const generateRefreshToken = client.refreshToken.create({
       data:{
         userId,

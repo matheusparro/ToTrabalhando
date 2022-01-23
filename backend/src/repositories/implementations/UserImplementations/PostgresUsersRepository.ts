@@ -20,7 +20,8 @@ export class PostgresUsersRepository implements IUsersRepository {
       data:{
           name:user.name,
           password:user.password,
-          email:user.email
+          email:user.email,
+          isAdmin:user.isAdmin
        }
      })
   }
