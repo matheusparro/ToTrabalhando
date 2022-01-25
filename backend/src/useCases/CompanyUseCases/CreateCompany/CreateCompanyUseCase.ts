@@ -12,12 +12,15 @@ export class CreateCompanyUseCase {
     const newCompany = new CompanyEntity({
       cpnj:data.cnpj,
       userId:data.userId,
-      fantasyName:data.fantasyName
+      fantasyName:data.fantasyName,
+      
+
     }) 
     const companyCreated = await this.companyRepository.save(newCompany)
     if (!companyCreated){
       throw new Error('Company not created')
     }
+    return companyCreated
    
   }
 }

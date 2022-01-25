@@ -8,7 +8,7 @@ export class CompanyEntity implements Company{
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(props: Omit<CompanyEntity,'id'>) {
+  constructor(props: Omit<UserEntity,'id'|'createdAt'|'updatedAt' >) {
     Object.assign(this,props);
   }
  

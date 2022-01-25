@@ -11,14 +11,14 @@ export class CreateCompanyController {
     const { cnpj, fantasyName} = request.body;
 
     try {
-      await this.createCompanyUseCase.execute({
+      const companyCreated = await this.createCompanyUseCase.execute({
         
         cnpj,
         fantasyName,
         userId
       })
   
-      return response.status(201).send();  
+      return response.status(201).json(companyCreated);  
     } catch (err) {
       return response.status(400).json({
         message: err.message || 'Unexpected error.'

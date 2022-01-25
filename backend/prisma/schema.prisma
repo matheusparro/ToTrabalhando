@@ -22,6 +22,7 @@ model User {
   company Company[]
   refreshToken RefreshToken?
   appointmentParameters AppointmentParametersOnUsers?
+  appointment Appointment[]
 }
 
 model Company {
@@ -46,9 +47,10 @@ model RefreshToken {
 
 model AppointmentParameters {
   id         Int                 @id @default(autoincrement())
-  startTime Int
-  lunchTime Int
-  endTime Int
+  startMorningTime Int
+  endMorningTime Int
+  startAfterTime Int
+  endAfterTime Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user AppointmentParametersOnUsers[]
@@ -65,4 +67,15 @@ model AppointmentParametersOnUsers {
   updatedAt DateTime @updatedAt
 
   @@id([userId, appointmentParametersId])
+}
+model Appointment{
+  id Int @id @default(autoincrement())
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int
+  start_date DateTime
+  end_date DateTime
+  isOpen Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
