@@ -14,10 +14,10 @@ export class CreateAppointmentParametersController {
 
     try {
       const appointmentParametersCreated = await this.createAppointmentParametersUseCase.execute({
-        startMorningTime,
-      endMorningTime,
-      startAfterTime,
-      endAfterTime  
+        startMorningTime:new Date(startMorningTime),
+      endMorningTime:new Date(startMorningTime),
+      startAfterTime:new Date(startMorningTime),
+      endAfterTime:new Date(startMorningTime),  
       })
   
       return response.status(201).json(appointmentParametersCreated);  

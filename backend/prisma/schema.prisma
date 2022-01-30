@@ -18,6 +18,7 @@ model User {
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Avatar String
   isAdmin Boolean @default(false)
   company Company[]
   refreshToken RefreshToken?
@@ -47,10 +48,10 @@ model RefreshToken {
 
 model AppointmentParameters {
   id         Int                 @id @default(autoincrement())
-  startMorningTime Int
-  endMorningTime Int
-  startAfterTime Int
-  endAfterTime Int
+  startMorningTime DateTime
+  endMorningTime DateTime
+  startAfterTime DateTime
+  endAfterTime DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user AppointmentParametersOnUsers[]

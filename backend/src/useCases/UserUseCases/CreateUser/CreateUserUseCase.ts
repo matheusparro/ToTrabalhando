@@ -18,10 +18,15 @@ export class CreateUserUseCase {
       name:data.name,
       email:data.email,
       isAdmin:data.isAdmin,
-      password: await hash(data.password,8)
+      password: await hash(data.password,8),
+      Avatar: data.Avatar
     });
 
-    await this.usersRepository.save(user);
+    const userCreated = await this.usersRepository.save(user);
+
+    if (!userCreated){
+      throw new Error('User not created.');
+    }
 
   }
 }

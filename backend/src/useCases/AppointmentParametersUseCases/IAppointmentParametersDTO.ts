@@ -1,8 +1,8 @@
 interface IAppointmentParametersDTO {
-  startMorningTime: number;
-  endMorningTime: number;
-  startAfterTime: number;
-  endAfterTime: number;
+  startMorningTime: Date;
+  endMorningTime: Date;
+  startAfterTime: Date;
+  endAfterTime: Date;
 }
 
 

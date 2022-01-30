@@ -8,8 +8,9 @@ export class UserEntity implements User{
   public createdAt: Date;
   public updatedAt: Date;
   public isAdmin: boolean
-
+  public Avatar: string;
   constructor(props: Omit<UserEntity,'id'|'createdAt'|'updatedAt' >) {
     Object.assign(this,props);    
   }
+  
 }

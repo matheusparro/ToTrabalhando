@@ -3,6 +3,7 @@ interface IUserDTO {
   email:string
   password: string;
   isAdmin: boolean
+  Avatar: string
 }
 
 interface IUserUpdatePassword{
@@ -10,4 +11,10 @@ interface IUserUpdatePassword{
   oldPassword: string;
   newPassword:string;
 }
-export {IUserDTO,IUserUpdatePassword}
+
+interface IAppointmentParameterUser{
+  userId:number;
+  appointmentParametersId:number;
+
+}
+export {IUserDTO,IUserUpdatePassword,IAppointmentParameterUser}
