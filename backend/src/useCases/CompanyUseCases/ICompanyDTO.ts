@@ -1,7 +1,7 @@
 interface ICompanyDTO {
   cnpj: string;
   fantasyName:string
-  userId: number;
+
 }
 
 interface ICompanyUpdatePassword{

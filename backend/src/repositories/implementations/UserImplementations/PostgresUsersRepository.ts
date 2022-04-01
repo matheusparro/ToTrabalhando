@@ -6,24 +6,35 @@ export class PostgresUsersRepository implements IUsersRepository {
 
 
 
-  private users: UserEntity[] = [];
+
  
   async findByEmail(email: string): Promise<UserEntity> {
-    const user = this.users.find(user => user.email === email);
-
+    const user = await client.user.findUnique({
+      where: {
+        email: email,
+      },
+    })
     return user;
   }
 
   async save(user: UserEntity): Promise<UserEntity> {
-     return await client.user.create({
-      data:{
-          name:user.name,
-          password:user.password,
-          email:user.email,
-          isAdmin:user.isAdmin,
-          Avatar:user.Avatar
-       }
-     })
+     
+
+     try {
+      const userCreated= await client.user.create({
+        data:{
+            name:user.name,
+            password:user.password,
+            email:user.email,
+            isAdmin:user.isAdmin,
+            Avatar:user.Avatar
+         }
+       })
+       return userCreated
+    } catch (error) {
+      throw new Error(error.message);
+    }
+    
   }
 
   async deleteUser(id: number): Promise<UserEntity> {

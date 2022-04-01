@@ -32,10 +32,12 @@ router.post('/teste',multer(uploadAvatar.getConfig).single("userAvatar"),(req, r
 })
 
 router.post('/users',multer(uploadAvatar.getConfig).single("userAvatar"), (request, response) => {
+  console.log("hello2222")
   return createUserController.handle(request, response);
 });
 
 router.post('/auth', (request, response) => {
+  console.log("hello")
   return authenticateUserController.handle(request, response);
 });
 
@@ -43,7 +45,7 @@ router.post('/refresh-token', (request, response) => {
   return refreshTokenUserController.handle(request, response);
 });
 
-router.post('/users/:id/company', ensureAuthenticated,(request, response) => {
+router.post('/company',(request, response) => {
   return createCompanyController.handle(request, response);
 });
 

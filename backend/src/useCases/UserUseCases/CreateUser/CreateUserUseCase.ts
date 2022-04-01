@@ -12,7 +12,7 @@ export class CreateUserUseCase {
     const userAlreadyExists = await this.usersRepository.findByEmail(data.email);
 
     if (userAlreadyExists) {
-      throw new Error('User already exists.');
+      throw new Error('E-mail alredy used.');
     }
     const user =  new UserEntity({
       name:data.name,

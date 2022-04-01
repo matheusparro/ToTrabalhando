@@ -12,10 +12,8 @@ export class CreateCompanyController {
 
     try {
       const companyCreated = await this.createCompanyUseCase.execute({
-        
         cnpj,
         fantasyName,
-        userId
       })
   
       return response.status(201).json(companyCreated);  

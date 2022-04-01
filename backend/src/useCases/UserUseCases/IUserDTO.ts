@@ -3,7 +3,7 @@ interface IUserDTO {
   email:string
   password: string;
   isAdmin: boolean
-  Avatar: string
+  Avatar?: string
 }
 
 interface IUserUpdatePassword{

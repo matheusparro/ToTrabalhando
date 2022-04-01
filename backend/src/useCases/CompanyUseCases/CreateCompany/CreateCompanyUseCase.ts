@@ -11,7 +11,6 @@ export class CreateCompanyUseCase {
   async execute(data: ICompanyDTO) {
     const newCompany = new CompanyEntity({
       cpnj:data.cnpj,
-      userId:data.userId,
       fantasyName:data.fantasyName,
       
 

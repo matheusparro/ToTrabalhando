@@ -12,7 +12,6 @@ export class PostgresCompaniesRepository implements ICompanyRepository{
       data:{
         cpnj:company.cpnj,
         fantasyName:company.fantasyName,
-        userId:company.userId
       }
     })
     return companyCreated
