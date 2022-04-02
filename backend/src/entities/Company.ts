@@ -2,7 +2,7 @@ import { Company } from '@prisma/client';
 
 export class CompanyEntity implements Company{
   id: number;
-  cpnj: string;
+  cnpj: string;
   fantasyName: string;
   createdAt: Date;
   updatedAt: Date;

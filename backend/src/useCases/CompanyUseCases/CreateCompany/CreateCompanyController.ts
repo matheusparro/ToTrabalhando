@@ -4,19 +4,31 @@ import { CreateCompanyUseCase } from "./CreateCompanyUseCase";
 export class CreateCompanyController {
   constructor(
     private createCompanyUseCase: CreateCompanyUseCase,
-  ) {}
+  ) { }
 
   async handle(request: Request, response: Response): Promise<Response> {
     const userId = parseInt(request.params.id)
-    const { cnpj, fantasyName} = request.body;
+    const { 
+      cnpj, 
+      fantasyName,
+      email,
+      isAdmin,
+      name,
+      password 
+    } = request.body;
 
     try {
       const companyCreated = await this.createCompanyUseCase.execute({
         cnpj,
         fantasyName,
+        email,
+        isAdmin,
+        name,
+        password
+
       })
-  
-      return response.status(201).json(companyCreated);  
+
+      return response.status(201).json(companyCreated);
     } catch (err) {
       return response.status(400).json({
         message: err.message || 'Unexpected error.'

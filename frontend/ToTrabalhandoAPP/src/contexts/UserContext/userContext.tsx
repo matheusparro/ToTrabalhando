@@ -3,21 +3,28 @@ import axios from "axios";
 import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState } from "react";
 
 interface UserContextData {
- 
+
   signed: boolean,
-  signIn(email: string, password: string): Promise<void>
-  user:UserProps | null
+  signIn(email: string, password: string): Promise<boolean | undefined>
+  user: UserProps | null
+  company: CompanyProps | null
+  signOut():Promise<void>
 }
 interface UserProps {
 
   id: number,
   name?: string,
   email?: string,
-  token:string,
+  token: string,
   refreshToken: {
-		id: number,
+    id: number,
   }
 
+}
+interface CompanyProps {
+  id: number,
+  fantasyName: string,
+  cnpj: string,
 }
 
 interface UserProviderProps {
@@ -30,42 +37,67 @@ export function UsersProvider({
   children,
 }: UserProviderProps) {
   const [user, setUser] = useState<UserProps | null>(null)
-
+  const [company, setCompany] = useState<CompanyProps | null>(null)
   
-
-  async function signIn(email: string, password: string) {
- 
-    let data={
-      email:email,
-      password:password
+  async function signOut(){
+    setUser(null)
+    setCompany(null)
+  }
+  async function signIn(email: string, password: string):Promise<boolean | undefined> {
+    
+    let data = {
+      email: email,
+      password: password
     }
     try {
-      const response = await axios.post('http://10.0.2.2:3333/auth', data)
+      let response = await axios.post('http://10.0.2.2:3333/auth', data)
       const {
         token,
-        refreshToken} = response.data
-      const authFound:UserProps={
-        id:refreshToken.userId,
-        email:email,
-        token,
-        refreshToken:{
-          id:refreshToken.id
+        refreshToken } = response.data
+      if (response.data) {
+        response = await axios.get(`http://10.0.2.2:3333/users/${refreshToken.userId}`)
+      }
+      if (response.data) {
+        console.log(response.data)
+        const authFound: UserProps = {
+          id: refreshToken.userId,
+          email: response.data.email,
+          //name: response.data.name,
+          token,
+          refreshToken: {
+            id: refreshToken.id
+          }
+        }
+        const { companyEmployers } = response.data
+        response = await axios.get(`http://10.0.2.2:3333/company/${companyEmployers.companyId}`)
+        if (response.data) {
+          console.log(response.data.cnpj)
+          const companyFound: CompanyProps = {
+            cnpj: response.data.cnpj,
+            fantasyName: response.data.fantasyName,
+            id: response.data.id
+          }
+          setUser(authFound)
+          setCompany(companyFound)
+         return true
         }
       }
-      setUser(authFound)
-    
-    } catch (error) {
-      console.log("DEUERRO",error)
-    }
- 
 
+    } catch (error:any) {
+      
+      alert(error.response.data.message);
+      return false
+    }
   }
 
   return (
     <UserContext.Provider value={{
-      signed: !!user,
+      signed: !!user && !!company,
       signIn,
-      user
+      user,
+      company,
+      signOut
+
 
     }}>
       {children}

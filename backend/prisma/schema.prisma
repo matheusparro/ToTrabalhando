@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+   previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -28,7 +29,7 @@ model User {
 
 model Company {
   id  Int      @id @default(autoincrement())
-  cpnj String
+  cnpj String
   fantasyName String
   companyEmployers CompanyEmployers[]
   createdAt DateTime @default(now())

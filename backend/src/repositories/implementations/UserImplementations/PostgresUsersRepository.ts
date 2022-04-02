@@ -16,6 +16,29 @@ export class PostgresUsersRepository implements IUsersRepository {
     })
     return user;
   }
+   
+  async findUser(id:number){
+    try {
+      const user = await client.user.findUnique({
+        where: {
+          id
+        },
+        include: {
+          companyEmployers: {
+            select: {
+              companyId:true, 
+            },
+          },
+        },
+      })
+      return user
+    } catch (error) {
+      return null
+    }
+   
+  
+
+  }
 
   async save(user: UserEntity): Promise<UserEntity> {
      

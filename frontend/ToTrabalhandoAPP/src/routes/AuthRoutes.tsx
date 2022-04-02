@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { SignIn } from '../screens/SignIn'
 import { CreateCompany } from '../screens/CreateCompany'
 import { theme } from '../global/styles/theme';
+import { UserContext } from '../contexts/UserContext/userContext';
+import { Home } from '../screens/Home';
+import { Image } from 'react-native';
 
 const { Navigator, Screen } = createStackNavigator()
 
 export function AuthRoutes() {
+ 
+
   return (
     <Navigator>
       <Screen
@@ -36,6 +41,24 @@ export function AuthRoutes() {
           },
           headerTintColor: theme.color.heading,
           headerShown:true
+        }}
+      />
+       <Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: 'Bem vindo Admin',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+          headerTintColor: theme.color.heading,
+          headerShown:true,
+          detachPreviousScreen:false,
+          headerLeft: ()=> false,
+          headerTitleAlign:"left",
+          
+
+         
         }}
       />
     </Navigator>

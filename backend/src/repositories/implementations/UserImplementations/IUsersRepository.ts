@@ -5,4 +5,5 @@ export interface IUsersRepository {
   save(user: UserEntity): Promise<UserEntity>;
   deleteUser(id:number):Promise<UserEntity>;
   saveAppointmentParameterUser( userId: number,appointmentParametersId: number):Promise<void>;
+  findUser(id:number): Promise<UserEntity>;
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, View, Image, StatusBar,TextInput,TouchableOpacity,ScrollView } from 'react-native';
 import {styles} from './styles'
 import IllustrationImg from '../../assets/illustration2.png'
@@ -7,14 +7,16 @@ import {theme} from '../../global/styles/theme'
 import { UserContext } from '../../contexts/UserContext/userContext';
 import { useNavigation } from '@react-navigation/native';
 export function SignIn() {
-  const [email,setEmail] = useState('mathparro@gmail.com');
-  const [password,setPassword] = useState('123456');
-  const {signIn} = useContext(UserContext)
+  const [email,setEmail] = useState('admin');
+  const [password,setPassword] = useState('admin');
+  const {signIn,signed,signOut} = useContext(UserContext)
   const navigation = useNavigation()
-  function handleSignIn(){
-    signIn(email,password)
+  async function handleSignIn(){
+    const result = await signIn(email,password)
+    if(result){
+      navigation.navigate("Home" as never, {} as never)
+    }
   }
-  
   return (
     <View style={styles.container}>
       <Image 

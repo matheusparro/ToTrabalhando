@@ -28,22 +28,16 @@ export function CreateCompany() {
   const navigation = useNavigation()
   async function handleCompanyRegister(data: FormData) {
     try {
-      const userToCreate = {
-        email: data.email,
-        password: data.password,
-        name: data.fantasyName,
-        isAdmin: true
-      }
+
       const companyToCreate = {
         cnpj: data.cnpj,
-        fantasyName: data.fantasyName
+        fantasyName: data.fantasyName,
+        email: data.email,
+        password: data.password,
       }
-      console.log(userToCreate)
-      let result = await axios.post('http://10.0.2.2:3333/users/', userToCreate)
-      console.log(result.status)
-      if (result.status == 201) {
-        result = await axios.post('http://10.0.2.2:3333/company/', companyToCreate)
-      }
+     
+      const result = await axios.post('http://10.0.2.2:3333/company/', companyToCreate)
+      
       if (result.data) {
        
         alert("Empresa criada com sucesso")
@@ -55,7 +49,7 @@ export function CreateCompany() {
       alert(error.response.data.message);
       
     }
-
+    alert("oi")
 
   }
 

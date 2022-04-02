@@ -5,10 +5,12 @@ import {authenticateUserController } from "./useCases/AuthenticateUser/";
 import { createCompanyController } from "./useCases/CompanyUseCases/CreateCompany";
 import { refreshTokenUserController } from "./useCases/RefreshToken";
 import { createUserController } from "./useCases/UserUseCases/CreateUser";
+import { findUserController } from "./useCases/UserUseCases/FindUser";
 import multer from "multer";
 
 //Middleware de Upload para o Avatar
 import { uploadAvatar } from "./middleware/userAvatar"
+import { findCompanyController } from "./useCases/CompanyUseCases/FindCompany";
 
 const router = Router()
 
@@ -51,6 +53,14 @@ router.post('/company',(request, response) => {
 
 router.post('/appointment-parameters', ensureAuthenticated,(request, response) => {
   return createAppointmentParametersController.handle(request, response);
+});
+
+router.get('/users/:id',(request, response) => {
+  return findUserController.handle(request, response);
+});
+
+router.get('/company/:id',(request, response) => {
+  return findCompanyController.handle(request, response);
 });
 
 
