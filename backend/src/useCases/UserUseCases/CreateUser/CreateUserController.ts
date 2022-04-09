@@ -14,17 +14,13 @@ export class CreateUserController {
     //   return response.status(400).json({error:"ERROR - Send avatar image"});  
     // } 
     try {
-      let avatar = ""
-      if (request.file){
-         avatar =request.file.path 
-      }
      
       await this.createUserUseCase.execute({
         name,
         email,
         password,
         isAdmin:val,
-        Avatar:avatar
+        Avatar:request.file ?request.file.path :null
       })
   
       return response.status(201).send();  

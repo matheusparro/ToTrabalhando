@@ -4,6 +4,6 @@ export interface IUsersRepository {
   findByEmail(email: string): Promise<UserEntity>;
   save(user: UserEntity): Promise<UserEntity>;
   deleteUser(id:number):Promise<UserEntity>;
-  saveAppointmentParameterUser( userId: number,appointmentParametersId: number):Promise<void>;
   findUser(id:number): Promise<UserEntity>;
+  setUserPermission(id:number,permissionID:number,companyId:number): Promise<UserEntity>;
 }

@@ -58,7 +58,7 @@ export function UsersProvider({
         response = await axios.get(`http://10.0.2.2:3333/users/${refreshToken.userId}`)
       }
       if (response.data) {
-        console.log(response.data)
+       
         const authFound: UserProps = {
           id: refreshToken.userId,
           email: response.data.email,
@@ -71,7 +71,6 @@ export function UsersProvider({
         const { companyEmployers } = response.data
         response = await axios.get(`http://10.0.2.2:3333/company/${companyEmployers.companyId}`)
         if (response.data) {
-          console.log(response.data.cnpj)
           const companyFound: CompanyProps = {
             cnpj: response.data.cnpj,
             fantasyName: response.data.fantasyName,

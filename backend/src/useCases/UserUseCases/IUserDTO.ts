@@ -4,6 +4,9 @@ interface IUserDTO {
   password: string;
   isAdmin: boolean
   Avatar?: string
+  departmentId?: number;
+  permissionsID?: number;
+  companyId?:number
 }
 
 interface IUserUpdatePassword{

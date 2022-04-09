@@ -1,16 +1,17 @@
 import { Router } from "express";
 import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
-import { createAppointmentParametersController } from "./useCases/AppointmentParametersUseCases/CreateAppointmentParameters";
 import {authenticateUserController } from "./useCases/AuthenticateUser/";
 import { createCompanyController } from "./useCases/CompanyUseCases/CreateCompany";
 import { refreshTokenUserController } from "./useCases/RefreshToken";
 import { createUserController } from "./useCases/UserUseCases/CreateUser";
 import { findUserController } from "./useCases/UserUseCases/FindUser";
+import { setUserPermissionController } from "./useCases/UserUseCases/SetUserPermission";
 import multer from "multer";
 
 //Middleware de Upload para o Avatar
 import { uploadAvatar } from "./middleware/userAvatar"
 import { findCompanyController } from "./useCases/CompanyUseCases/FindCompany";
+import { is } from "./middleware/validatePermissions";
 
 const router = Router()
 
@@ -34,7 +35,6 @@ router.post('/teste',multer(uploadAvatar.getConfig).single("userAvatar"),(req, r
 })
 
 router.post('/users',multer(uploadAvatar.getConfig).single("userAvatar"), (request, response) => {
-  console.log("hello2222")
   return createUserController.handle(request, response);
 });
 
@@ -47,20 +47,23 @@ router.post('/refresh-token', (request, response) => {
   return refreshTokenUserController.handle(request, response);
 });
 
+
 router.post('/company',(request, response) => {
   return createCompanyController.handle(request, response);
 });
 
-router.post('/appointment-parameters', ensureAuthenticated,(request, response) => {
-  return createAppointmentParametersController.handle(request, response);
-});
 
-router.get('/users/:id',(request, response) => {
+
+router.get('/users/:id',is(['manager','admin']),(request, response) => {
   return findUserController.handle(request, response);
 });
 
-router.get('/company/:id',(request, response) => {
+router.get('/company/:id',is(['manager','admin']),(request, response) => {
   return findCompanyController.handle(request, response);
+});
+
+router.post('/users/set-permission',ensureAuthenticated,is(['manager','admin']),(request, response) => {
+  return setUserPermissionController.handle(request, response);
 });
 
 

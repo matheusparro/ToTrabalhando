@@ -19,7 +19,12 @@ export class CreateUserUseCase {
       email:data.email,
       isAdmin:data.isAdmin,
       password: await hash(data.password,8),
-      Avatar: data.Avatar
+      Avatar: data.Avatar,
+      departmentId:data.departmentId,
+      permissionsID:data.permissionsID,
+      companyId:data.companyId,
+      
+
     });
 
     const userCreated = await this.usersRepository.save(user);

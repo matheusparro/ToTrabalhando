@@ -3,41 +3,50 @@ import { UserEntity } from "../../../entities/User";
 import { PrismaClient } from "@prisma/client";
 import { client } from "../../../prisma/client";
 export class PostgresUsersRepository implements IUsersRepository {
+  async setUserPermission(id: number, permissionID: number,companyId:number): Promise<UserEntity> {
+    const permissionFounded = await client.permissions.findFirst({
+      where:{
+        id:permissionID,
+        companyId:companyId
+      }
+    })
+    if(!permissionFounded){
+      throw new Error("Permission not exist")
+    }
+    const updateUser = await client.user.update({
+      where: {
+        id 
+      },
+      data: {
+        permissionsID:permissionID
+      },
+    })
+    return updateUser
+  }
+  
 
 
 
-
- 
   async findByEmail(email: string): Promise<UserEntity> {
     const user = await client.user.findUnique({
       where: {
-        email: email,
+       email
       },
     })
     return user;
   }
    
   async findUser(id:number){
-    try {
-      const user = await client.user.findUnique({
-        where: {
-          id
-        },
-        include: {
-          companyEmployers: {
-            select: {
-              companyId:true, 
-            },
-          },
-        },
-      })
-      return user
-    } catch (error) {
-      return null
-    }
-   
-  
-
+    const user = await client.user.findUnique({
+      where: {
+       id
+      },
+      include:{
+        permissions:true,
+      },
+      
+    })
+    return user;
   }
 
   async save(user: UserEntity): Promise<UserEntity> {
@@ -50,7 +59,7 @@ export class PostgresUsersRepository implements IUsersRepository {
             password:user.password,
             email:user.email,
             isAdmin:user.isAdmin,
-            Avatar:user.Avatar
+            Avatar:user.Avatar,
          }
        })
        return userCreated
@@ -63,17 +72,6 @@ export class PostgresUsersRepository implements IUsersRepository {
   async deleteUser(id: number): Promise<UserEntity> {
     throw new Error("Method not implemented.");
   }
-  async saveAppointmentParameterUser(userId: number, appointmentParametersId: number): Promise<void> {
-    try {
-      await client.appointmentParametersOnUsers.create({
-        data:{userId,appointmentParametersId}
-      })
-    } catch (error) {
-      throw new Error(error.message || "Error to create");
-    }
-    
-  }
-  
   
   
 }

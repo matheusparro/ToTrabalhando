@@ -20,7 +20,10 @@ export class CreateCompanyUseCase {
       isAdmin:true,
       name:data.fantasyName,
       password:await hash(data.password,8),
-      Avatar:null
+      companyId:null,
+      Avatar:null,
+      departmentId:null,
+      permissionsID:null
     }) 
     const companyCreated = await this.companyRepository.save(newCompany,newUser)
     if (!companyCreated){
