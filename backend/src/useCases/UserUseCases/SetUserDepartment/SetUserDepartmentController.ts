@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { SetUserPermissionUseCase } from "./SetUserPermissionUseCase";
+import { SetUserDepartmentUseCase } from "./SetUserDepartmentUseCase";
 
-export class SetUserPermissionController {
+export class SetUserDepartmentController {
   constructor(
-    private setUserPermissionUseCase: SetUserPermissionUseCase,
+    private setUserDepartmentUseCase: SetUserDepartmentUseCase,
   ) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const { userId,permissionID } = request.params;
+    const { userId,departmentId } = request.params;
 
     
     try {
-      const userFounded = await this.setUserPermissionUseCase.execute(parseInt(userId),parseInt(permissionID))
+      const userFounded = await this.setUserDepartmentUseCase.execute(parseInt(userId),parseInt(departmentId))
   
       return response.status(201).json(userFounded);
     } catch (err) {

@@ -48,7 +48,7 @@ model Company {
 
 model Department {
   id  Int      @id @default(autoincrement())
-  name String
+  name   String   @unique
   company   Company    @relation(fields: [companyId], references: [id])
   companyId Int
   createdAt DateTime @default(now())

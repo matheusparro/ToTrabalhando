@@ -3,6 +3,27 @@ import { UserEntity } from "../../../entities/User";
 import { PrismaClient } from "@prisma/client";
 import { client } from "../../../prisma/client";
 export class PostgresUsersRepository implements IUsersRepository {
+
+  async setUserDepartment(id: number, departmentId: number, companyId: number): Promise<UserEntity> {
+    const departmentFounded = await client.department.findFirst({
+      where:{
+        id:departmentId,
+        companyId:companyId
+      }
+    })
+    if(!departmentFounded){
+      throw new Error("Permission not exist")
+    }
+    const updateUser = await client.user.update({
+      where: {
+        id 
+      },
+      data: {
+        departmentId:departmentId
+      },
+    })
+    return updateUser
+  }
   async setUserPermission(id: number, permissionID: number,companyId:number): Promise<UserEntity> {
     const permissionFounded = await client.permissions.findFirst({
       where:{

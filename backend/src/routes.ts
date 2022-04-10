@@ -6,6 +6,8 @@ import { refreshTokenUserController } from "./useCases/RefreshToken";
 import { createUserController } from "./useCases/UserUseCases/CreateUser";
 import { findUserController } from "./useCases/UserUseCases/FindUser";
 import { setUserPermissionController } from "./useCases/UserUseCases/SetUserPermission";
+import { createDepartmentController } from "./useCases/DepartmentUseCases/CreateDepartment";
+import { setUserDepartmentController } from "./useCases/UserUseCases/SetUserDepartment";
 import multer from "multer";
 
 //Middleware de Upload para o Avatar
@@ -54,16 +56,24 @@ router.post('/company',(request, response) => {
 
 
 
-router.get('/users/:id',is(['manager','admin']),(request, response) => {
+router.get('/users/:id',(request, response) => {
   return findUserController.handle(request, response);
 });
 
-router.get('/company/:id',is(['manager','admin']),(request, response) => {
+router.get('/company/:id',ensureAuthenticated,is(['manager','admin']),(request, response) => {
   return findCompanyController.handle(request, response);
 });
 
-router.post('/users/set-permission',ensureAuthenticated,is(['manager','admin']),(request, response) => {
+router.post('/users/:userId/permission/:permissionID/set-permission',ensureAuthenticated,is(['manager','admin']),(request, response) => {
   return setUserPermissionController.handle(request, response);
+});
+
+router.post('/users/:userId/department/:departmentId/set-department',ensureAuthenticated,is(['manager','admin']),(request, response) => {
+  return setUserDepartmentController.handle(request, response);
+});
+
+router.post('/company/:companyId/department',ensureAuthenticated,is(['manager','admin']),(request, response) => {
+  return createDepartmentController.handle(request, response);
 });
 
 
