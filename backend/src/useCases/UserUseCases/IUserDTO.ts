@@ -6,7 +6,7 @@ interface IUserDTO {
   Avatar?: string
   departmentId?: number;
   permissionsID?: number;
-  companyId?:number
+  companyId:number
 }
 
 interface IUserUpdatePassword{

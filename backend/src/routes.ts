@@ -14,6 +14,7 @@ import multer from "multer";
 import { uploadAvatar } from "./middleware/userAvatar"
 import { findCompanyController } from "./useCases/CompanyUseCases/FindCompany";
 import { is } from "./middleware/validatePermissions";
+import { deleteUserController } from "./useCases/UserUseCases/DeleteUser";
 
 const router = Router()
 
@@ -36,9 +37,18 @@ router.post('/teste',multer(uploadAvatar.getConfig).single("userAvatar"),(req, r
   });
 })
 
-router.post('/users',multer(uploadAvatar.getConfig).single("userAvatar"), (request, response) => {
+router.post('/users',multer(uploadAvatar.getConfig).single("userAvatar"),ensureAuthenticated,is(['manager','admin']), (request, response) => {
   return createUserController.handle(request, response);
 });
+
+router.get('/users/:id',(request, response) => {
+  return findUserController.handle(request, response);
+});
+
+router.delete('/users/:userId',(request, response) => {
+  return deleteUserController.handle(request, response);
+});
+
 
 router.post('/auth', (request, response) => {
   console.log("hello")
@@ -49,30 +59,23 @@ router.post('/refresh-token', (request, response) => {
   return refreshTokenUserController.handle(request, response);
 });
 
-
 router.post('/company',(request, response) => {
   return createCompanyController.handle(request, response);
 });
 
 
-
-router.get('/users/:id',(request, response) => {
-  return findUserController.handle(request, response);
-});
-
 router.get('/company/:id',ensureAuthenticated,is(['manager','admin']),(request, response) => {
   return findCompanyController.handle(request, response);
 });
 
-router.post('/users/:userId/permission/:permissionID/set-permission',ensureAuthenticated,is(['manager','admin']),(request, response) => {
+router.post('/users/permission/:permissionID/set-permission',ensureAuthenticated,is(['manager','admin']),(request, response) => {
   return setUserPermissionController.handle(request, response);
 });
 
-router.post('/users/:userId/department/:departmentId/set-department',ensureAuthenticated,is(['manager','admin']),(request, response) => {
+router.post('/company/:companyId/department/:departmentId/set-department',ensureAuthenticated,is(['manager']),(request, response) => {
   return setUserDepartmentController.handle(request, response);
 });
-
-router.post('/company/:companyId/department',ensureAuthenticated,is(['manager','admin']),(request, response) => {
+router.post('/company/:companyId/department',ensureAuthenticated,is(['manager','admin']),(request, response) => { // CRIAR UM DEPARTAMENTO
   return createDepartmentController.handle(request, response);
 });
 

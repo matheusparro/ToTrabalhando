@@ -11,7 +11,9 @@ export function is(rolesRoutes: string[]) {
     if (!user) {
       return response.status(400).json("User does not exists");
     }
-
+    if (!user.permissions){
+      return response.status(401).end();
+    }
     const permissionExist = rolesRoutes.includes(user.permissions.name)
 
     if (!permissionExist) {

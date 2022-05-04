@@ -81,6 +81,7 @@ export class PostgresUsersRepository implements IUsersRepository {
             email:user.email,
             isAdmin:user.isAdmin,
             Avatar:user.Avatar,
+            companyId:user.companyId,
          }
        })
        return userCreated
@@ -91,7 +92,17 @@ export class PostgresUsersRepository implements IUsersRepository {
   }
 
   async deleteUser(id: number): Promise<UserEntity> {
-    throw new Error("Method not implemented.");
+    try{
+      const user = await client.user.delete({
+        where: {
+         id
+        }
+      })
+      return user
+      
+    }catch (error) {
+      throw new Error(error.message);
+    }
   }
   
   

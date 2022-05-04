@@ -7,7 +7,7 @@ export class CreateUserController {
   ) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const { name, email, password ,isAdmin} = request.body;
+    const { name, email, password ,isAdmin, companyId} = request.body;
     var val = (isAdmin === "true");
     // if (!request.file){
      
@@ -20,7 +20,8 @@ export class CreateUserController {
         email,
         password,
         isAdmin:val,
-        Avatar:request.file ?request.file.path :null
+        Avatar:request.file ?request.file.path :null,
+        companyId:parseInt(companyId)
       })
   
       return response.status(201).send();  

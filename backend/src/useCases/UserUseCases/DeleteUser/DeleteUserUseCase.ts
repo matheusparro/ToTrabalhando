@@ -8,13 +8,14 @@ export class DeleteUserUseCase {
   ) {}
 
   async execute(id: number) {
- 
-    const userAlreadyExists = await this.usersRepository.deleteUser(id)
-    if (userAlreadyExists){
+    const userAlreadyExists = await this.usersRepository.findUser(id);
+
+    if (!userAlreadyExists) {
+      throw new Error('User not exists.');
+    }
+    const userDeleted = await this.usersRepository.deleteUser(id)
+    if (!userDeleted){
       throw new Error('User id wrong, user has not been deleted')
     }
-
-  
-
   }
 }
