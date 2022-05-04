@@ -15,24 +15,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
-  name    String?
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Avatar String?
-  isAdmin Boolean @default(false)
-  department   Department?    @relation(fields: [departmentId], references: [id])
-  departmentId Int?
   refreshToken RefreshToken?
   company   Company?    @relation(fields: [companyId], references: [id])
   companyId Int?
   permissions   Permissions?   @relation(fields: [permissionsID], references: [id])
   permissionsID Int?
+  employee Employee?  @relation(fields: [employeeId], references: [id])
+  employeeId Int?
+}
 
+model Employee {
+  id      Int      @id @default(autoincrement())
+  name String
+  cpf String
+  pis String
+  department   Department?    @relation(fields: [departmentId], references: [id])
+  departmentId Int?
+  user User?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+   
 }
 
 model Company {
@@ -53,7 +62,7 @@ model Department {
   companyId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user User[]
+  employer Employee[]
 }
 
 model RefreshToken {
@@ -73,6 +82,11 @@ model Permissions {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user User[]
+}
+
+model AppointmentConfiguration {
+  id Int      @id @default(autoincrement())
+
 }
 
 
