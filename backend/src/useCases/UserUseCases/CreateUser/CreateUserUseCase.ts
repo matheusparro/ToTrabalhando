@@ -8,19 +8,16 @@ export class CreateUserUseCase {
     private usersRepository: IUsersRepository,
   ) {}
 
-  async execute(data: IUserDTO) {
+  async execute(data: UserEntity) {
     const userAlreadyExists = await this.usersRepository.findByEmail(data.email);
 
     if (userAlreadyExists) {
       throw new Error('E-mail alredy used.');
     }
     const user =  new UserEntity({
-      name:data.name,
       email:data.email,
-      isAdmin:data.isAdmin,
       password: await hash(data.password,8),
       Avatar: data.Avatar,
-      departmentId:data.departmentId,
       permissionsID:data.permissionsID,
       companyId:data.companyId,
       

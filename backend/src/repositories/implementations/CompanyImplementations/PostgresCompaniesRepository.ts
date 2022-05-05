@@ -36,14 +36,12 @@ export class PostgresCompaniesRepository implements ICompanyRepository {
         user.permissions=null
         const userCreated = await prisma.user.create({
           data:{
-            name:user.name,
             password:user.password,
             email:user.email,
-            isAdmin:user.isAdmin,
             Avatar:user.Avatar,
             companyId:companyCreated.id,
-            permissionsID:createPermissionAdmin.id
-
+            permissionsID:createPermissionAdmin.id,
+            employeeId:user.employeeId
          }
         })
         return companyCreated

@@ -17,13 +17,11 @@ export class CreateCompanyUseCase {
     })
     const newUser = new UserEntity({
       email:data.email,
-      isAdmin:true,
-      name:data.fantasyName,
       password:await hash(data.password,8),
       companyId:null,
       Avatar:null,
-      departmentId:null,
-      permissionsID:null
+      permissionsID:null,
+      employeeId:null
     }) 
     const companyCreated = await this.companyRepository.save(newCompany,newUser)
     if (!companyCreated){
