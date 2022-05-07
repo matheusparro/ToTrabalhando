@@ -1,6 +1,4 @@
-import { client } from "../../prisma/client";
 import { IAuthenticationRepository } from "../../repositories/implementations/AuthenticationImplementations/IAuthenticationRepository";
-import {sign} from "jsonwebtoken"
 import { GenerateRefreshToken } from "../../providers/implementations/GenerateRefreshToken";
 import { GenerateTokenProvider } from "../../providers/implementations/GenerateTokenProvider";
 

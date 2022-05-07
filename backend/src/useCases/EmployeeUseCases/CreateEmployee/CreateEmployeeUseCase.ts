@@ -12,7 +12,7 @@ export class CreateEmployeeUseCase {
   async execute(data: EmployeeEntity,userId: number) {
     const userAlreadyExists = await this.usersRepository.findUser(userId);
 
-    if (userAlreadyExists) {
+    if (!userAlreadyExists) {
       throw new Error('User not exist.');
     }
   

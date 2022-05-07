@@ -29,6 +29,7 @@ model User {
   permissionsID Int?
   employee Employee?  @relation(fields: [employeeId], references: [id])
   employeeId Int?
+  teste String
 }
 
 model Employee {
