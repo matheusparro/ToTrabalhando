@@ -14,17 +14,9 @@ export class CreateUserUseCase {
     if (userAlreadyExists) {
       throw new Error('E-mail alredy used.');
     }
-    const user =  new UserEntity({
-      email:data.email,
-      password: await hash(data.password,8),
-      Avatar: data.Avatar,
-      permissionsID:data.permissionsID,
-      companyId:data.companyId,
-      
+  
 
-    });
-
-    const userCreated = await this.usersRepository.save(user);
+    const userCreated = await this.usersRepository.save(data);
 
     if (!userCreated){
       throw new Error('User not created.');

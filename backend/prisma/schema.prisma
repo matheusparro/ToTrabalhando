@@ -22,7 +22,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Avatar String?
-  refreshToken RefreshToken?
+  refreshToken RefreshToken? 
   company   Company?    @relation(fields: [companyId], references: [id])
   companyId Int?
   permissions   Permissions?   @relation(fields: [permissionsID], references: [id])
@@ -38,7 +38,10 @@ model Employee {
   pis String
   department   Department?    @relation(fields: [departmentId], references: [id])
   departmentId Int?
+  appointmentConfiguration   AppointmentConfiguration?    @relation(fields: [appointmentConfigurationId], references: [id])
+  appointmentConfigurationId Int?
   user User?
+  appointment Appointment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
    
@@ -51,8 +54,9 @@ model Company {
   users User[]
   department Department[]
   permissions Permissions[]
+  appointmentConfiguration AppointmentConfiguration[]
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt    
+  updatedAt DateTime @updatedAt
 }
 
 model Department {
@@ -63,12 +67,13 @@ model Department {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   employer Employee[]
+  appointment Appointment[]
 }
 
 model RefreshToken {
   id Int      @id @default(autoincrement())
   expiresIn Int
-  user   User    @relation(fields: [userId], references: [id])
+  user   User    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt  
@@ -86,8 +91,31 @@ model Permissions {
 
 model AppointmentConfiguration {
   id Int      @id @default(autoincrement())
-
+  startTime  DateTime
+  startTimeEnd  DateTime
+  endTime DateTime
+  endTimeEnd DateTime
+  company   Company    @relation(fields: [companyId], references: [id])
+  companyId Int
+  employer Employee[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+
+model Appointment {
+  id Int      @id @default(autoincrement())
+  startTime  DateTime
+  startTimeEnd  DateTime
+  endTime DateTime
+  endTimeEnd DateTime
+  department   Department?    @relation(fields: [departmentId], references: [id])
+  departmentId Int?
+  employee Employee?  @relation(fields: [employeeId], references: [id])
+  employeeId Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 
 
 

@@ -7,11 +7,11 @@ export class SetUserPermissionController {
   ) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const { userId,permissionID } = request.params;
+    const { userId,permissionId } = request.body;
 
     
     try {
-      const userFounded = await this.setUserPermissionUseCase.execute(parseInt(userId),parseInt(permissionID))
+      const userFounded = await this.setUserPermissionUseCase.execute(parseInt(userId),parseInt(permissionId))
   
       return response.status(201).json(userFounded);
     } catch (err) {
