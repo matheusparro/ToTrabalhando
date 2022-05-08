@@ -9,6 +9,7 @@ import { setUserPermissionController } from "./useCases/UserUseCases/SetUserPerm
 import { createDepartmentController } from "./useCases/DepartmentUseCases/CreateDepartment";
 //import { setUserDepartmentController } from "./useCases/UserUseCases/SetUserDepartment";
 import { createEmployeeController } from "./useCases/EmployeeUseCases/CreateEmployee";
+import {  createAppointmentConfigurationController } from "./useCases/AppointmentConfigurationUseCases/CreateAppointmentConfiguration";
 import multer from "multer";
 
 //Middleware de Upload para o Avatar
@@ -83,6 +84,11 @@ router.post('/company/:companyId/department', ensureAuthenticated, is(['manager'
 router.post('/employee', (request, response) => {
   return createEmployeeController.handle(request, response);
 });
+
+router.post('/appointment-configuration', (request, response) => {
+  return createAppointmentConfigurationController.handle(request, response);
+});
+
 
 
 
