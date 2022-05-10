@@ -19,6 +19,7 @@ model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
   password String
+  faceId String? @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Avatar String?
@@ -104,10 +105,7 @@ model AppointmentConfiguration {
 
 model Appointment {
   id Int      @id @default(autoincrement())
-  startTime  DateTime
-  startTimeEnd  DateTime
-  endTime DateTime
-  endTimeEnd DateTime
+  appointmentTime  DateTime
   department   Department?    @relation(fields: [departmentId], references: [id])
   departmentId Int?
   employee Employee?  @relation(fields: [employeeId], references: [id])

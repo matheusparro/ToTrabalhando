@@ -3,7 +3,9 @@ import { UserEntity } from "../../../entities/User";
 import { PrismaClient } from "@prisma/client";
 import { client } from "../../../prisma/client";
 export class PostgresUsersRepository implements IUsersRepository {
-
+  constructor(
+    private prisma = new PrismaClient(),
+  ) { }
   // async setUserDepartment(id: number, departmentId: number, companyId: number): Promise<UserEntity> {
   //   const departmentFounded = await client.department.findFirst({
   //     where:{
@@ -71,17 +73,11 @@ export class PostgresUsersRepository implements IUsersRepository {
   }
 
   async save(user: UserEntity): Promise<UserEntity> {
-     
 
      try {
-      const userCreated= await client.user.create({
-        data:{
-            password:user.password,
-            email:user.email,
-            Avatar:user.Avatar,
-            companyId:user.companyId,
-         }
-       })
+      const userCreated= await this.prisma.user.create({
+        data:user
+      })
        return userCreated
     } catch (error) {
       throw new Error(error.message);

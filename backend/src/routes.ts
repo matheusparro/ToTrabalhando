@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
-import { authenticateUserController } from "./useCases/AuthenticateUser/";
+import { authenticateUserController } from "./useCases/AuthenticateUser";
 import { createCompanyController } from "./useCases/CompanyUseCases/CreateCompany";
 import { refreshTokenUserController } from "./useCases/RefreshToken";
 import { createUserController } from "./useCases/UserUseCases/CreateUser";
@@ -88,9 +88,5 @@ router.post('/employee', (request, response) => {
 router.post('/appointment-configuration', (request, response) => {
   return createAppointmentConfigurationController.handle(request, response);
 });
-
-
-
-
 
 export { router }

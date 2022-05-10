@@ -13,7 +13,6 @@ export class CreateCompanyController {
       fantasyName,
       email,
       isAdmin,
-      name,
       password 
     } = request.body;
 
@@ -23,7 +22,6 @@ export class CreateCompanyController {
         fantasyName,
         email,
         isAdmin,
-        name,
         password
 
       })

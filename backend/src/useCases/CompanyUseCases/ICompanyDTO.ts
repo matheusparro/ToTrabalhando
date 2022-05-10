@@ -3,7 +3,6 @@ interface ICompanyDTO {
   fantasyName:string
   email:string,
   isAdmin:boolean,
-  name:string,
   password:string,
 
 }

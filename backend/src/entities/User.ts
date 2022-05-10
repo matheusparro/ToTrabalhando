@@ -9,12 +9,12 @@ export class UserEntity implements User{
   public updatedAt: Date;
   public Avatar: string;
   public permissionsID: number;
-  public permissions?:PermissionsEntity
   public employeeId: number;
 
-  constructor(props: Omit<UserEntity,'id'|'createdAt'|'updatedAt' | 'permissions' >) {
+  constructor(props: Omit<UserEntity,'id'|'createdAt'|'updatedAt'>) {
     Object.assign(this,props);    
   }
+  faceId: string;
 
   
 }
