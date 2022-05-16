@@ -5,18 +5,26 @@ import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
 import {theme} from '../../global/styles/theme'
 import { UserContext } from '../../contexts/UserContext/userContext';
+import {useAuth} from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 export function SignIn() {
   const [email,setEmail] = useState('admin');
   const [password,setPassword] = useState('admin');
-  const {signIn,signed,signOut} = useContext(UserContext)
-  const navigation = useNavigation()
-  async function handleSignIn(){
-    const result = await signIn(email,password)
-    if(result){
-      navigation.navigate("Home" as never, {} as never)
+   const {signed,signIn,user} = useAuth()
+  //const {signIn,signed,signOut} = useContext(UserContext)
+   const navigation = useNavigation()
+  // async function handleSignIn(){
+  //   const result = await signIn(email,password)
+  //   if(result){
+  //     navigation.navigate("Home" as never, {} as never)
+  //   }r
+  // }
+  console.log(signed)
+  console.log(user)
+   async function handleSignIn(){
+      
+      signIn()
     }
-  }
   return (
     <View style={styles.container}>
       <Image 

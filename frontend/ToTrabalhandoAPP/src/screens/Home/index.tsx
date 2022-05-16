@@ -4,7 +4,7 @@ import { styles } from './styles'
 import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { theme } from '../../global/styles/theme'
-import { UserContext } from '../../contexts/UserContext/userContext';
+import {useAuth} from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from "react-native";
 import { StyleSheet } from 'react-native';
@@ -21,7 +21,7 @@ import {
 export function Home() {
 
 
-  const { user } = useContext(UserContext)
+ const { signOut } = useAuth()
   const navigation = useNavigation()
   const screenWidth = Dimensions.get("window").width;
   const state = {
@@ -106,7 +106,8 @@ export function Home() {
           </DataTable>
         </View>
         <View >
-          <ButtonIcon color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
+          <ButtonIcon onPress={signOut} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
+          <Text >aa</Text>
         </View>
       </View>
     </View>

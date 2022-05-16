@@ -1,14 +1,14 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { Routes } from './src/routes/';
+import { Routes } from './src/screens';
 import { CreateCompany } from './src/screens/CreateCompany';
 import { theme } from './src/global/styles/theme'
-import {UsersProvider} from './src//contexts/UserContext/userContext'
+//import {UsersProvider} from './src//contexts/UserContext/userContext'
 import { Background } from './src/components/Background';
-
+import {AuthProvider} from './src/contexts/auth'
 export default function App() {
   return (
-    <UsersProvider>
+    <AuthProvider>
       <Background>
       <StatusBar 
       barStyle="light-content"
@@ -17,7 +17,7 @@ export default function App() {
     />
       <Routes/>
       </Background>
-    </UsersProvider>
+    </AuthProvider>
   );
 }
 
