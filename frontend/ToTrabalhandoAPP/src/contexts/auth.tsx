@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useState, useEffect,useContext } from 'react'
 import axios from "axios";
+import {Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import api from './../services/api'
 interface AuthProviderProps {
@@ -11,7 +12,7 @@ interface AuthContextData{
   signed: boolean
   user: User | null
   loading: boolean
-  signIn: () => Promise<void>;
+  signIn: (email:string,password:string) => Promise<void>;
   signOut: () =>void;
 }
 
@@ -38,19 +39,25 @@ export function AuthProvider({
         setUser(JSON.parse(storageUser))
         setLoading(false)
       }
+      setLoading(false)
     }
     loadStoragedData();
   },[])
-  async function signIn(){
-    
-    const response = await api.post('http://10.0.2.2:3333/auth', {"email":"mathparro@gmail.com","password":"123"})
+  async function signIn(email:string,password:string){
+    try{
+    const response = await api.post('http://10.0.2.2:3333/auth', {"email":email,"password":password})
     const { token, userFind } = response.data
-    setUser(userFind)
+    if(userFind && token){
+      setUser(userFind)
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-    await AsyncStorage.setItem('@toTrabalhandoAuth:user',JSON.stringify(userFind))
-    await AsyncStorage.setItem('@atoTrabalhandoToken:token',token)
+      await AsyncStorage.setItem('@toTrabalhandoAuth:user',JSON.stringify(userFind))
+      await AsyncStorage.setItem('@atoTrabalhandoToken:token',token)
+    }
+  }catch(error:any){
+    Alert.alert("Login",error.response.data.message);
+  }
   }
 
   async function signOut(){

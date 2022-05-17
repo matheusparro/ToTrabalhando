@@ -35,7 +35,6 @@ export function CreateCompany() {
         email: data.email,
         password: data.password,
       }
-     
       const result = await axios.post('http://10.0.2.2:3333/company/', companyToCreate)
       
       if (result.data) {
@@ -43,13 +42,10 @@ export function CreateCompany() {
         alert("Empresa criada com sucesso")
         new Promise((res) => setTimeout(()=>navigation.navigate("SignIn" as never, {} as never), 1));
       }
-      
-
     } catch (error:any) {
       alert(error.response.data.message);
       
     }
-    alert("oi")
 
   }
 

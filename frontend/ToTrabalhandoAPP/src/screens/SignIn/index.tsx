@@ -8,8 +8,8 @@ import { UserContext } from '../../contexts/UserContext/userContext';
 import {useAuth} from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 export function SignIn() {
-  const [email,setEmail] = useState('admin');
-  const [password,setPassword] = useState('admin');
+  const [email,setEmail] = useState('mathparro@gmail.com');
+  const [password,setPassword] = useState('123');
    const {signed,signIn,user} = useAuth()
   //const {signIn,signed,signOut} = useContext(UserContext)
    const navigation = useNavigation()
@@ -23,7 +23,7 @@ export function SignIn() {
   console.log(user)
    async function handleSignIn(){
       
-      signIn()
+      signIn(email,password)
     }
   return (
     <View style={styles.container}>

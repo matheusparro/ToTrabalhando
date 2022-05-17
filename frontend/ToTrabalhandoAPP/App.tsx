@@ -1,23 +1,27 @@
+import 'react-native-reanimated'
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { Routes } from './src/screens';
-import { CreateCompany } from './src/screens/CreateCompany';
-import { theme } from './src/global/styles/theme'
+import { Provider as PaperProvider } from 'react-native-paper';
 //import {UsersProvider} from './src//contexts/UserContext/userContext'
+import { AppRegistry } from 'react-native';
 import { Background } from './src/components/Background';
+import { expo as appName } from './app.json';
 import {AuthProvider} from './src/contexts/auth'
 export default function App() {
   return (
-    <AuthProvider>
-      <Background>
-      <StatusBar 
-      barStyle="light-content"
-      backgroundColor="transparent"
-      translucent
-    />
-      <Routes/>
-      </Background>
-    </AuthProvider>
+    <PaperProvider>
+      <AuthProvider>
+        <Background>
+        <StatusBar 
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+        <Routes/>
+        </Background>
+      </AuthProvider>
+    </PaperProvider>
   );
 }
 
