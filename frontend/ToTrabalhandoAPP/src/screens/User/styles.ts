@@ -31,10 +31,12 @@ export const styles = StyleSheet.create({
     marginTop:8,
     width:"100%",
   },
-  titleLabel: {
+  title: {
     color: theme.color.heading,
+    textAlign: 'center',
+    fontSize:24,
+    marginBottom:16,
   },
-  
   
 
 })

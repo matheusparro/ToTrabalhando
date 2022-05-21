@@ -6,6 +6,8 @@ import { theme } from '../global/styles/theme';
 import { Home } from '../screens/Home';
 import { Employee } from '../screens/Employee';
 import { CreateEmployee } from '../screens/Employee/createEmployee';
+import { User } from '../screens/User';
+import { CreateUser } from '../screens/User/createUser';
 
 
 //const { Navigator, Screen } = createStackNavigator()
@@ -43,6 +45,35 @@ export function AppRoutes() {
       
       options={{
         title: 'Funcionário',
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        drawerItemStyle: {
+          display: "none",
+        },
+        headerTintColor: theme.color.heading,
+        headerShown:true
+      }}
+    />
+      <Screen
+      name="Users"
+      component={User}
+      options={{
+        title: 'Usuários',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+      }}
+    />
+
+<Screen
+      name="UserInsert"
+      component={CreateUser}
+      
+      options={{
+        title: 'Usuário',
         headerStyle: {
           backgroundColor: theme.color.background,
         },

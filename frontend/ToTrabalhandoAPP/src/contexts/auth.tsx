@@ -19,6 +19,7 @@ interface AuthContextData{
 interface User {
   name:string,
   email:string,
+  companyId:string,
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
