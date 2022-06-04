@@ -20,6 +20,7 @@ interface User {
   name:string,
   email:string,
   companyId:string,
+  Avatar:string
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)

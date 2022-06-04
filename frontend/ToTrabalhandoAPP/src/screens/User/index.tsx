@@ -61,7 +61,9 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
         <FlatList
         data={allUsers}
         renderItem={({item}) =>
-          <TouchableWithoutFeedback onPress={()=>console.log("oi")}>
+          <TouchableWithoutFeedback onPress={() => {
+            navigation.navigate("UserInsert" as never, {data:2} as never)
+          }}>
             <Text style={styles.item}>{item?.email}</Text>
           </TouchableWithoutFeedback> 
         }
@@ -73,7 +75,9 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
     style={styles2.fab}
     small
     icon="plus"
-    onPress={() =>  navigation.navigate("UserInsert" as never, {} as never)}
+    onPress={() => {
+      navigation.navigate("UserInsert" as never, {} as never)
+    }}
   />
     </View>
   );

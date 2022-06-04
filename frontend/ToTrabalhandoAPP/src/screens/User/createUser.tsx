@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput,StyleSheet, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { Text, View, Image, StatusBar, TextInput,StyleSheet,Button, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { useForm } from 'react-hook-form'
 import { Picker } from "@react-native-picker/picker";
 import { styles } from './styles'
@@ -10,15 +10,19 @@ import { theme } from '../../global/styles/theme'
 import axios from 'axios'
 import { useIsFocused, useNavigation, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
+import * as ImagePicker from 'expo-image-picker';
+import api from '../../services/api';
+
 type FormData = {
 
-  name: string,
-  cpf: string
-  pis: string,
-  departmentId: number,
-  appointmentConfigurationId: number,
-  userId:string,
-
+  email: string,
+  password: string
+  userAvatar:{
+    uri: string | null,
+    type: string,
+    name: string
+  },
+  companyId:string | undefined,
 }
 interface allDepartment{
   name:string,
@@ -26,63 +30,97 @@ interface allDepartment{
 }
 
 export function CreateUser() {
-  const { control, handleSubmit } = useForm<FormData>()
+  const { control, handleSubmit,reset } = useForm<FormData>()
+
+  const {user} = useAuth()
+  const [userAvatar, setUserAvatar] = useState<any>(null);
   const navigation = useNavigation()
-  const [department, setDepartment] = useState("")
-  const { user } = useAuth()
-  const [allDepartments, setAllDepartments] = useState<[allDepartment] | null>(null)
   const isFocused = useIsFocused();
-  const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 16,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        paddingRight: 30 // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 1,
-        paddingVertical: 1,
-        borderWidth: 0.5,
-        borderColor: 'purple',
-        borderRadius: 8,
-        color: 'black',
-        backgroundColor:"#3333",// to ensure the text is never behind the icon
+  
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    useEffect(() =>{
+      async function alldepartment(){
+        if(isFocused){
+          const result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/department/all`)
+          if (result.data) {
+          
+           
+          }
+        }
+      }
+      alldepartment()
+      reset()
+    },[isFocused])
+
+    //console.log(result);
+
+    if (!result.cancelled) {
+      setUserAvatar(result.uri);
     }
-});
-  async function handleEmployeeRegister(data: FormData) {
-    
+  };
+  let config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  }
+  async function handleUserRegister(data: FormData){
     try {
-   
-      const result = await axios.post('http://10.0.2.2:3333/employee/', data)
       
-      if (result.data) {
+      data.userAvatar = {
+        uri: userAvatar,
+        type: "image/jpeg",
+        name: "teste.jpg"
+      }
+      data.companyId = user?.companyId
+
+      let localUri = String(userAvatar);
+      let filename = localUri.split('/').pop();
+    
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(String(filename));
+      
+      // Upload the image using the fetch and FormData APIs
+      let formData = new FormData();
+      // Assume "photo" is the name of the form field the server expects
+      const teste:any =   {uri: String(userAvatar), type: 'image/jpeg', name: "teste" }
+        formData.append("userAvatar",teste);
+        formData.append("companyId",String(data.companyId));
+        formData.append("email",data.email);
+        formData.append("password",data.password);
+
+
+      console.log(formData)
+      const result = await await api.post('http://10.0.2.2:3333/users/',formData,config)
+      
+      if (result.status==201) {
        
-        
+        alert("Usuário criado com sucesso")
+        new Promise((res) => setTimeout(()=>  navigation.navigate("Users" as never, {} as never) , 1));
       }
     } catch (error:any) {
-      alert(error.response.data.message);
-      
+      Alert.alert("Login",error.response.data.message);
     }
-
+    
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <ControlledInput name="email" control={control} keyboardType="numeric" labelName="E-mail" />
+        <ControlledInput name="email" control={control} labelName="E-mail" />
         <ControlledInput name="password" control={control} labelName="Senha" />
+        <Button title="Avatar" onPress={pickImage} />
+        {userAvatar && <Image source={{ uri: userAvatar }} style={{height: 200 }} />}
         <Pressable onPress={() => alert('Hi!')}>
-         
-      
           <ControlledInput editable={false} name="employee" control={control} keyboardType="numeric" labelName="Funcionário" />
           </Pressable>
         <View style={{ marginTop: 20 }}>
-          <ButtonIcon onPress={handleSubmit(handleEmployeeRegister)} color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
+          <ButtonIcon onPress={handleSubmit(handleUserRegister)}color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
         </View>
       </View>
     </View>
