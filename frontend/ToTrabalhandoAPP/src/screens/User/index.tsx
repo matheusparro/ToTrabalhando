@@ -10,8 +10,9 @@ import { FAB } from 'react-native-paper';
 import api from '../../services/api'
 
 interface allUsers{
-  email:string,
+  email:string
   id:string
+  Avatar:string
 }
 export function User() {
 
@@ -62,7 +63,7 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
         data={allUsers}
         renderItem={({item}) =>
           <TouchableWithoutFeedback onPress={() => {
-            navigation.navigate("UserInsert" as never, {data:2} as never)
+            navigation.navigate("UserInsert" as never, {email:item.email,id:item.id,Avatar:item.Avatar} as never)
           }}>
             <Text style={styles.item}>{item?.email}</Text>
           </TouchableWithoutFeedback> 

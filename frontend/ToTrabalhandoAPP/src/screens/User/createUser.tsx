@@ -8,7 +8,7 @@ import { ButtonIcon } from '../../components/ButtonIcon';
 import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
 import axios from 'axios'
-import { useIsFocused, useNavigation, } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../services/api';
@@ -24,19 +24,24 @@ type FormData = {
   },
   companyId:string | undefined,
 }
-interface allDepartment{
-  name:string,
-  id:string
-}
+
+
+type ParamList = {
+  Detail: {
+    id:string
+    email:string,
+    password:string,
+    Avatar:string,
+  };
+};
 
 export function CreateUser() {
   const { control, handleSubmit,reset } = useForm<FormData>()
-
+  const isFocused = useIsFocused();
   const {user} = useAuth()
   const [userAvatar, setUserAvatar] = useState<any>(null);
   const navigation = useNavigation()
-  const isFocused = useIsFocused();
-  
+  const route = useRoute<RouteProp<ParamList, 'Detail'>>();
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,20 +50,6 @@ export function CreateUser() {
       aspect: [4, 3],
       quality: 1,
     });
-    useEffect(() =>{
-      async function alldepartment(){
-        if(isFocused){
-          const result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/department/all`)
-          if (result.data) {
-          
-           
-          }
-        }
-      }
-      alldepartment()
-      reset()
-    },[isFocused])
-
     //console.log(result);
 
     if (!result.cancelled) {
@@ -70,6 +61,22 @@ export function CreateUser() {
       'content-type': 'multipart/form-data'
     }
   }
+ 
+  useEffect(() =>{
+    
+    async function focusSreen(){
+      setUserAvatar(null)
+      if(isFocused){
+       if(route.params.Avatar){
+         console.log("Oi")
+        console.log(api.defaults.baseURL+"/"+route.params.Avatar.split("\\")[1])
+         setUserAvatar(api.defaults.baseURL+"/"+route.params.Avatar.split("\\")[1])
+       }
+      }
+    }
+    reset()
+    focusSreen()
+  },[isFocused])
   async function handleUserRegister(data: FormData){
     try {
       
@@ -112,8 +119,8 @@ export function CreateUser() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <ControlledInput name="email" control={control} labelName="E-mail" />
-        <ControlledInput name="password" control={control} labelName="Senha" />
+        <ControlledInput  value={route.params.email} name="email" control={control} labelName="E-mail" />
+        {!route.params.email && <ControlledInput name="password" control={control} labelName="Senha" />}
         <Button title="Avatar" onPress={pickImage} />
         {userAvatar && <Image source={{ uri: userAvatar }} style={{height: 200 }} />}
         <Pressable onPress={() => alert('Hi!')}>
