@@ -37,6 +37,9 @@ export const styles = StyleSheet.create({
     fontSize:24,
     marginBottom:16,
   },
+  titleLabel: {
+    color: theme.color.heading,
+  },
   
 
 })

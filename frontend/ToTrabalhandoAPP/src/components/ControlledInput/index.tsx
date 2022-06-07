@@ -4,13 +4,15 @@ import { Input,IInputProps } from '../../components/Input';
 type Props = IInputProps &{
   control:Control<any>;
   name:string;
+  screenValue?:string
+
 }
-export function ControlledInput({control,name,...rest}:Props){
+export function ControlledInput({control,name,screenValue,...rest}:Props){
   return(
     <Controller
       name={name}
       control={control}
-      render={({field:{onChange,value}})=>(
+      render={({field:{onChange,value=screenValue}})=>(
         <Input 
           onChangeText={onChange}
           value={value}

@@ -13,6 +13,7 @@ interface allUsers{
   email:string
   id:string
   Avatar:string
+  permissionsID:string
 }
 export function User() {
 
@@ -63,7 +64,7 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
         data={allUsers}
         renderItem={({item}) =>
           <TouchableWithoutFeedback onPress={() => {
-            navigation.navigate("UserInsert" as never, {email:item.email,id:item.id,Avatar:item.Avatar} as never)
+            navigation.navigate("UserInsert" as never, {email:item.email,id:item.id,Avatar:item.Avatar,permissionsID:item.permissionsID} as never)
           }}>
             <Text style={styles.item}>{item?.email}</Text>
           </TouchableWithoutFeedback> 

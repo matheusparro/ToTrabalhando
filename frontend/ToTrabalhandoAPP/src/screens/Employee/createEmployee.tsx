@@ -20,21 +20,24 @@ type FormData = {
   userId:string,
 
 }
-interface allDepartment{
+interface allFields{
   name:string,
   id:string
 }
+
 
 export function CreateEmployee() {
   const { control, handleSubmit } = useForm<FormData>()
   const navigation = useNavigation()
   const [department, setDepartment] = useState("")
+  const [allAppointmentConf, setAllAppointmentConf] = useState<[allFields] | null>(null)
+  
   const { user } = useAuth()
-  const [allDepartments, setAllDepartments] = useState<[allDepartment] | null>(null)
+  const [allDepartments, setAllDepartments] = useState<[allFields] | null>(null)
   const isFocused = useIsFocused();
+  
   async function handleEmployeeRegister(data: FormData) {
     try {
-      console.log(data)
       // const result = await axios.post('http://10.0.2.2:3333/employee/', data)
       
       // if (result.data) {
@@ -49,17 +52,25 @@ export function CreateEmployee() {
 
   }
   useEffect(() =>{
-    async function alldepartment(){
+    async function allFields(){
       if(isFocused){
-        const result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/department/all`)
+        let result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/department/all`)
         if (result.data) {
         
           setAllDepartments(result.data)
           alert(result.data)
         }
+         result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/appointment-configuration/all`)
+        if (result.data) {
+          setAllAppointmentConf(result.data)
+          alert(result.data)
+        }
+
+
       }
     }
-    alldepartment()
+
+    allFields()
   },[isFocused])
 
   return (
@@ -68,7 +79,6 @@ export function CreateEmployee() {
         <ControlledInput name="name" control={control} keyboardType="numeric" labelName="Nome" />
         <ControlledInput name="cpf" control={control} labelName="Cpf" />
         <ControlledInput name="pis" control={control} labelName="Pis" />
-        <ControlledInput name="appointmentConfigurationId" control={control} labelName="Configuração de Apontamento" />
         <Text style={styles.titleLabel}>Departamento</Text>  
         <Controller
       name={"departmentId"}
@@ -83,6 +93,26 @@ export function CreateEmployee() {
       >
         <Picker.Item label="Selecione" value="" />
         {allDepartments? allDepartments.map(item=>{
+          return( <Picker.Item  key={item?.id} label={item?.name} value={item?.id} />)
+        }):null}
+        
+      </Picker>
+      )}
+    />
+      <Text style={styles.titleLabel}>Configuração de Apontamento</Text>  
+      <Controller
+      name={"appointmentConfigurationId"}
+      control={control}
+      render={({field})=>(
+        <Picker
+        selectedValue={field.value}
+        onValueChange={(date) => field.onChange(date)}
+        mode="dropdown" // Android only
+        style={styles.input}
+        
+      >
+        <Picker.Item label="Selecione" value="" />
+        {allAppointmentConf? allAppointmentConf.map(item=>{
           return( <Picker.Item  key={item?.id} label={item?.name} value={item?.id} />)
         }):null}
         

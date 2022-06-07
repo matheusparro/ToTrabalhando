@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StatusBar, TextInput,StyleSheet,Button, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable } from 'react-native';
-import { useForm } from 'react-hook-form'
-import { Picker } from "@react-native-picker/picker";
+import { Controller, useForm } from 'react-hook-form'
 import { styles } from './styles'
-import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
-import axios from 'axios'
 import { RouteProp, useIsFocused, useNavigation, useRoute, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../services/api';
-
+import { Picker } from "@react-native-picker/picker";
 type FormData = {
 
   email: string,
@@ -23,6 +20,7 @@ type FormData = {
     name: string
   },
   companyId:string | undefined,
+  permissionsID:string
 }
 
 
@@ -32,16 +30,20 @@ type ParamList = {
     email:string,
     password:string,
     Avatar:string,
+    permissionsID: string
   };
 };
 
+
+
 export function CreateUser() {
-  const { control, handleSubmit,reset } = useForm<FormData>()
+  const { control, handleSubmit,reset,register} = useForm<FormData>()
   const isFocused = useIsFocused();
   const {user} = useAuth()
   const [userAvatar, setUserAvatar] = useState<any>(null);
   const navigation = useNavigation()
   const route = useRoute<RouteProp<ParamList, 'Detail'>>();
+  const [permission,setPermission] = useState('')
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -67,6 +69,7 @@ export function CreateUser() {
     async function focusSreen(){
       setUserAvatar(null)
       if(isFocused){
+
        if(route.params.Avatar){
          console.log("Oi")
         console.log(api.defaults.baseURL+"/"+route.params.Avatar.split("\\")[1])
@@ -76,7 +79,10 @@ export function CreateUser() {
     }
     reset()
     focusSreen()
+    register("permissionsID")
+    console.log(route.params.permissionsID)
   },[isFocused])
+
   async function handleUserRegister(data: FormData){
     try {
       
@@ -96,19 +102,30 @@ export function CreateUser() {
       // Upload the image using the fetch and FormData APIs
       let formData = new FormData();
       // Assume "photo" is the name of the form field the server expects
+      
       const teste:any =   {uri: String(userAvatar), type: 'image/jpeg', name: "teste" }
         formData.append("userAvatar",teste);
+       
         formData.append("companyId",String(data.companyId));
+        console.log(data,"aquiii")
         formData.append("email",data.email);
-        formData.append("password",data.password);
-
-
-      console.log(formData)
-      const result = await await api.post('http://10.0.2.2:3333/users/',formData,config)
       
+        formData.append("password",data.password);
+        formData.append("permissionsID",data.permissionsID);
+
+
+      let result =null
+     
+      if(!route){
+        
+       result = await await api.post('http://10.0.2.2:3333/users/',formData,config)
+      }else{
+        result = await await api.put(`http://10.0.2.2:3333/users/${route.params.id}`,formData,config)
+        console.log("OIIIIIIIIII")
+      }
       if (result.status==201) {
        
-        alert("Usuário criado com sucesso")
+        alert("Sucesso")
         new Promise((res) => setTimeout(()=>  navigation.navigate("Users" as never, {} as never) , 1));
       }
     } catch (error:any) {
@@ -119,10 +136,36 @@ export function CreateUser() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <ControlledInput  value={route.params.email} name="email" control={control} labelName="E-mail" />
+        <ControlledInput  defaultValue={route.params.email}  name="email" control={control} labelName="E-mail" />
         {!route.params.email && <ControlledInput name="password" control={control} labelName="Senha" />}
         <Button title="Avatar" onPress={pickImage} />
         {userAvatar && <Image source={{ uri: userAvatar }} style={{height: 200 }} />}
+        
+        <Text style={styles.titleLabel}>Permissão</Text>  
+
+      <Controller
+      name={"permissionsID"}
+      control={control}
+      render={({field:{value=String(route.params.permissionsID),onChange}})=>(
+        <Picker
+        
+        selectedValue={value}
+        onValueChange={(date) => onChange(date)}
+        mode="dropdown" // Android only
+        style={styles.input}
+        
+        
+        
+      >
+        <Picker.Item label="Selecione" value="" />
+        <Picker.Item  key={1} label={"Admin"} value={'1'} />
+        <Picker.Item  key={2} label={"Gerente"} value={'2'} />
+        <Picker.Item  key={3} label={"Funcionário"} value={'3'} />
+        
+        
+      </Picker>
+      )}
+    />
         <Pressable onPress={() => alert('Hi!')}>
           <ControlledInput editable={false} name="employee" control={control} keyboardType="numeric" labelName="Funcionário" />
           </Pressable>
