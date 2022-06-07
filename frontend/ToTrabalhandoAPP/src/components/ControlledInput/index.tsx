@@ -1,5 +1,5 @@
 import React from 'react';
-import {Control,Controller} from 'react-hook-form'
+import {Control,Controller, useForm,} from 'react-hook-form'
 import { Input,IInputProps } from '../../components/Input';
 type Props = IInputProps &{
   control:Control<any>;
@@ -8,13 +8,15 @@ type Props = IInputProps &{
 
 }
 export function ControlledInput({control,name,screenValue,...rest}:Props){
+  const {register} = useForm()
   return(
     <Controller
       name={name}
       control={control}
-      render={({field:{onChange,value=screenValue}})=>(
+      render={({field:{onChange,ref={...register(name)},value}})=>(
         <Input 
-          onChangeText={onChange}
+          {...ref}
+          onChange={onChange}
           value={value}
           {...rest}
         >
@@ -24,3 +26,4 @@ export function ControlledInput({control,name,screenValue,...rest}:Props){
     />
   )
 }
+
