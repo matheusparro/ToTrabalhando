@@ -83,7 +83,7 @@ export function CreateUser() {
 
   async function handleUserRegister(data: FormData) {
     try {
-
+      
       data.userAvatar = {
         uri: userAvatar,
         type: "image/jpeg",
@@ -111,8 +111,8 @@ export function CreateUser() {
 
       let result = null
 
-      if (!route) {
-
+      if (!route.params.id) {
+        console.log("oi")
         result = await await api.post('http://10.0.2.2:3333/users/', formData, config)
       } else {
         result = await await api.put(`http://10.0.2.2:3333/users/${route.params.id}`, formData, config)

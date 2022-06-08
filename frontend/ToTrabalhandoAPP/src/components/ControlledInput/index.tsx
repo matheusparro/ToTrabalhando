@@ -1,22 +1,18 @@
 import React from 'react';
-import {Control,Controller, useForm,} from 'react-hook-form'
+import {Control,Controller} from 'react-hook-form'
 import { Input,IInputProps } from '../../components/Input';
 type Props = IInputProps &{
   control:Control<any>;
   name:string;
-  screenValue?:string
-
 }
-export function ControlledInput({control,name,screenValue,...rest}:Props){
-  const {register} = useForm()
+export function ControlledInput({control,name,onChange,...rest}:Props){
   return(
     <Controller
       name={name}
       control={control}
-      render={({field:{onChange,ref={...register(name)},value}})=>(
+      render={({field:{onChange,value}})=>(
         <Input 
-          {...ref}
-          onChange={onChange}
+          onChangeText={onChange}
           value={value}
           {...rest}
         >
@@ -26,4 +22,3 @@ export function ControlledInput({control,name,screenValue,...rest}:Props){
     />
   )
 }
-

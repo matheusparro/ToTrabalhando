@@ -49,7 +49,7 @@ export function SignIn() {
         
           <TouchableOpacity  activeOpacity={0.8}>
      
-          <Text onPress={()=>{ navigation.navigate("CreateCompany" as never, {} as never)}}style={styles.createAccount}>Cadastrar empresa</Text>
+          <Text onPress={()=>{ navigation.navigate("Company" as never, {} as never)}}style={styles.createAccount}>Cadastrar empresa</Text>
         </TouchableOpacity>
         
       

@@ -45,6 +45,7 @@ export function CreateEmployee() {
       //   alert("Funcionário criado com sucesso")
       //   //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
       // }
+      console.log(data)
     } catch (error:any) {
       alert(error.response.data.message);
       

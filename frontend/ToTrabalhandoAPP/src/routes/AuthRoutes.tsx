@@ -2,6 +2,8 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { SignIn } from '../screens/SignIn'
+import { CreateCompany } from '../screens/CreateCompany';
+import { theme } from '../global/styles/theme';
 
 
 const { Navigator, Screen } = createStackNavigator()
@@ -25,6 +27,18 @@ export function AuthRoutes() {
         }}
       
       />
+      <Screen
+      name="Company"
+      component={CreateCompany}
+      options={{
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+        headerTitleAlign:"left",
+      }}
+    />
     </Navigator>
   )
 }
