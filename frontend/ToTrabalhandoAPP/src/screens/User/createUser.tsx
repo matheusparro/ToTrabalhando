@@ -31,8 +31,18 @@ type ParamList = {
     password: string,
     Avatar: string,
     permissionsID: string
+    employeeId:string
   };
 };
+
+type employee ={
+  id:string,
+  name:string,
+  cpf:string,
+  pis:string,
+  departmentId:string,
+  appointmentConfigurationId:string
+}
 
 
 
@@ -43,7 +53,7 @@ export function CreateUser() {
   const [userAvatar, setUserAvatar] = useState<any>(null);
   const navigation = useNavigation()
   const route = useRoute<RouteProp<ParamList, 'Detail'>>();
-  const [permission, setPermission] = useState('')
+  const [employee, setEmployee] = useState<employee | null>(null)
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -69,12 +79,18 @@ export function CreateUser() {
       setUserAvatar(null)
       if (isFocused) {
         reset()
-
+        
         if (route.params.Avatar) {
-          console.log("Oi", route.params.permissionsID)
-          console.log(api.defaults.baseURL + "/" + route.params.Avatar.split("\\")[1])
+        
           setUserAvatar(api.defaults.baseURL + "/" + route.params.Avatar.split("\\")[1])
+        }
+        if(route.params.id){
           reset({ email: route.params.email, permissionsID: String(route.params.permissionsID) })
+          if(route.params.employeeId){
+           
+            const result = await api.get(api.defaults.baseURL + `/employee/${route.params.employeeId}`)
+            setEmployee(result.data)
+          }
         }
       }
     }
@@ -155,14 +171,17 @@ export function CreateUser() {
               <Picker.Item key={1} label={"Admin"} value={'1'} />
               <Picker.Item key={2} label={"Gerente"} value={'2'} />
               <Picker.Item key={3} label={"Funcionário"} value={'3'} />
-
-
             </Picker>
           )}
         />
-        <Pressable onPress={() => alert('Hi!')}>
-          <ControlledInput editable={false} name="employee" control={control} keyboardType="numeric" labelName="Funcionário" />
-        </Pressable>
+        {route.params.id && <Pressable onPress={() => {
+          if(route.params.employeeId){
+            navigation.navigate("EmloyeeInsert" as never, {userId:route.params.id,id:employee?.id,name:employee?.name,cpf:employee?.cpf,pis:employee?.pis,departmentId:employee?.departmentId,appointmentConfigurationId:employee?.appointmentConfigurationId} as never)
+          }else
+          navigation.navigate("EmloyeeInsert" as never,{userId:route.params.id} as never)
+        }}>
+          <ControlledInput defaultValue={employee?.name ?employee?.name:"Clique para cadastrar"} editable={false} name="employee" control={control} keyboardType="numeric" labelName="Funcionário" />
+        </Pressable>}
         <View style={{ marginTop: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleUserRegister)} color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
         </View>

@@ -28,7 +28,7 @@ export function AppRoutes() {
       }}
     />
     <Screen
-      name="Emloyee"
+      name="Employee"
       component={Employee}
       options={{
         title: 'Funcionário',

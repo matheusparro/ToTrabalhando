@@ -8,7 +8,7 @@ import { ButtonIcon } from '../../components/ButtonIcon';
 import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
 import axios from 'axios'
-import { useIsFocused, useNavigation, } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
 type FormData = {
 
@@ -25,27 +25,51 @@ interface allFields{
   id:string
 }
 
+type ParamList = {
+  Detail: {
+    userId:string,
+    id:string,
+    name:string,
+    pis:string,
+    cpf:string
+    departmentId:string,
+    appointmentConfigurationId:string
+  };
+};
 
 export function CreateEmployee() {
-  const { control, handleSubmit } = useForm<FormData>()
+  const { control, handleSubmit,reset } = useForm<FormData>()
   const navigation = useNavigation()
-  const [department, setDepartment] = useState("")
   const [allAppointmentConf, setAllAppointmentConf] = useState<[allFields] | null>(null)
-  
+  const route = useRoute<RouteProp<ParamList, 'Detail'>>();
   const { user } = useAuth()
   const [allDepartments, setAllDepartments] = useState<[allFields] | null>(null)
   const isFocused = useIsFocused();
   
   async function handleEmployeeRegister(data: FormData) {
     try {
-      // const result = await axios.post('http://10.0.2.2:3333/employee/', data)
-      
-      // if (result.data) {
-       
-      //   alert("Funcionário criado com sucesso")
-      //   //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
-      // }
-      console.log(data)
+      if(route.params.userId){
+        data.userId = route.params.userId
+        if(!route.params.id){
+          const result = await axios.post('http://10.0.2.2:3333/employee/', data)
+          
+          if (result.data) {
+          
+            alert("Funcionário criado com sucesso")
+            //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
+          }
+        }else{
+          console.log(data)
+          const result = await axios.put(`http://10.0.2.2:3333/employee/${route.params.id}`, data)
+          
+          if (result.data) {
+          
+            alert("Funcionário atualizado")
+            //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
+          }
+        }
+        
+      }else alert("DEU RUIM")
     } catch (error:any) {
       alert(error.response.data.message);
       
@@ -59,14 +83,14 @@ export function CreateEmployee() {
         if (result.data) {
         
           setAllDepartments(result.data)
-          alert(result.data)
         }
          result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/appointment-configuration/all`)
         if (result.data) {
           setAllAppointmentConf(result.data)
-          alert(result.data)
         }
-
+        if(route.params.userId){
+          reset({name:route.params.name,appointmentConfigurationId:parseInt(route.params.appointmentConfigurationId),cpf:route.params.cpf,pis:route.params.pis,departmentId:parseInt(route.params.departmentId)})
+        }
 
       }
     }
@@ -77,9 +101,9 @@ export function CreateEmployee() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <ControlledInput name="name" control={control} keyboardType="numeric" labelName="Nome" />
-        <ControlledInput name="cpf" control={control} labelName="Cpf" />
-        <ControlledInput name="pis" control={control} labelName="Pis" />
+        <ControlledInput defaultValue={route.params.name} name="name" control={control} keyboardType="numeric" labelName="Nome" />
+        <ControlledInput defaultValue={route.params.cpf} name="cpf" control={control} labelName="Cpf" />
+        <ControlledInput defaultValue={route.params.pis} name="pis" control={control} labelName="Pis" />
         <Text style={styles.titleLabel}>Departamento</Text>  
         <Controller
       name={"departmentId"}
