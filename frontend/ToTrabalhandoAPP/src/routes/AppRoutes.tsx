@@ -8,10 +8,52 @@ import { Employee } from '../screens/Employee';
 import { CreateEmployee } from '../screens/Employee/createEmployee';
 import { User } from '../screens/User';
 import { CreateUser } from '../screens/User/createUser';
+import { CreateDepartment } from '../screens/Department/createDepartment';
+import { Department } from '../screens/Department';
+import CustomHeader from '../components/CustomHeader/custoHeader';
 
 
-//const { Navigator, Screen } = createStackNavigator()
+const stackNavigator = createStackNavigator()
 const { Navigator, Screen} = createDrawerNavigator()
+
+function Teste() {
+  return (
+    <stackNavigator.Navigator>
+      <stackNavigator.Screen
+        name="Department"
+        component={Department}
+        
+        options={{
+          title: 'Departamento',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+        
+          headerTintColor: theme.color.heading,
+          headerShown:true,
+          header: (props) => <CustomHeader {...props} /> 
+          
+          
+        }}
+      />
+
+      <stackNavigator.Screen
+        name="DepartmentInsert"
+        component={CreateDepartment}
+        
+        options={{
+          title: 'Departamento',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+         
+          headerTintColor: theme.color.heading,
+          headerShown:true
+        }}
+      />
+    </stackNavigator.Navigator>
+  )
+}
 export function AppRoutes() {
   return (
     <Navigator>
@@ -53,6 +95,7 @@ export function AppRoutes() {
         },
         headerTintColor: theme.color.heading,
         headerShown:true
+       
       }}
     />
       <Screen
@@ -74,6 +117,37 @@ export function AppRoutes() {
       
       options={{
         title: 'Usuário',
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        drawerItemStyle: {
+          display: "none",
+        },
+        headerTintColor: theme.color.heading,
+        headerShown:true
+      }}
+    />
+
+  <Screen
+      name="Department"
+      component={Teste}
+      
+      options={{
+        title: 'Departamento',
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerShown:false,
+        headerTintColor: theme.color.heading,
+        
+      }}
+    />
+
+  <Screen
+      name="DepartmentInsert"
+      component={Teste}  
+      options={{
+        title: 'Departamento',
         headerStyle: {
           backgroundColor: theme.color.background,
         },

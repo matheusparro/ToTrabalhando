@@ -21,6 +21,7 @@ type FormData = {
   },
   companyId: string | undefined,
   permissionsID: string
+  employee:string
 }
 
 
@@ -76,8 +77,9 @@ export function CreateUser() {
 
   useEffect(() => {
     async function focusSreen() {
-      setUserAvatar(null)
+      
       if (isFocused) {
+        setEmployee(null)
         reset()
         
         if (route.params.Avatar) {

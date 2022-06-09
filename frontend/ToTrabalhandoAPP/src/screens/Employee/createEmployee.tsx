@@ -52,11 +52,11 @@ export function CreateEmployee() {
         data.userId = route.params.userId
         if(!route.params.id){
           const result = await axios.post('http://10.0.2.2:3333/employee/', data)
-          
-          if (result.data) {
+          console.log(result.data)
+          if (result.status==201) {
           
             alert("Funcionário criado com sucesso")
-            //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
+           // new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
           }
         }else{
           console.log(data)
