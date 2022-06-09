@@ -8,7 +8,7 @@ import { Employee } from '../screens/Employee';
 import { CreateEmployee } from '../screens/Employee/createEmployee';
 import { User } from '../screens/User';
 import { CreateUser } from '../screens/User/createUser';
-import { CreateDepartment } from '../screens/Department/createDepartment';
+import { CreateDepartment } from '../screens/Department/CreateDepartment';
 import { Department } from '../screens/Department';
 import CustomHeader from '../components/CustomHeader/custoHeader';
 
@@ -78,6 +78,9 @@ export function AppRoutes() {
         headerStyle: {
           backgroundColor: theme.color.background,
         },
+        drawerItemStyle: {
+          display: "none",
+        },
         headerTintColor: theme.color.heading,
       }}
     />
@@ -129,7 +132,7 @@ export function AppRoutes() {
     />
 
   <Screen
-      name="Department"
+      name="DepartmentDraw"
       component={Teste}
       
       options={{

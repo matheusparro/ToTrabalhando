@@ -90,7 +90,7 @@ export function CreateEmployee() {
         }
         if(route.params.userId){
           reset({name:route.params.name,appointmentConfigurationId:parseInt(route.params.appointmentConfigurationId),cpf:route.params.cpf,pis:route.params.pis,departmentId:parseInt(route.params.departmentId)})
-        }
+        }else reset()
 
       }
     }
