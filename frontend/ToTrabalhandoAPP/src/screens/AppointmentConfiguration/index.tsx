@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from 'react';
-import { Text, View, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, FlatList, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { styles } from './styles'
 import {useAuth} from '../../contexts/auth';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -9,7 +9,11 @@ import api from '../../services/api'
 
 interface allAppointmentsConf{
   id:string
-  name:string
+  name:string,
+  endTime:string,
+  endTimeEnd:string,
+  startTime:string,
+  startTimeEnd:string,
 }
 export function AppointmentConfiguration() {
 
@@ -44,11 +48,14 @@ const [allAppointmentsConf,setAllAppointmentsConf]= useState<allAppointmentsConf
         <FlatList
         data={allAppointmentsConf}
         renderItem={({item}) =>
-          <TouchableWithoutFeedback onPress={() => {
-            navigation.navigate("DepartmentInsert" as never, {id:item.id,name:item.name} as never)
+          <Pressable onPress={() => {
+            navigation.navigate("CreateAppointmentConfiguration" as never, {id:item.id,name:item.name, endTime:item.endTime,
+              endTimeEnd:item.endTimeEnd,
+              startTime:item.startTime,
+              startTimeEnd:item.startTimeEnd,} as never)
           }}>
             <Text style={styles.item}>{item?.name}</Text>
-          </TouchableWithoutFeedback> 
+          </Pressable> 
         }
       />
         </View>
@@ -59,7 +66,7 @@ const [allAppointmentsConf,setAllAppointmentsConf]= useState<allAppointmentsConf
     small
     icon="plus"
     onPress={() => {
-      navigation.navigate("DepartmentInsert" as never, {} as never)
+      navigation.navigate("CreateAppointmentConfiguration" as never, {} as never)
     }}
   />
     </View>

@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from 'react';
-import { Text, View, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, FlatList, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { styles } from './styles'
 import {useAuth} from '../../contexts/auth';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -39,16 +39,16 @@ const [allDepartments,setAllDepartments]= useState<allDepartments[] | null>(null
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <View style={styles.contentList}>
         <View >
         <FlatList
         data={allDepartments}
         renderItem={({item}) =>
-          <TouchableWithoutFeedback onPress={() => {
+          <Pressable onPress={() => {
             navigation.navigate("DepartmentInsert" as never, {id:item.id,name:item.name} as never)
           }}>
             <Text style={styles.item}>{item?.name}</Text>
-          </TouchableWithoutFeedback> 
+          </Pressable> 
         }
       />
         </View>

@@ -75,7 +75,7 @@ export function CreateDepartment() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <ControlledInput name="name" control={control} labelName="Nome" />
+        <ControlledInput  name="name" control={control} labelName="Nome" />
         <View style={{ marginTop: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleUserRegister)} color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
         </View>

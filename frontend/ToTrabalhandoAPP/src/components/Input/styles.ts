@@ -6,12 +6,13 @@ export const styles = StyleSheet.create({
   input:{
     backgroundColor: '#C393F2',
     borderBottomColor:'black',
-    height: 40,
+    height: 45,
     color:'#222222',
     paddingHorizontal:15,
     marginBottom:15,
     marginTop:8,
     width:"100%",
+    
   },
   title: {
     color: theme.color.heading,

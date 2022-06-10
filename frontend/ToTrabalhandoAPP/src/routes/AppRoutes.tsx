@@ -11,6 +11,9 @@ import { CreateUser } from '../screens/User/createUser';
 import { CreateDepartment } from '../screens/Department/CreateDepartment';
 import { Department } from '../screens/Department';
 import CustomHeader from '../components/CustomHeader/custoHeader';
+import { CreateAppointmentConfiguration } from '../screens/AppointmentConfiguration/CreateAppointmentConfiguration';
+import { AppointmentConfiguration } from '../screens/AppointmentConfiguration';
+import {CustomDrawer} from '../components/CustomDrawer';
 
 
 const stackNavigator = createStackNavigator()
@@ -35,6 +38,7 @@ function Teste() {
           
           
         }}
+        
       />
 
       <stackNavigator.Screen
@@ -56,7 +60,9 @@ function Teste() {
 }
 export function AppRoutes() {
   return (
-    <Navigator>
+    <Navigator 
+      drawerContent={props=> <CustomDrawer {...props}/>}
+    >
     <Screen
       name="Home"
       component={Home}
@@ -159,6 +165,36 @@ export function AppRoutes() {
         },
         headerTintColor: theme.color.heading,
         headerShown:true
+      }}
+    />
+
+<Screen
+      name="CreateAppointmentConfiguration"
+      component={CreateAppointmentConfiguration}  
+      options={{
+        title: 'Nova Configuração Apontamento',
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        drawerItemStyle: {
+          display: "none",
+        },
+        headerTintColor: theme.color.heading,
+        headerShown:true
+      }}
+    />
+
+<Screen
+      name="AppointmentConfiguration"
+      component={AppointmentConfiguration}
+      
+      options={{
+        title: 'Configuração de Apontamento',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
       }}
     />
     

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput, StyleSheet, Button, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { Text, View, Image, StatusBar, TextInput, StyleSheet, Button, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable, ActivityIndicator } from 'react-native';
 import { Controller, useForm } from 'react-hook-form'
 import { styles } from './styles'
 import { ButtonIcon } from '../../components/ButtonIcon';
@@ -77,15 +77,8 @@ export function CreateUser() {
 
   useEffect(() => {
     async function focusSreen() {
-      
       if (isFocused) {
         setEmployee(null)
-        reset()
-        
-        if (route.params.Avatar) {
-        
-          setUserAvatar(api.defaults.baseURL + "/" + route.params.Avatar.split("\\")[1])
-        }
         if(route.params.id){
           reset({ email: route.params.email, permissionsID: String(route.params.permissionsID) })
           if(route.params.employeeId){
@@ -93,9 +86,19 @@ export function CreateUser() {
             const result = await api.get(api.defaults.baseURL + `/employee/${route.params.employeeId}`)
             setEmployee(result.data)
           }
+         
+          if (route.params.Avatar) {
+            setUserAvatar(api.defaults.baseURL + "/" + route.params.Avatar.split("\\")[1])
+          }else setUserAvatar(null)
+        }else{
+          reset({ email:'', permissionsID: ''})
+          setEmployee(null)
+          setUserAvatar(null)
+          console.log("oii")
         }
       }
     }
+    
     focusSreen()
   }, [isFocused])
 
@@ -130,7 +133,6 @@ export function CreateUser() {
       let result = null
 
       if (!route.params.id) {
-        console.log("oi")
         result = await await api.post('http://10.0.2.2:3333/users/', formData, config)
       } else {
         result = await await api.put(`http://10.0.2.2:3333/users/${route.params.id}`, formData, config)
@@ -147,10 +149,12 @@ export function CreateUser() {
   }
   return (
     <View style={styles.container}>
+      
       <View style={styles.content}>
-        <ControlledInput defaultValue={route.params.email} name="email" control={control} labelName="E-mail" />
+        <ScrollView>
+        <ControlledInput  name="email" control={control} labelName="E-mail" />
         {!route.params.email && <ControlledInput name="password" control={control} labelName="Senha" />}
-        <Button title="Avatar" onPress={pickImage} />
+        <ButtonIcon height={45} color={'#7a1f9b'}  title="Avatar" onPress={pickImage} />
         {userAvatar && <Image source={{ uri: userAvatar }} style={{ height: 200 }} />}
 
         <Text style={styles.titleLabel}>Permissão</Text>
@@ -184,9 +188,10 @@ export function CreateUser() {
         }}>
           <ControlledInput defaultValue={employee?.name ?employee?.name:"Clique para cadastrar"} editable={false} name="employee" control={control} keyboardType="numeric" labelName="Funcionário" />
         </Pressable>}
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 20 , marginBottom: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleUserRegister)} color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
         </View>
+        </ScrollView>
       </View>
     </View>
   );

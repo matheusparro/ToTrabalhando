@@ -6,10 +6,14 @@ import {styles} from './styles'
 interface IButtonIconProps extends TouchableOpacityProps{
   title:string,
   color:ColorValue
+  height?:number
 }
-export function ButtonIcon({title,color ,...rest}:IButtonIconProps){
+export function ButtonIcon({title,color ,height,...rest}:IButtonIconProps){
+  if(!height){
+    height =70
+  }
   return(
-    <TouchableOpacity style={[styles.container,{backgroundColor:color}]} {...rest} >
+    <TouchableOpacity style={[styles.container,{backgroundColor:color,height:height}]} {...rest} >
       <Text style={styles.title}>
         {title}
       </Text>

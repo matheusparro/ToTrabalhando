@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { styles } from './styles'
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { theme } from '../../global/styles/theme'
@@ -37,7 +37,6 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
         if (result.data) {
         
           setAllUsers(result.data)
-          console.log(allUsers)
         }
       }
     }
@@ -46,29 +45,16 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <View style={styles.contentList}>
         <View >
-        {/* <FlatList
-        data={[
-          {key: 'Devin'},
-          {key: 'Dan'},
-          {key: 'Dominic'},
-          {key: 'Jackson'},
-          {key: 'James'},
-          {key: 'Joel'},
-          {key: 'John'},
-          {key: 'Jillian'},
-          {key: 'Jimmy'},
-          {key: 'Julie'},
-        ]} */}
         <FlatList
         data={allUsers}
         renderItem={({item}) =>
-          <TouchableWithoutFeedback onPress={() => {
+          <Pressable onPress={() => {
             navigation.navigate("UserInsert" as never, {email:item.email,id:item.id,Avatar:item.Avatar,permissionsID:item.permissionsID,employeeId:item.employeeId} as never)
           }}>
             <Text style={styles.item}>{item?.email}</Text>
-          </TouchableWithoutFeedback> 
+          </Pressable> 
         }
       />
         </View>

@@ -15,12 +15,21 @@ interface AuthContextData{
   signIn: (email:string,password:string) => Promise<void>;
   signOut: () =>void;
 }
-
+interface Employee {
+  name:string
+}
 interface User {
-  name:string,
+  employee:Employee | null
   email:string,
   companyId:string,
   Avatar:string
+  company:{
+    fantasyName:string
+  }
+  permissions:{
+    name:string
+  }
+  employeeId:string,
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
