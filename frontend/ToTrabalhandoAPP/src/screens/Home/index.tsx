@@ -79,7 +79,8 @@ export function Home() {
         alert("Apontamento realizado com sucesso")
       }
     } catch (error: any) {
-      Alert.alert("Login", error.response.data.message);
+      console.log(error.message)
+      Alert.alert("Reconhecimento Facial","Erro tente novamente");
     }
 
   }
@@ -135,25 +136,8 @@ export function Home() {
         </View>
 
         <Text style={{ color: theme.color.heading, marginBottom: 20 }}>Dia de Hoje 01/04/2022</Text>
-        <View style={{ marginBottom: 20 }}>
-          <DataTable  >
-            <DataTable.Header  >
-              <DataTable.Title theme={{ colors: { text: '#ffff' } }} >1°Ponto</DataTable.Title>
-              <DataTable.Title theme={{ colors: { text: '#ffff' } }}>2°Ponto</DataTable.Title>
-              <DataTable.Title theme={{ colors: { text: '#ffff' } }}>3°Ponto</DataTable.Title>
-              <DataTable.Title theme={{ colors: { text: '#ffff', } }}>4°Ponto</DataTable.Title>
-            </DataTable.Header>
-
-            <DataTable.Row style={{height: 40, backgroundColor: '#9C14C2'}}>
-              <DataTable.Cell theme={{ colors: { text: '#ffff', } }}>08:00</DataTable.Cell>
-              <DataTable.Cell theme={{ colors: { text: '#ffff', } }}>12:00</DataTable.Cell>
-              <DataTable.Cell theme={{ colors: { text: '#ffff', } }}>13:12</DataTable.Cell>
-              <DataTable.Cell theme={{ colors: { text: '#ffff', } }}>18:00</DataTable.Cell>
-            </DataTable.Row>
-
-           
-
-          </DataTable>
+        <View style={{ marginBottom: 20,backgroundColor: theme.color.heading,height:50}}>
+        
         </View>
         <View >
           <ButtonIcon onPress={pickImage} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
