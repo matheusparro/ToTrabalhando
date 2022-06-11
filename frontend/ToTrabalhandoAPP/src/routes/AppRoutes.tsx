@@ -14,7 +14,8 @@ import CustomHeader from '../components/CustomHeader/custoHeader';
 import { CreateAppointmentConfiguration } from '../screens/AppointmentConfiguration/CreateAppointmentConfiguration';
 import { AppointmentConfiguration } from '../screens/AppointmentConfiguration';
 import {CustomDrawer} from '../components/CustomDrawer';
-
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { CreateAppointment } from '../screens/Appointment/CreateAppointment';
 
 const stackNavigator = createStackNavigator()
 const { Navigator, Screen} = createDrawerNavigator()
@@ -72,8 +73,15 @@ export function AppRoutes() {
           backgroundColor: theme.color.background,
         },
         headerTintColor: theme.color.heading,
-        headerTitleAlign:"left",
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-home"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
       }}
+
     />
     <Screen
       name="Employee"
@@ -117,6 +125,13 @@ export function AppRoutes() {
           backgroundColor: theme.color.background,
         },
         headerTintColor: theme.color.heading,
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-person"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
       }}
     />
 
@@ -148,7 +163,13 @@ export function AppRoutes() {
         },
         headerShown:false,
         headerTintColor: theme.color.heading,
-        
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-business-outline"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
       }}
     />
 
@@ -195,8 +216,37 @@ export function AppRoutes() {
           backgroundColor: theme.color.background,
         },
         headerTintColor: theme.color.heading,
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-settings-outline"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
       }}
     />
+    <Screen
+      name="CreateAppointment"
+      component={CreateAppointment}
+      
+      options={{
+        title: 'CreateAppointment',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-settings-outline"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
+      }}
+    />
+    
+
     
   </Navigator>
   )

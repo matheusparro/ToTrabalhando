@@ -11,26 +11,16 @@ export const styles = StyleSheet.create({
 
   content:{
     marginTop:30,
-    paddingHorizontal:30,
-    width:"100%"
-  },
-  contentList:{
-    marginTop:30,
+    paddingHorizontal:50,
     width:"100%"
   },
   teste:{
     color:theme.color.heading,
   },
   item: {
-    
-    fontSize: 20,
-    height: 100,
-    marginTop:2,
-    paddingLeft:20,
-    color:theme.color.heading,
-    backgroundColor: '#4E1786',
-    textAlignVertical:'center'
-   
+    padding: 10,
+    fontSize: 18,
+    height: 44,
   },
   input:{
     backgroundColor: '#C393F2',
@@ -41,15 +31,10 @@ export const styles = StyleSheet.create({
     marginTop:8,
     width:"100%",
   },
-  title: {
-    color: theme.color.heading,
-    textAlign: 'center',
-    fontSize:24,
-    marginBottom:16,
-  },
   titleLabel: {
     color: theme.color.heading,
   },
+  
   
 
 })

@@ -43,7 +43,7 @@ const [allAppointmentsConf,setAllAppointmentsConf]= useState<allAppointmentsConf
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <View style={styles.contentList}>
         <View >
         <FlatList
         data={allAppointmentsConf}

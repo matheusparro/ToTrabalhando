@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
 import { styles } from './styles'
 import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from "react-native";
 import { StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker';
 import {
   LineChart,
   BarChart,
@@ -17,12 +18,14 @@ import {
   ContributionGraph,
   StackedBarChart
 } from "react-native-chart-kit";
+import api from '../../services/api';
 
 export function Home() {
 
 
- const { signOut } = useAuth()
+ const { signOut,user } = useAuth()
   const navigation = useNavigation()
+  const [userAvatar, setUserAvatar] = useState<any>(null);
   const screenWidth = Dimensions.get("window").width;
   const state = {
     data: [
@@ -32,7 +35,54 @@ export function Home() {
       { id: "04", name: "4°Ponto" }
     ]
   };
-  
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    //console.log(result);
+
+    if (!result.cancelled) {
+      setUserAvatar(result.uri);
+      await handleUserRegister()
+    }
+  };
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  }
+  async function handleUserRegister() {
+    try {
+      let localUri = String(userAvatar);
+      let filename = localUri.split('/').pop();
+
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(String(filename));
+
+      // Upload the image using the fetch and FormData APIs
+      let formData = new FormData();
+      // Assume "photo" is the name of the form field the server expects
+
+      const teste: any = { uri: String(userAvatar), type: 'image/jpeg', name: "teste" }
+      formData.append("faceToAnalize", teste);
+      formData.append("employeeId", String(user?.employeeId));
+      formData.append("appointmentTime", String(new Date(Date.now())));
+      
+      const result = await await api.post('/appointment', formData, config)
+     
+      if (result.status == 201) {
+        alert("Apontamento realizado com sucesso")
+      }
+    } catch (error: any) {
+      Alert.alert("Login", error.response.data.message);
+    }
+
+  }
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -106,7 +156,7 @@ export function Home() {
           </DataTable>
         </View>
         <View >
-          <ButtonIcon onPress={signOut} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
+          <ButtonIcon onPress={pickImage} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
           <Text >aa</Text>
         </View>
       </View>

@@ -19,6 +19,7 @@ import {theme} from '../../global/styles/theme'
 
 export function CustomDrawer(props:DrawerContentComponentProps){
   const { user,signOut} = useAuth()
+  
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView
@@ -29,7 +30,7 @@ export function CustomDrawer(props:DrawerContentComponentProps){
           <Image
           source={user?.Avatar? { uri: api.defaults.baseURL + "/" + user?.Avatar.split("\\")[1] }:require('../../assets/discord.png')}
            
-            style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}
+            style={{height: 100, width: 100, borderRadius: 40, marginBottom: 10}}
           />
           <Text
             style={{

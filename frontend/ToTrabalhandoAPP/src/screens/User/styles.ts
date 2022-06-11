@@ -27,10 +27,10 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     height: 100,
     marginTop:2,
-    paddingTop:'3%',
     paddingLeft:20,
     color:theme.color.heading,
     backgroundColor: '#4E1786',
+    textAlignVertical:'center'
    
   },
   input:{
