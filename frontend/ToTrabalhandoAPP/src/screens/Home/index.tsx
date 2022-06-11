@@ -143,6 +143,7 @@ export function Home() {
           <ButtonIcon onPress={pickImage} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
           <Text >aa</Text>
         </View>
+        
       </View>
     </View>
   );

@@ -109,7 +109,7 @@ export function CreateUser() {
         uri: userAvatar,
         type: "image/jpeg",
         name: "teste.jpg"
-      }
+      }  
       data.companyId = user?.companyId
 
       let localUri = String(userAvatar);
