@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
 import { styles } from './styles'
 import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { theme } from '../../global/styles/theme'
 import {useAuth} from '../../contexts/auth';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Dimensions } from "react-native";
 import { StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import {
   LineChart,
   BarChart,
@@ -27,6 +28,8 @@ export function Home() {
   const navigation = useNavigation()
   const [userAvatar, setUserAvatar] = useState<any>(null);
   const screenWidth = Dimensions.get("window").width;
+  const isFocused = useIsFocused();
+  const [hoursMonth,setHoursMonth]= useState<number[]>([0,0,0,0,0,0,0,0])
   const state = {
     data: [
       { id: "01", name: "1°Ponto" },
@@ -84,6 +87,20 @@ export function Home() {
     }
 
   }
+
+
+  useEffect(() =>{
+    async function allFields(){
+      if(isFocused){
+        let result = await api.get(`/employee/${user?.employeeId}/comp_time/year`)
+        setHoursMonth(result.data)
+      }
+     
+    }
+    
+    allFields()
+  },[isFocused])
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -95,14 +112,7 @@ export function Home() {
               labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
               datasets: [
                 {
-                  data: [
-                    100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100
-                  ]
+                  data:hoursMonth
                 }
               ]
             }}
@@ -135,13 +145,28 @@ export function Home() {
           />
         </View>
 
-        <Text style={{ color: theme.color.heading, marginBottom: 20 }}>Dia de Hoje 01/04/2022</Text>
-        <View style={{ marginBottom: 20,backgroundColor: theme.color.heading,height:50}}>
-        
+        <Text style={{ color: theme.color.heading, marginBottom: 20 }}>Último Apontamento realizado</Text>
+        <View style={{ borderRadius: 16,alignItems:"center",height:80,marginBottom: 20,backgroundColor: '#6d30a3',flexDirection: 'column' }}>
+         
+         
+          
+          
+          <View style={{flexDirection: 'row',marginVertical:5,} }>
+              <Ionicons style={{color: theme.color.heading,textAlignVertical:'center',paddingLeft:10}} name="calendar-outline" size={28} />
+              <Text style={{color: theme.color.heading,textAlignVertical:'center', fontSize:20}}>Jun 14,2022</Text>
+             
+            </View>
+            
+            <View style={{flexDirection: 'row'} }>
+              <Ionicons style={{color: theme.color.heading,textAlignVertical:'center',paddingLeft:10}} name="time-outline" size={28} />
+              <Text style={{color: theme.color.heading,textAlignVertical:'center', fontSize:20}}>08:30:28</Text>
+             
+            </View>
+          
         </View>
         <View >
           <ButtonIcon onPress={pickImage} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
-          <Text >aa</Text>
+         
         </View>
         
       </View>

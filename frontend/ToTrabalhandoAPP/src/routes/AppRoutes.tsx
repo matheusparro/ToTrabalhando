@@ -20,7 +20,7 @@ import { CreateAppointment } from '../screens/Appointment/CreateAppointment';
 const stackNavigator = createStackNavigator()
 const { Navigator, Screen} = createDrawerNavigator()
 
-function Teste() {
+function DepartamentStack() {
   return (
     <stackNavigator.Navigator>
       <stackNavigator.Screen
@@ -48,6 +48,98 @@ function Teste() {
         
         options={{
           title: 'Departamento',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+         
+          headerTintColor: theme.color.heading,
+          headerShown:true
+        }}
+      />
+    </stackNavigator.Navigator>
+  )
+}
+function UserStack() {
+  return (
+    <stackNavigator.Navigator>
+      <stackNavigator.Screen
+        name="Users"
+        component={User}
+        
+        options={{
+          title: 'Usuários',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+        
+          headerTintColor: theme.color.heading,
+          headerShown:true,
+          header: (props) => <CustomHeader {...props} /> 
+          
+          
+        }}
+        
+      />
+
+      <stackNavigator.Screen
+        name="UserInsert"
+        component={CreateUser}
+        
+        options={{
+          title: 'Usuário',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+         
+          headerTintColor: theme.color.heading,
+          headerShown:true
+        }}
+      />
+       <stackNavigator.Screen
+        name="EmloyeeInsert"
+        component={CreateEmployee}
+        
+        options={{
+          title: 'Funcionário',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+         
+          headerTintColor: theme.color.heading,
+          headerShown:true
+        }}
+      />
+    </stackNavigator.Navigator>
+  )
+}
+function AppointmentConfigurationStack() {
+  return (
+    <stackNavigator.Navigator>
+      <stackNavigator.Screen
+        name="AppointmentConfiguration"
+        component={AppointmentConfiguration}
+        
+        options={{
+          title: 'Configuração de Apontamento',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+        
+          headerTintColor: theme.color.heading,
+          headerShown:true,
+          header: (props) => <CustomHeader {...props} /> 
+          
+          
+        }}
+        
+      />
+
+      <stackNavigator.Screen
+        name="CreateAppointmentConfiguration"
+        component={CreateAppointmentConfiguration}
+        
+        options={{
+          title: 'Configuração de Apontamento',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
@@ -98,32 +190,12 @@ export function AppRoutes() {
         headerTintColor: theme.color.heading,
       }}
     />
-    <Screen
-      name="EmloyeeInsert"
-      component={CreateEmployee}
-      
-      options={{
-        title: 'Funcionário',
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        drawerItemStyle: {
-          display: "none",
-        },
-        headerTintColor: theme.color.heading,
-        headerShown:true
-       
-      }}
-    />
       <Screen
       name="Users"
-      component={User}
+      component={UserStack}
       options={{
         title: 'Usuários',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
+        headerShown:false,
         headerTintColor: theme.color.heading,
         drawerIcon: ({focused, size}) => (
           <Ionicons
@@ -135,26 +207,9 @@ export function AppRoutes() {
       }}
     />
 
-<Screen
-      name="UserInsert"
-      component={CreateUser}
-      
-      options={{
-        title: 'Usuário',
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        drawerItemStyle: {
-          display: "none",
-        },
-        headerTintColor: theme.color.heading,
-        headerShown:true
-      }}
-    />
-
   <Screen
       name="DepartmentDraw"
-      component={Teste}
+      component={DepartamentStack}
       
       options={{
         title: 'Departamento',
@@ -175,7 +230,7 @@ export function AppRoutes() {
 
   <Screen
       name="DepartmentInsert"
-      component={Teste}  
+      component={DepartamentStack}  
       options={{
         title: 'Departamento',
         headerStyle: {
@@ -189,25 +244,10 @@ export function AppRoutes() {
       }}
     />
 
-<Screen
-      name="CreateAppointmentConfiguration"
-      component={CreateAppointmentConfiguration}  
-      options={{
-        title: 'Nova Configuração Apontamento',
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        drawerItemStyle: {
-          display: "none",
-        },
-        headerTintColor: theme.color.heading,
-        headerShown:true
-      }}
-    />
 
 <Screen
       name="AppointmentConfiguration"
-      component={AppointmentConfiguration}
+      component={AppointmentConfigurationStack}
       
       options={{
         title: 'Configuração de Apontamento',
@@ -215,6 +255,7 @@ export function AppRoutes() {
         headerStyle: {
           backgroundColor: theme.color.background,
         },
+        headerShown:false,
         headerTintColor: theme.color.heading,
         drawerIcon: ({focused, size}) => (
           <Ionicons
