@@ -16,17 +16,19 @@ import { AppointmentConfiguration } from '../screens/AppointmentConfiguration';
 import {CustomDrawer} from '../components/CustomDrawer';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CreateAppointment } from '../screens/Appointment/CreateAppointment';
+import { Profile } from '../screens/User/Profile';
+import { useAuth } from '../contexts/auth';
 
 const stackNavigator = createStackNavigator()
 const { Navigator, Screen} = createDrawerNavigator()
 
 function DepartamentStack() {
+  const { signOut,user } = useAuth()
   return (
     <stackNavigator.Navigator>
       <stackNavigator.Screen
         name="Department"
         component={Department}
-        
         options={{
           title: 'Departamento',
           headerStyle: {
@@ -140,6 +142,47 @@ function AppointmentConfigurationStack() {
         
         options={{
           title: 'Configuração de Apontamento',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+         
+          headerTintColor: theme.color.heading,
+          headerShown:true
+        }}
+      />
+    </stackNavigator.Navigator>
+  )
+}
+
+function ProfileStack() {
+  const { signOut,user } = useAuth()
+  return (
+    <stackNavigator.Navigator>
+      <stackNavigator.Screen
+        name="Profile"
+        component={Profile}
+        initialParams={{email:user?.email,id:user?.id,Avatar:user?.Avatar,permissionsID:user?.permissions.id,employeeId:user?.employeeId}}
+        options={{
+          title: 'Perfil',
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+        
+          headerTintColor: theme.color.heading,
+          headerShown:true,
+          header: (props) => <CustomHeader {...props} /> 
+          
+          
+        }}
+        
+      />
+
+      <stackNavigator.Screen
+        name="DepartmentInsert"
+        component={CreateDepartment}
+        
+        options={{
+          title: 'Departamento',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
@@ -276,6 +319,27 @@ export function AppRoutes() {
         headerStyle: {
           backgroundColor: theme.color.background,
         },
+        headerTintColor: theme.color.heading,
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-settings-outline"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
+      }}
+    />
+    <Screen
+      name="Profile"
+      component={ProfileStack}
+      
+      options={{
+        title: 'Perfil',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerShown:false,
         headerTintColor: theme.color.heading,
         drawerIcon: ({focused, size}) => (
           <Ionicons

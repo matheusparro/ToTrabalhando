@@ -119,6 +119,7 @@ export function Home() {
             width={screenWidth - 20} // from react-native
             height={220}
             yAxisInterval={1}
+            onDataPointClick={(data)=>Alert.alert("Valor selecionado",String(data.value + " horas"))}
             // optional, defaults to 1
             chartConfig={{
               backgroundColor: "#5A17AC",

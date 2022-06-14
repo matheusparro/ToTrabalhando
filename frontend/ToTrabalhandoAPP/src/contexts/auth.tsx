@@ -19,6 +19,7 @@ interface Employee {
   name:string
 }
 interface User {
+  id:string,
   employee:Employee | null
   email:string,
   companyId:string,
