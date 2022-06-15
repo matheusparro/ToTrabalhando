@@ -56,25 +56,7 @@ export function Profile() {
   const route = useRoute<RouteProp<ParamList, 'Detail'>>();
   const [employee, setEmployee] = useState<employee | null>(null)
   const [isLoading,setIsLoading] = useState(false)
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    //console.log(result);
 
-    if (!result.cancelled) {
-      setUserAvatar(result.uri);
-    }
-  };
-  const config = {
-    headers: {
-      'content-type': 'multipart/form-data'
-    }
-  }
 
   useEffect(() => {
     async function focusSreen() {
@@ -104,51 +86,6 @@ export function Profile() {
     focusSreen()
   }, [isFocused])
 
-  async function handleUserRegister(data: FormData) {
-    try {
-      
-      data.userAvatar = {
-        uri: userAvatar,
-        type: "image/jpeg",
-        name: "teste.jpg"
-      }  
-      data.companyId = user?.companyId
-
-      let localUri = String(userAvatar);
-      let filename = localUri.split('/').pop();
-
-      // Infer the type of the image
-      let match = /\.(\w+)$/.exec(String(filename));
-
-      // Upload the image using the fetch and FormData APIs
-      let formData = new FormData();
-      // Assume "photo" is the name of the form field the server expects
-
-      const teste: any = { uri: String(userAvatar), type: 'image/jpeg', name: "teste" }
-      formData.append("userAvatar", teste);
-      formData.append("companyId", String(data.companyId));
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      formData.append("permissionsID", data.permissionsID);
-
-
-      let result = null
-
-      if (!route.params.id) {
-        result = await await api.post('http://10.0.2.2:3333/users/', formData, config)
-      } else {
-        result = await await api.put(`http://10.0.2.2:3333/users/${route.params.id}`, formData, config)
-      }
-      if (result.status == 201) {
-
-        alert("Sucesso")
-        new Promise((res) => setTimeout(() => navigation.navigate("Users" as never, {} as never), 1));
-      }
-    } catch (error: any) {
-      Alert.alert("Login", error.response.data.message);
-    }
-
-  }
   return (
    isLoading ?(<View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
    <ActivityIndicator size="large" color="#666"/>
@@ -156,9 +93,9 @@ export function Profile() {
       
       <View style={styles.content}>
         <ScrollView>
-        <ControlledInput  name="email" control={control} labelName="E-mail" />
+        <ControlledInput  editable={false} name="email" control={control} labelName="E-mail" />
         {!route.params.email && <ControlledInput name="password" control={control} labelName="Senha" />}
-        <ButtonIcon height={45} color={'#7a1f9b'}  title="Avatar" onPress={pickImage} />
+        <ButtonIcon height={45} color={'#7a1f9b'}  title="Avatar" />
         {userAvatar && <Image source={{ uri: userAvatar }} style={{ height: 200 }} />}
 
         <Text style={styles.titleLabel}>Permissão</Text>
@@ -168,7 +105,7 @@ export function Profile() {
           control={control}
           render={({ field: { value, onChange } }) => (
             <Picker
-
+              enabled={false}
               selectedValue={value}
               onValueChange={(date) => onChange(date)}
               mode="dropdown" // Android only
@@ -184,14 +121,8 @@ export function Profile() {
             </Picker>
           )}
         />
-        {route.params.id && <Pressable onPress={() => {
-          if(route.params.employeeId){
-            navigation.navigate("EmloyeeInsert" as never, {userId:route.params.id,id:employee?.id,name:employee?.name,cpf:employee?.cpf,pis:employee?.pis,departmentId:employee?.departmentId,appointmentConfigurationId:employee?.appointmentConfigurationId} as never)
-          }else
-          navigation.navigate("EmloyeeInsert" as never,{userId:route.params.id} as never)
-        }}>
-          <ControlledInput defaultValue={employee?.name ?employee?.name:"Clique para cadastrar"} editable={false} name="employee" control={control} keyboardType="numeric" labelName="Funcionário" />
-        </Pressable>}
+
+          <ControlledInput  defaultValue={employee?.name ?employee?.name:"Solicite seu cadastro"} editable={false} name="employee" control={control} keyboardType="numeric" labelName="Funcionário" />
         </ScrollView>
       </View>
     </View>)

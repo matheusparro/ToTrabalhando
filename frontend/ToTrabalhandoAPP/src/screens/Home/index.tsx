@@ -11,6 +11,7 @@ import { StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import 'moment/locale/pt-br'
 import {
   LineChart,
   BarChart,
@@ -20,6 +21,7 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 import api from '../../services/api';
+import moment from 'moment-timezone';
 
 export function Home() {
 
@@ -30,6 +32,8 @@ export function Home() {
   const screenWidth = Dimensions.get("window").width;
   const isFocused = useIsFocused();
   const [hoursMonth,setHoursMonth]= useState<number[]>([0,0,0,0,0,0,0,0])
+  const [lastApDate,setLastApDate] = useState('')
+  const [lastApHour,setLastApHour] = useState('')
   const state = {
     data: [
       { id: "01", name: "1°Ponto" },
@@ -80,6 +84,7 @@ export function Home() {
      
       if (result.status == 201) {
         alert("Apontamento realizado com sucesso")
+        await setLastAppointment()
       }
     } catch (error: any) {
       console.log(error.message)
@@ -88,12 +93,27 @@ export function Home() {
 
   }
 
+  async function setLastAppointment(){
+    let result= await api.get(`/employee/${user?.employeeId}/appointment/last`)
+    const data = result.data.appointmentTimeEnd?result.data.appointmentTimeEnd:result.data.appointmentTime
+    
+    let teste = moment(data);
+    var offset = moment().utcOffset();
 
+     const teste2 = teste.tz('America/Sao_Paulo')
+     console.log(teste2)
+    result.data &&  setLastApDate(teste2.format('LL'))
+    result.data && setLastApHour(teste2.format('HH:mm:ss'))
+
+   result = await api.get(`/employee/${user?.employeeId}/comp_time/year`)
+   result.data && setHoursMonth(result.data)
+
+  }
   useEffect(() =>{
+    
     async function allFields(){
       if(isFocused){
-        let result = await api.get(`/employee/${user?.employeeId}/comp_time/year`)
-        setHoursMonth(result.data)
+        await setLastAppointment()
       }
      
     }
@@ -154,13 +174,13 @@ export function Home() {
           
           <View style={{flexDirection: 'row',marginVertical:5,} }>
               <Ionicons style={{color: theme.color.heading,textAlignVertical:'center',paddingLeft:10}} name="calendar-outline" size={28} />
-              <Text style={{color: theme.color.heading,textAlignVertical:'center', fontSize:20}}>Jun 14,2022</Text>
+              <Text style={{color: theme.color.heading,textAlignVertical:'center', fontSize:20}}>{lastApDate}</Text>
              
             </View>
             
             <View style={{flexDirection: 'row'} }>
               <Ionicons style={{color: theme.color.heading,textAlignVertical:'center',paddingLeft:10}} name="time-outline" size={28} />
-              <Text style={{color: theme.color.heading,textAlignVertical:'center', fontSize:20}}>08:30:28</Text>
+              <Text style={{color: theme.color.heading,textAlignVertical:'center', fontSize:20}}>{lastApHour}</Text>
              
             </View>
           

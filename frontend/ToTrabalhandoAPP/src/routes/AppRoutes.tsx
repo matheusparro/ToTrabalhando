@@ -195,6 +195,7 @@ function ProfileStack() {
   )
 }
 export function AppRoutes() {
+  const { signOut,user } = useAuth()
   return (
     <Navigator 
       drawerContent={props=> <CustomDrawer {...props}/>}
@@ -218,7 +219,7 @@ export function AppRoutes() {
       }}
 
     />
-    <Screen
+    {/* <Screen
       name="Employee"
       component={Employee}
       options={{
@@ -232,9 +233,10 @@ export function AppRoutes() {
         },
         headerTintColor: theme.color.heading,
       }}
-    />
+    /> */}
+    {user?.permissions.id == '1' ? (
       <Screen
-      name="Users"
+      name="UsersDrawer"
       component={UserStack}
       options={{
         title: 'Usuários',
@@ -249,7 +251,8 @@ export function AppRoutes() {
        ),
       }}
     />
-
+):null}
+ {user?.permissions.id == '1' ? (
   <Screen
       name="DepartmentDraw"
       component={DepartamentStack}
@@ -270,26 +273,11 @@ export function AppRoutes() {
        ),
       }}
     />
+    ):null}
 
-  <Screen
-      name="DepartmentInsert"
-      component={DepartamentStack}  
-      options={{
-        title: 'Departamento',
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        drawerItemStyle: {
-          display: "none",
-        },
-        headerTintColor: theme.color.heading,
-        headerShown:true
-      }}
-    />
-
-
+{user?.permissions.id == '1' ? (
 <Screen
-      name="AppointmentConfiguration"
+      name="AppointmentConfigurationDrawer"
       component={AppointmentConfigurationStack}
       
       options={{
@@ -309,28 +297,10 @@ export function AppRoutes() {
        ),
       }}
     />
+    ):null}
+    {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
     <Screen
-      name="CreateAppointment"
-      component={CreateAppointment}
-      
-      options={{
-        title: 'CreateAppointment',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-settings-outline"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
-    <Screen
-      name="Profile"
+      name="ProfileDrawer"
       component={ProfileStack}
       
       options={{
@@ -350,6 +320,7 @@ export function AppRoutes() {
        ),
       }}
     />
+    ):null}
     
 
     

@@ -154,29 +154,31 @@ export function CreateUser() {
         <ScrollView>
         <ControlledInput  name="email" control={control} labelName="E-mail" />
         {!route.params.email && <ControlledInput name="password" control={control} labelName="Senha" />}
-        <ButtonIcon height={45} color={'#7a1f9b'}  title="Avatar" onPress={pickImage} />
+        <ButtonIcon  height={45}  color={'#7a1f9b'}  title="Avatar" onPress={pickImage} />
         {userAvatar && <Image source={{ uri: userAvatar }} style={{ height: 200 }} />}
 
         <Text style={styles.titleLabel}>Permissão</Text>
 
         <Controller
+        
           name={"permissionsID"}
           control={control}
           render={({ field: { value, onChange } }) => (
             <Picker
-
+              
               selectedValue={value}
               onValueChange={(date) => onChange(date)}
               mode="dropdown" // Android only
               style={styles.input}
-
+              
 
 
             >
               <Picker.Item label="Selecione" value="" />
               <Picker.Item key={1} label={"Admin"} value={'1'} />
               <Picker.Item key={2} label={"Gerente"} value={'2'} />
-              <Picker.Item key={3} label={"Funcionário"} value={'3'} />
+              <Picker.Item enabled={false} key={3} label={"Funcionário"} value={'3'} />
+
             </Picker>
           )}
         />
