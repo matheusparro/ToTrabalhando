@@ -7,8 +7,8 @@ import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
-import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
 type FormData = {
 
@@ -35,11 +35,11 @@ export function CreateCompany() {
         email: data.email,
         password: data.password,
       }
-      const result = await axios.post('http://10.0.2.2:3333/company/', companyToCreate)
+      const result = await api.post('/company/', companyToCreate)
       
       if (result.data) {
        
-        alert("Empresa criada com sucesso")
+        Alert.alert("Empresa","Criada com sucesso")
         new Promise((res) => setTimeout(()=>navigation.navigate("SignIn" as never, {} as never), 1));
       }
     } catch (error:any) {

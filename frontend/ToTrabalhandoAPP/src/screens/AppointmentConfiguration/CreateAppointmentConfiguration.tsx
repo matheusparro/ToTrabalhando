@@ -7,7 +7,6 @@ import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
 import { RouteProp, useIsFocused, useNavigation, useRoute, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
-import axios from 'axios';
 import api from '../../services/api';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { onChange } from 'react-native-reanimated';
@@ -103,7 +102,8 @@ export function CreateAppointmentConfiguration() {
         const result = await api.post(`/company/${user?.companyId}/appointment-configuration`, data)
         if (result.status==201) {
         
-          alert("Configuração criada com sucesso")
+          Alert.alert("Configuração Apontamento", "Criada com sucesso")
+          
          //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 2));
         }
       }else{
@@ -111,7 +111,7 @@ export function CreateAppointmentConfiguration() {
         
         if (result.status==201) {
         
-          alert("Configuração atualizada")
+         Alert.alert("Configuração Apontamento","Atualizada com sucesso")
           //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
         }
       }

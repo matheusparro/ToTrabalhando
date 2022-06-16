@@ -134,13 +134,13 @@ export function CreateAppointment() {
       let result = null
 
       if (!route.params.id) {
-        result = await await api.post('http://10.0.2.2:3333/users/', formData, config)
+        result = await await api.post('/users/', formData, config)
       } else {
-        result = await await api.put(`http://10.0.2.2:3333/users/${route.params.id}`, formData, config)
+        result = await await api.put(`/users/${route.params.id}`, formData, config)
       }
       if (result.status == 201) {
 
-        alert("Sucesso")
+        Alert.alert("Apontamento","Criado com sucesso")
         new Promise((res) => setTimeout(() => navigation.navigate("Users" as never, {} as never), 1));
       }
     } catch (error: any) {

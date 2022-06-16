@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useState, useEffect,useContext } from 'react'
-import axios from "axios";
 import {Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import api from './../services/api'
@@ -28,6 +27,7 @@ interface User {
     fantasyName:string
   }
   permissions:{
+    id:string,
     name:string
   }
   employeeId:string,
@@ -57,7 +57,7 @@ export function AuthProvider({
   },[])
   async function signIn(email:string,password:string){
     try{
-    const response = await api.post('http://10.0.2.2:3333/auth', {"email":email,"password":password})
+    const response = await api.post('/auth', {"email":email,"password":password})
     const { token, userFind } = response.data
     if(userFind && token){
       setUser(userFind)

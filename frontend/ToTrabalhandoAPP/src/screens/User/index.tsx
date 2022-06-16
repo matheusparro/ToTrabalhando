@@ -33,7 +33,7 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
   useEffect(() =>{
     async function allUsersFound(){
       if(isFocused){
-        const result = await api.get(`http://10.0.2.2:3333/company/${user?.companyId}/users`)
+        const result = await api.get(`/company/${user?.companyId}/users`)
         if (result.data) {
         
           setAllUsers(result.data)

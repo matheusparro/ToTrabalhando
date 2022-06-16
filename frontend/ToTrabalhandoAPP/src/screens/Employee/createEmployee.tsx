@@ -7,9 +7,9 @@ import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
-import axios from 'axios'
 import { RouteProp, useIsFocused, useNavigation, useRoute, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
+import api from '../../services/api';
 type FormData = {
 
   name: string,
@@ -51,7 +51,7 @@ export function CreateEmployee() {
       if(route.params.userId){
         data.userId = route.params.userId
         if(!route.params.id){
-          const result = await axios.post('http://10.0.2.2:3333/employee/', data)
+          const result = await api.post('/employee/', data)
           console.log(result.data)
           if (result.status==201) {
           
@@ -60,16 +60,16 @@ export function CreateEmployee() {
           }
         }else{
           console.log(data)
-          const result = await axios.put(`http://10.0.2.2:3333/employee/${route.params.id}`, data)
+          const result = await api.put(`/employee/${route.params.id}`, data)
           
           if (result.data) {
           
-            alert("Funcionário atualizado")
+            Alert.alert("Funcionário","Atualizado com sucesso")
             //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
           }
         }
         
-      }else alert("DEU RUIM")
+      }else Alert.alert("Funcionário","Falha ao criar funcionário")
     } catch (error:any) {
       alert(error.response.data.message);
       
@@ -79,12 +79,12 @@ export function CreateEmployee() {
   useEffect(() =>{
     async function allFields(){
       if(isFocused){
-        let result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/department/all`)
+        let result = await api.get(`/company/${user?.companyId}/department/all`)
         if (result.data) {
         
           setAllDepartments(result.data)
         }
-         result = await axios.get(`http://10.0.2.2:3333/company/${user?.companyId}/appointment-configuration/all`)
+         result = await api.get(`/company/${user?.companyId}/appointment-configuration/all`)
         if (result.data) {
           setAllAppointmentConf(result.data)
         }

@@ -34,56 +34,111 @@ export function Home() {
   const [hoursMonth,setHoursMonth]= useState<number[]>([0,0,0,0,0,0,0,0])
   const [lastApDate,setLastApDate] = useState('')
   const [lastApHour,setLastApHour] = useState('')
-  const state = {
-    data: [
-      { id: "01", name: "1°Ponto" },
-      { id: "02", name: "2°Ponto" },
-      { id: "03", name: "3°Ponto" },
-      { id: "04", name: "4°Ponto" }
-    ]
-  };
+  const [cameraRollStatus,setCameraRollStatus] = useState('')
+  const [cameraStatus,setCameraStatus] = useState('')
+  const [testmsg,setTestmsg] = useState('')
+ 
 
-  const pickImage = async () => {
+  // const pickImage2 = async () => {
+    
+  
+
+//    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+//    if (permissionResult.granted === false) {
+//      alert("You've refused to allow this appp to access your camera!");
+//      return;
+//    }
+  
+
+//     let image = await ImagePicker.launchCameraAsync().catch(error => console.log({ error }));
+//     console.log(image);
+// }
+
+
+
+
+
+
+  async function pickImage() {
     // No permissions request is necessary for launching the image library
+    setTestmsg('forcing refresh')
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [16, 9],
       quality: 1,
     });
     //console.log(result);
 
     if (!result.cancelled) {
       setUserAvatar(result.uri);
-      await handleUserRegister()
+      console.log(userAvatar);
     }
+
   };
+  const pickFromCamera = async ()=>{
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if(permissionResult.granted){
+       let data =  await ImagePicker.launchCameraAsync({
+         mediaTypes:ImagePicker.MediaTypeOptions.Images,
+         allowsEditing:true,
+         aspect:[4,3],
+         quality:1
+       })
+      if(!data.cancelled){
+        setUserAvatar(data.uri)
+        let newfile = { 
+         uri:data.uri,
+         type:`test/${data.uri.split(".")[1]}`,
+         name:`test.${data.uri.split(".")[1]}` 
+       
+ 
+       }
+      
+       handleUserRegister(newfile.uri)
+      }
+    }else{
+      Alert.alert("you need to give up permission to work")
+    }
+   }
+   useEffect(() =>{
+  
+    console.log("MEU LOCAL EFFECT",userAvatar)
+  },[userAvatar])
   const config = {
     headers: {
       'content-type': 'multipart/form-data'
     }
   }
-  async function handleUserRegister() {
+  async function handleUserRegister(teste2:string) {
     try {
-      let localUri = String(userAvatar);
+      let localUri = teste2;
+     
       let filename = localUri.split('/').pop();
 
       // Infer the type of the image
-      let match = /\.(\w+)$/.exec(String(filename));
+      
 
       // Upload the image using the fetch and FormData APIs
       let formData = new FormData();
       // Assume "photo" is the name of the form field the server expects
 
-      const teste: any = { uri: String(userAvatar), type: 'image/jpeg', name: "teste" }
+      const teste: any = { uri: String(teste2), type: 'image/jpg', name: "teste" }
       formData.append("faceToAnalize", teste);
       formData.append("employeeId", String(user?.employeeId));
       formData.append("appointmentTime", String(new Date(Date.now())));
       
-      const result = await await api.post('/appointment', formData, config)
+      const result = await api.post('/appointment', formData, config)
      
       if (result.status == 201) {
-        alert("Apontamento realizado com sucesso")
+        Alert.alert("Apontamento","Realizado com sucesso")
         await setLastAppointment()
       }
     } catch (error: any) {
@@ -94,6 +149,7 @@ export function Home() {
   }
 
   async function setLastAppointment(){
+    if(user?.employeeId){
     let result= await api.get(`/employee/${user?.employeeId}/appointment/last`)
     const data = result.data.appointmentTimeEnd?result.data.appointmentTimeEnd:result.data.appointmentTime
     
@@ -107,7 +163,7 @@ export function Home() {
 
    result = await api.get(`/employee/${user?.employeeId}/comp_time/year`)
    result.data && setHoursMonth(result.data)
-
+    }
   }
   useEffect(() =>{
     
@@ -176,7 +232,7 @@ export function Home() {
               <Ionicons style={{color: theme.color.heading,textAlignVertical:'center',paddingLeft:10}} name="calendar-outline" size={28} />
               <Text style={{color: theme.color.heading,textAlignVertical:'center', fontSize:20}}>{lastApDate}</Text>
              
-            </View>
+          </View>
             
             <View style={{flexDirection: 'row'} }>
               <Ionicons style={{color: theme.color.heading,textAlignVertical:'center',paddingLeft:10}} name="time-outline" size={28} />
@@ -186,7 +242,7 @@ export function Home() {
           
         </View>
         <View >
-          <ButtonIcon onPress={pickImage} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
+          <ButtonIcon onPress={pickFromCamera} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
          
         </View>
         

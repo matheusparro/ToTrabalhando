@@ -7,7 +7,6 @@ import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
 import { RouteProp, useIsFocused, useNavigation, useRoute, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
-import axios from 'axios';
 import api from '../../services/api';
 type FormData = {
   name: string,
@@ -53,8 +52,9 @@ export function CreateDepartment() {
         const result = await api.post(`/company/${user?.companyId}/department`, data)
         console.log("oii")
         if (result.status==201) {
+          
         
-          alert("Departamento criado com sucesso")
+         Alert.alert("Departamento","Criado com sucesso")
          //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 2));
         }
       }else{
@@ -63,12 +63,12 @@ export function CreateDepartment() {
         
         if (result.data) {
         
-          alert("Departamento atualizado")
+          Alert.alert("Departamento","Atualizado com sucesso")
           //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
         }
       }
     } catch (error: any) {
-      Alert.alert("Department: ", error.response.data.message);
+      Alert.alert("Departmento: ", error.response.data.message);
     }
 
   }

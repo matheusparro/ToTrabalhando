@@ -18,6 +18,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { CreateAppointment } from '../screens/Appointment/CreateAppointment';
 import { Profile } from '../screens/User/Profile';
 import { useAuth } from '../contexts/auth';
+import { CompTime } from '../screens/CompTime';
 
 const stackNavigator = createStackNavigator()
 const { Navigator, Screen} = createDrawerNavigator()
@@ -321,7 +322,28 @@ export function AppRoutes() {
       }}
     />
     ):null}
-    
+    {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
+    <Screen
+      name="CompTimeDrawer"
+      component={CompTime}
+      
+      options={{
+        title: 'Banco de Horas',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-settings-outline"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
+      }}
+    />
+    ):null}
 
     
   </Navigator>
