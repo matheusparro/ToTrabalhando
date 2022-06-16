@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput, StyleSheet, Button, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable, Platform } from 'react-native';
+import { Text, View, StyleSheet, Alert,Pressable, Platform } from 'react-native';
 import { Controller, useForm } from 'react-hook-form'
 import { styles } from './styles'
 import { ButtonIcon } from '../../components/ButtonIcon';
@@ -7,9 +7,11 @@ import { ControlledInput } from '../../components/ControlledInput';
 import { theme } from '../../global/styles/theme'
 import { RouteProp, useIsFocused, useNavigation, useRoute, } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
+import axios from 'axios';
 import api from '../../services/api';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { onChange } from 'react-native-reanimated';
+import DateTimePicker from "react-native-modal-datetime-picker";
 type FormData = {
   name: string,
   companyId: string | undefined,
@@ -111,7 +113,7 @@ export function CreateAppointmentConfiguration() {
         
         if (result.status==201) {
         
-         Alert.alert("Configuração Apontamento","Atualizada com sucesso")
+         Alert.alert("Apontamento","Criado com sucesso")
           //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
         }
       }
@@ -121,86 +123,83 @@ export function CreateAppointmentConfiguration() {
     }
   }
 
-  const setDateChange = (event:any, date:any) => {
+  const setDateChange = (date:Date | undefined) => {
     setIsPickerShow(false)
-    setStartTime(date)
+    setStartTime(String(date))
 
   };
-  const setDateChange2 = (event:any, date:any) => {
+  const setDateChange2= (date:Date | undefined) => {
     setIsPickerShow2(false)
-    setStartTimeEnd(date)
+    setStartTimeEnd(String(date))
 
   };
-  const setDateChange3 = (event:any, date:any) => {
+  const setDateChange3= (date:Date | undefined) => {
     setIsPickerShow3(false)
-    setEndTime(date)
+    setEndTime(String(date))
 
   };
-  const setDateChange4= (event:any, date:any) => {
+  const setDateChange4= (date:Date | undefined) => {
     setIsPickerShow4(false)
-    setEndTimeEnd(date)
+    setEndTimeEnd(String(date))
 
   };
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <ControlledInput name="name" control={control} labelName="Nome" />
-          <Pressable onPress={()=>showPicker()}>
-          <ControlledInput value={startTime &&(String(new Date(startTime).getHours() +":"+new Date(startTime).getMinutes()) +" "+ (new Date(startTime).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="1° Entrada " >
+        <Pressable onPress={()=>showPicker2()}>
+          <ControlledInput onPressIn={()=>showPicker()} value={startTime &&(String(new Date(startTime).getHours() +":"+new Date(startTime).getMinutes()) +" "+ (new Date(startTime).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="1° Entrada " >
             </ControlledInput>
-              {isPickerShow &&   
-              <RNDateTimePicker  value={new Date()}
-            mode={'time'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={true}
-            dateFormat="day month year"
-            onChange={setDateChange}
-            style={styles2.datePicker} />
-            }
-          </Pressable>
+              {(isPickerShow && Platform.OS === 'ios') &&   
+              <DateTimePicker
+              mode="time"
+              isVisible={isPickerShow}
+              onConfirm={setDateChange}
+              datePickerContainerStyleIOS={{
+                backgroundColor:'purple'
+              }}
+              onCancel={()=>{setIsPickerShow(false)}}
+            />}
+      </Pressable>
 
-
-          <Pressable onPress={()=>showPicker2()}>
-            <ControlledInput value={startTimeEnd &&(String(new Date(startTimeEnd).getHours() +":"+new Date(startTimeEnd).getMinutes()) +" "+ (new Date(startTimeEnd).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="1° Saída" >
+            <ControlledInput onPressIn={()=>showPicker2()} value={startTimeEnd &&(String(new Date(startTimeEnd).getHours() +":"+new Date(startTimeEnd).getMinutes()) +" "+ (new Date(startTimeEnd).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="1° Saída" >
             </ControlledInput>
-              {isPickerShow2 &&   
-              <RNDateTimePicker  value={new Date()}
-            mode={'time'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={true}
-            dateFormat="day month year"
-            onChange={setDateChange2}
-            style={styles2.datePicker} />
-            }
-          </Pressable>
+            {isPickerShow2 &&   
+              <DateTimePicker
+              mode="time"
+              isVisible={isPickerShow2}
+              onConfirm={setDateChange2}
+              datePickerContainerStyleIOS={{
+                backgroundColor:'purple'
+              }}
+              onCancel={()=>{setIsPickerShow2(false)}}
+            />}
 
-          <Pressable onPress={()=>showPicker3()}>
-            <ControlledInput value={endTime &&(String(new Date(endTime).getHours() +":"+new Date(endTime).getMinutes()) +" "+ (new Date(endTime).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="2° Entrada" >
+            <ControlledInput onPressIn={()=>showPicker3()} value={endTime &&(String(new Date(endTime).getHours() +":"+new Date(endTime).getMinutes()) +" "+ (new Date(endTime).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="2° Entrada" >
             </ControlledInput>
-              {isPickerShow3 &&   
-              <RNDateTimePicker  value={new Date()}
-            mode={'time'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={true}
-            dateFormat="day month year"
-            onChange={setDateChange3}
-            style={styles2.datePicker} />
-            }
-          </Pressable>
+            {isPickerShow3 &&   
+              <DateTimePicker
+              mode="time"
+              isVisible={isPickerShow3}
+              onConfirm={setDateChange3}
+              datePickerContainerStyleIOS={{
+                backgroundColor:'purple'
+              }}
+              onCancel={()=>{setIsPickerShow3(false)}}
+            />}
 
-          <Pressable onPress={()=>showPicker4()}>
-            <ControlledInput value={endTimeEnd &&(String(new Date(endTimeEnd).getHours() +":"+new Date(endTimeEnd).getMinutes()) +" "+ (new Date(endTimeEnd).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="2° Saída" >
+            <ControlledInput   value={endTimeEnd &&(String(new Date(endTimeEnd).getHours() +":"+new Date(endTimeEnd).getMinutes()) +" "+ (new Date(endTimeEnd).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="2° Saída" >
             </ControlledInput>
-              {isPickerShow4 &&   
-              <RNDateTimePicker  value={new Date()}
-            mode={'time'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={true}
-            dateFormat="day month year"
-            onChange={setDateChange4}
-            style={styles2.datePicker} />
-            }
-          </Pressable>
+            {isPickerShow4 &&   
+              <DateTimePicker
+              mode="time"
+              isVisible={isPickerShow4}
+              onConfirm={setDateChange4}
+              datePickerContainerStyleIOS={{
+                backgroundColor:'purple'
+              }}
+              onCancel={()=>{setIsPickerShow4(false)}}
+            />}
         <View style={{ marginTop: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleUserRegister)} color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
         </View>

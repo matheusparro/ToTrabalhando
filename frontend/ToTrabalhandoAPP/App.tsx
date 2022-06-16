@@ -1,6 +1,6 @@
 import 'react-native-reanimated'
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { LogBox, StatusBar } from 'react-native';
 import { Routes } from './src/screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 //import {UsersProvider} from './src//contexts/UserContext/userContext'
@@ -10,7 +10,9 @@ import { expo as appName } from './app.json';
 import {AuthProvider} from './src/contexts/auth'
 export default function App() {
   return (
+    
     <PaperProvider>
+      {LogBox.ignoreAllLogs(true)}
       <AuthProvider>
         <Background>
         <StatusBar 
