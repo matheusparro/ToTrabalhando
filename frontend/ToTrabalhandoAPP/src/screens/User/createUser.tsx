@@ -153,7 +153,7 @@ export function CreateUser() {
       <View style={styles.content}>
         <ScrollView>
         <ControlledInput  name="email" control={control} labelName="E-mail" />
-        {!route.params.email && <ControlledInput name="password" control={control} labelName="Senha" />}
+        {!route.params.email && <ControlledInput secureTextEntry={true} name="password" control={control} labelName="Senha" />}
         <ButtonIcon  height={45}  color={'#7a1f9b'}  title="Avatar" onPress={pickImage} />
         {userAvatar && <Image source={{ uri: userAvatar }} style={{ height: 200 }} />}
 

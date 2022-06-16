@@ -5,6 +5,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {
   DrawerContentComponentProps,
@@ -59,16 +60,16 @@ export function CustomDrawer(props:DrawerContentComponentProps){
         <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Ionicons name="share-social-outline" size={22} />
-            <Text
+            <Text onPress={()=>{Alert.alert("ToTrabalhando","App desenvolvido para a apresentação da conclusão final do curso de Eng de Software - UDESC")}}
               style={{
                 fontSize: 15,
                 marginLeft: 5,
               }}>
-              Tell a Friend
+                MaP Software
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {signOut()}} style={{paddingVertical: 15}}>
+        <TouchableOpacity onPress={signOut} style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Ionicons name="exit-outline" size={22} />
             <Text
@@ -76,7 +77,7 @@ export function CustomDrawer(props:DrawerContentComponentProps){
                 fontSize: 15,
                 marginLeft: 5,
               }}>
-              Sign Out
+              Sair
             </Text>
           </View>
         </TouchableOpacity>

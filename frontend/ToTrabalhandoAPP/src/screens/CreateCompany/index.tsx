@@ -55,7 +55,7 @@ export function CreateCompany() {
         <ControlledInput name="cnpj" control={control} keyboardType="numeric" labelName="CNPJ da Empresa" />
         <ControlledInput name="fantasyName" control={control} labelName="Nome da Empresa" />
         <ControlledInput name="email" control={control} labelName="Email" />
-        <ControlledInput name="password" control={control} labelName="Senha" />
+        <ControlledInput secureTextEntry={true} name="password" control={control} labelName="Senha" />
         <View style={{ marginTop: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleCompanyRegister)} color={theme.color.primary} title='Cadastrar' activeOpacity={0.8} />
         </View>
