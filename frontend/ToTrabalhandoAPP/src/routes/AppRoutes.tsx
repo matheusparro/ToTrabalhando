@@ -15,7 +15,7 @@ import { CreateAppointmentConfiguration } from '../screens/AppointmentConfigurat
 import { AppointmentConfiguration } from '../screens/AppointmentConfiguration';
 import {CustomDrawer} from '../components/CustomDrawer';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { CreateAppointment } from '../screens/Appointment/CreateAppointment';
+import { Appointment } from '../screens/Appointment/';
 import { Profile } from '../screens/User/Profile';
 import { useAuth } from '../contexts/auth';
 import { CompTime } from '../screens/CompTime';
@@ -345,7 +345,26 @@ export function AppRoutes() {
     />
     ):null}
 
-    
+<Screen
+      name="AppointmentDrawer"
+      component={Appointment}
+      
+      options={{
+        title: 'Perfil',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-settings-outline"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
+      }}
+    />
   </Navigator>
   )
 }
