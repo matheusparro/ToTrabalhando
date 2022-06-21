@@ -13,18 +13,20 @@ import { Department } from '../screens/Department';
 import CustomHeader from '../components/CustomHeader/custoHeader';
 import { CreateAppointmentConfiguration } from '../screens/AppointmentConfiguration/CreateAppointmentConfiguration';
 import { AppointmentConfiguration } from '../screens/AppointmentConfiguration';
-import {CustomDrawer} from '../components/CustomDrawer';
+import { CustomDrawer } from '../components/CustomDrawer';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Appointment } from '../screens/Appointment/';
 import { Profile } from '../screens/User/Profile';
 import { useAuth } from '../contexts/auth';
 import { CompTime } from '../screens/CompTime';
+import { ItemAppointment } from '../screens/Appointment/ItemAppointments';
+import { ItemAppointmentUpdated } from '../screens/Appointment/ItemAppointmentUpdated';
 
 const stackNavigator = createStackNavigator()
-const { Navigator, Screen} = createDrawerNavigator()
+const { Navigator, Screen } = createDrawerNavigator()
 
 function DepartamentStack() {
-  const { signOut,user } = useAuth()
+  const { signOut, user } = useAuth()
   return (
     <stackNavigator.Navigator>
       <stackNavigator.Screen
@@ -35,28 +37,28 @@ function DepartamentStack() {
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-        
+
           headerTintColor: theme.color.heading,
-          headerShown:true,
-          header: (props) => <CustomHeader {...props} /> 
-          
-          
+          headerShown: true,
+          header: (props) => <CustomHeader {...props} />
+
+
         }}
-        
+
       />
 
       <stackNavigator.Screen
         name="DepartmentInsert"
         component={CreateDepartment}
-        
+
         options={{
           title: 'Departamento',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-         
+
           headerTintColor: theme.color.heading,
-          headerShown:true
+          headerShown: true
         }}
       />
     </stackNavigator.Navigator>
@@ -68,65 +70,92 @@ function UserStack() {
       <stackNavigator.Screen
         name="Users"
         component={User}
-        
+
         options={{
           title: 'Usuários',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-        
+
           headerTintColor: theme.color.heading,
-          headerShown:true,
-          header: (props) => <CustomHeader {...props} /> 
-          
-          
+          headerShown: true,
+          header: (props) => <CustomHeader {...props} />
+
+
         }}
-        
+
       />
 
       <stackNavigator.Screen
         name="UserInsert"
         component={CreateUser}
-        
+
         options={{
           title: 'Usuário',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-         
+
           headerTintColor: theme.color.heading,
-          headerShown:true
+          headerShown: true
         }}
       />
-       <stackNavigator.Screen
+      <stackNavigator.Screen
         name="EmloyeeInsert"
         component={CreateEmployee}
-        
+
         options={{
           title: 'Funcionário',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-         
+
           headerTintColor: theme.color.heading,
-          headerShown:true
+          headerShown: true
         }}
       />
 
-<Screen
-      name="MyAppointmentsDrawer"
-      component={Appointment}
-      
-      options={{
-        title: 'Meus Apontamentos',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerTintColor: theme.color.heading,
-        headerShown:true
-      }}
-    />
+
+      <Screen
+        name="MyAppointmentsDrawer"
+        component={Appointment}
+
+        options={{
+          title: 'Meus Apontamentos',
+
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+          headerTintColor: theme.color.heading,
+          headerShown: true
+        }}
+      />
+      <Screen
+        name="ItemAppointment"
+        component={ItemAppointment}
+
+        options={{
+          title: 'ItemAppointment',
+
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+          headerTintColor: theme.color.heading,
+        }}
+      />
+       <Screen
+        name="ItemAppointmentUpdated"
+        component={ItemAppointmentUpdated}
+
+        options={{
+          title: 'Atualizar Apontamento',
+
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+          headerTintColor: theme.color.heading,
+        }}
+      />
     </stackNavigator.Navigator>
   )
 }
@@ -136,34 +165,34 @@ function AppointmentConfigurationStack() {
       <stackNavigator.Screen
         name="AppointmentConfiguration"
         component={AppointmentConfiguration}
-        
+
         options={{
           title: 'Configuração de Apontamento',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-        
+
           headerTintColor: theme.color.heading,
-          headerShown:true,
-          header: (props) => <CustomHeader {...props} /> 
-          
-          
+          headerShown: true,
+          header: (props) => <CustomHeader {...props} />
+
+
         }}
-        
+
       />
 
       <stackNavigator.Screen
         name="CreateAppointmentConfiguration"
         component={CreateAppointmentConfiguration}
-        
+
         options={{
           title: 'Configuração de Apontamento',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-         
+
           headerTintColor: theme.color.heading,
-          headerShown:true
+          headerShown: true
         }}
       />
     </stackNavigator.Navigator>
@@ -171,71 +200,71 @@ function AppointmentConfigurationStack() {
 }
 
 function ProfileStack() {
-  const { signOut,user } = useAuth()
+  const { signOut, user } = useAuth()
   return (
     <stackNavigator.Navigator>
       <stackNavigator.Screen
         name="Profile"
         component={Profile}
-        initialParams={{email:user?.email,id:user?.id,Avatar:user?.Avatar,permissionsID:user?.permissions.id,employeeId:user?.employeeId}}
+        initialParams={{ email: user?.email, id: user?.id, Avatar: user?.Avatar, permissionsID: user?.permissions.id, employeeId: user?.employeeId }}
         options={{
           title: 'Perfil',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-        
+
           headerTintColor: theme.color.heading,
-          headerShown:true,
-          header: (props) => <CustomHeader {...props} /> 
-          
-          
+          headerShown: true,
+          header: (props) => <CustomHeader {...props} />
+
+
         }}
-        
+
       />
 
       <stackNavigator.Screen
         name="DepartmentInsert"
         component={CreateDepartment}
-        
+
         options={{
           title: 'Departamento',
           headerStyle: {
             backgroundColor: theme.color.background,
           },
-         
+
           headerTintColor: theme.color.heading,
-          headerShown:true
+          headerShown: true
         }}
       />
     </stackNavigator.Navigator>
   )
 }
 export function AppRoutes() {
-  const { signOut,user } = useAuth()
+  const { signOut, user } = useAuth()
   return (
-    <Navigator 
-      drawerContent={props=> <CustomDrawer {...props}/>}
+    <Navigator
+      drawerContent={props => <CustomDrawer {...props} />}
     >
-    <Screen
-      name="Home"
-      component={Home}
-      options={{
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-home"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
+      <Screen
+        name="Home"
+        component={Home}
+        options={{
 
-    />
-    {/* <Screen
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+          headerTintColor: theme.color.heading,
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="md-home"
+              size={size}
+              color={focused ? '#700f81' : '#ccc'}
+            />
+          ),
+        }}
+
+      />
+      {/* <Screen
       name="Employee"
       component={Employee}
       options={{
@@ -250,141 +279,143 @@ export function AppRoutes() {
         headerTintColor: theme.color.heading,
       }}
     /> */}
-    {user?.permissions.id == '1' ? (
-      <Screen
-      name="UsersDrawer"
-      component={UserStack}
-      options={{
-        title: 'Usuários',
-        headerShown:false,
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-person"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
-):null}
- {user?.permissions.id == '1' ? (
-  <Screen
-      name="DepartmentDraw"
-      component={DepartamentStack}
-      
-      options={{
-        title: 'Departamento',
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerShown:false,
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-business-outline"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
-    ):null}
+      {user?.permissions.id == '1' ? (
+        <Screen
+          name="UsersDrawer"
+          component={UserStack}
+          options={{
+            title: 'Usuários',
+            headerShown: false,
+            headerTintColor: theme.color.heading,
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-person"
+                size={size}
+                color={focused ? '#700f81' : '#ccc'}
+              />
+            ),
+          }}
+        />
+      ) : null}
+      {user?.permissions.id == '1' ? (
+        <Screen
+          name="DepartmentDraw"
+          component={DepartamentStack}
 
-{user?.permissions.id == '1' ? (
-<Screen
-      name="AppointmentConfigurationDrawer"
-      component={AppointmentConfigurationStack}
-      
-      options={{
-        title: 'Configuração de Apontamento',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerShown:false,
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-settings-outline"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
-    ):null}
-    {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
-    <Screen
-      name="ProfileDrawer"
-      component={ProfileStack}
-      
-      options={{
-        title: 'Perfil',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerShown:false,
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-settings-outline"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
-    ):null}
+          options={{
+            title: 'Departamento',
+            headerStyle: {
+              backgroundColor: theme.color.background,
+            },
+            headerShown: false,
+            headerTintColor: theme.color.heading,
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-business-outline"
+                size={size}
+                color={focused ? '#700f81' : '#ccc'}
+              />
+            ),
+          }}
+        />
+      ) : null}
 
-{user?.permissions.id == '3' || user?.permissions.id == '2' ? (
-<Screen
-      name="MyAppointmentsDrawer"
-      component={Appointment}
-      
-      options={{
-        title: 'Meus Apontamentos',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-settings-outline"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
-    ):null}
+      {user?.permissions.id == '1' ? (
+        <Screen
+          name="AppointmentConfigurationDrawer"
+          component={AppointmentConfigurationStack}
 
-    {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
-    <Screen
-      name="CompTimeDrawer"
-      component={CompTime}
-      
-      options={{
-        title: 'Banco de Horas',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-settings-outline"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
-    ):null}
- 
-      
-  </Navigator>
+          options={{
+            title: 'Configuração de Apontamento',
+
+            headerStyle: {
+              backgroundColor: theme.color.background,
+            },
+            headerShown: false,
+            headerTintColor: theme.color.heading,
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-settings-outline"
+                size={size}
+                color={focused ? '#700f81' : '#ccc'}
+              />
+            ),
+          }}
+        />
+      ) : null}
+      {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
+        <Screen
+          name="ProfileDrawer"
+          component={ProfileStack}
+
+          options={{
+            title: 'Perfil',
+
+            headerStyle: {
+              backgroundColor: theme.color.background,
+            },
+            headerShown: false,
+            headerTintColor: theme.color.heading,
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-settings-outline"
+                size={size}
+                color={focused ? '#700f81' : '#ccc'}
+              />
+            ),
+          }}
+        />
+      ) : null}
+
+      {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
+        <Screen
+          name="MyAppointmentsDrawer"
+          component={Appointment}
+
+          options={{
+            title: 'Meus Apontamentos',
+
+            headerStyle: {
+              backgroundColor: theme.color.background,
+            },
+            headerTintColor: theme.color.heading,
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-settings-outline"
+                size={size}
+                color={focused ? '#700f81' : '#ccc'}
+              />
+            ),
+          }}
+        />
+      ) : null}
+
+      {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
+        <Screen
+          name="CompTimeDrawer"
+          component={CompTime}
+
+          options={{
+            title: 'Banco de Horas',
+
+            headerStyle: {
+              backgroundColor: theme.color.background,
+            },
+            headerTintColor: theme.color.heading,
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-settings-outline"
+                size={size}
+                color={focused ? '#700f81' : '#ccc'}
+              />
+            ),
+          }}
+        />
+      ) : null}
+
+
+     
+
+    </Navigator>
   )
 }

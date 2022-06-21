@@ -9,20 +9,33 @@ import api from '../../services/api'
 import moment from 'moment';
 import { theme } from '../../global/styles/theme';
 
+
+interface Appointment {
+  
+    id: string
+    appointmentTime: string,
+    appointmentTimeEnd: string,
+    appointmentDate:string,
+    status: string,
+    employeeId: string,
+}
 interface allDepartments{
   data:string,
   situacao:number
-  appointments:[]
+  appointments:Appointment[]
 }
 type ParamList = {
   Detail: {
     employeeId:string,
+    data:string,
+    situacao:number
+    appointments:[]
   };
 };
 
-export function Appointment() {
+export function ItemAppointment() {
 
-const [allAppointments,setAllAppointments]= useState<allDepartments[] | null>(null)
+const [allAppointments,setAllAppointments]= useState<allDepartments | null>(null)
 const route = useRoute<RouteProp<ParamList, 'Detail'>>();
   const styles2 = StyleSheet.create({
     fab: {
@@ -38,11 +51,10 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
   useEffect(() =>{
     async function allDepartmentsFound(){
       if(isFocused){
-        console.log( user?.employeeId)
-        const result = await api.get(`employee/${route.params.employeeId || user?.employeeId}/appointment`)
-        if (result.data) {
-          setAllAppointments(result.data)
-        }
+       if(route.params){
+        setAllAppointments(route.params)
+        console.log(route.params,"OIiiiiiiiiiiiiiiiiiiiiiiiii")
+       }
       }
     }
     allDepartmentsFound()
@@ -59,22 +71,27 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
     <View style={styles.container}>
       <View style={styles.contentList}>
         <View >
+        <Text style={{marginTop:20,
+                fontSize: 20,
+                fontWeight:"bold",
+                color: route.params.situacao ==1?"#0e5525":route.params.situacao ==2 ?"#ae2222":"#D3D934",paddingLeft:20,
+                
+              }}>{moment(allAppointments?.data).tz('America/Sao_Paulo').format('LL')}</Text>
         <FlatList
-        data={allAppointments}
+        data={allAppointments?.appointments}
         renderItem={({item}) =>
         
           <Pressable onPress={() => {
-            navigation.navigate("ItemAppointment" as never, {data:item.data,appointments:item.appointments,situacao:item.situacao} as never)
+            navigation.navigate("ItemAppointmentUpdated" as never, {id:item.id,appointmentTime:item.appointmentTime?item.appointmentTime:'',
+              appointmentTimeEnd:item.appointmentTimeEnd?item.appointmentTimeEnd:''} as never)
           }}>
-              <View key={item.data} style={styles.item}>
-              
-                <Text key={item.data}style={{marginTop:20,
+              <View key={item.appointmentTime} style={styles.item2}>
+              <Text style={{textAlignVertical:"center",
                 fontSize: 20,
                 fontWeight:"bold",
-                color: item.situacao ==1?"#0e5525":item.situacao ==2 ?"#ae2222":"#afb42c",paddingLeft:20,
+                color: route.params.situacao ==1?"#0e5525":route.params.situacao ==2 ?"#ae2222":"#D3D934",paddingLeft:20,
                 
-              }}>{moment(item.data).tz('America/Sao_Paulo').format('LL')}</Text>
-                <Text key={item.data} style={{color: item.situacao ==1?"#258543":item.situacao ==2 ?"#ae2222":"#afb42c",paddingLeft:20, fontWeight:"bold"}}>{item.situacao ==1 ? "Concluído": item.situacao == 2 ? "Falta":"Incompleto"}</Text>
+              }}>{moment(item.appointmentDate).tz('America/Sao_Paulo').format('HH:mm:ss')} Até {moment(item.appointmentDate).tz('America/Sao_Paulo').format('HH:mm:ss')}</Text>
               </View>
              
             

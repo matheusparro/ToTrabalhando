@@ -33,6 +33,17 @@ export const styles = StyleSheet.create({
     
    
   },
+  item2: {
+    
+    fontSize: 20,
+    height: 100,
+    marginTop:2,
+    paddingLeft:20,
+    color:theme.color.heading,
+    backgroundColor: '#4E1786',
+    justifyContent:"center"    
+   
+  },
   input:{
     backgroundColor: '#C393F2',
     borderBottomColor:'black',
