@@ -51,7 +51,15 @@ export function CompTime() {
     }
   }
 
-
+  function convertHoursToHoursMinutes(hoursSend:number):string{
+    var hours = hoursSend
+    var rhours = Math.floor(hours);
+    console.log(rhours)
+    var minutes = (hours - rhours) * 60;
+    console.log(minutes)
+    var rminutes = Math.round(minutes);
+    return rhours + ":" + rminutes;
+  }
 
   useEffect(() =>{
     
@@ -61,13 +69,21 @@ export function CompTime() {
 
 
         if( result.data){
-
-          const total = result.data.extraHoursWorked + result.data.missingHoursWorked + result.data.hoursWorked
+         
+          const total = result.data.extraHoursWorked + result.data.hoursWorked
           const comp:CompTime = result.data
-          comp.total = Number(total).toFixed(2)
-          comp.extraHoursWorked = Number(result.data.extraHoursWorked).toFixed(2)
-          comp.hoursWorked = Number(result.data.hoursWorked).toFixed(2)
-          comp.missingHoursWorked = Number(result.data.missingHoursWorked).toFixed(2)
+          var hours = result.data.extraHoursWorked
+          console.log(hours,"horas")
+          var rhours = Math.floor(hours);
+          console.log(rhours)
+          var minutes = (hours - rhours) * 60;
+          console.log(minutes)
+          var rminutes = Math.round(minutes);
+          comp.extraHoursWorked = convertHoursToHoursMinutes(Number(result.data.extraHoursWorked))
+          comp.hoursWorked =convertHoursToHoursMinutes(Number(result.data.hoursWorked))
+          comp.missingHoursWorked =convertHoursToHoursMinutes(Number(result.data.missingHoursWorked))
+          
+          comp.total =  convertHoursToHoursMinutes(total)
           setCompTime(comp)
         }
       }

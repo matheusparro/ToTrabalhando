@@ -42,6 +42,16 @@ export const styles = StyleSheet.create({
     marginTop:8,
     width:"100%",
   },
+  pickerChange:{
+    backgroundColor: '#C393F2',
+    borderBottomColor:'black',
+   
+    color:'#222222',
+    marginBottom:15,
+    marginTop:8,
+    width:"100%",
+    position:'relative'
+  },
   title: {
     color: theme.color.heading,
     textAlign: 'center',

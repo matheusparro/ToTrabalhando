@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { Controller, useForm } from 'react-hook-form'
 import { Picker } from "@react-native-picker/picker";
 import { styles } from './styles'
@@ -100,7 +100,7 @@ export function CreateEmployee() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView style={styles.content}>
         <ControlledInput defaultValue={route.params.name} name="name" control={control} keyboardType="numeric" labelName="Nome" />
         <ControlledInput defaultValue={route.params.cpf} name="cpf" control={control} labelName="Cpf" />
         <ControlledInput defaultValue={route.params.pis} name="pis" control={control} labelName="Pis" />
@@ -144,11 +144,14 @@ export function CreateEmployee() {
       </Picker>
       )}
     />
-
+    <Pressable onPress={()=> navigation.navigate("MyAppointmentsDrawer" as never, {employeeId:route.params.id} as never)}>
+      <ControlledInput defaultValue={"Vizualiar apontamentos"} editable={false} name="appointments" control={control} keyboardType="numeric" labelName="Apontamentos" />    
+    </Pressable>
         <View style={{ marginTop: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleEmployeeRegister)} color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
         </View>
-      </View>
+      </ScrollView>
+
     </View>
   );
 }

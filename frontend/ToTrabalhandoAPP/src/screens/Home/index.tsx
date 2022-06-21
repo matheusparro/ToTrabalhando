@@ -151,18 +151,26 @@ export function Home() {
   async function setLastAppointment(){
     if(user?.employeeId){
     let result= await api.get(`/employee/${user?.employeeId}/appointment/last`)
-    const data = result.data.appointmentTimeEnd?result.data.appointmentTimeEnd:result.data.appointmentTime
-    
+    console.log(result.data)
+    const data = result.data.appointmentTime
     let teste = moment(data);
+    console.log(data)
     var offset = moment().utcOffset();
 
      const teste2 = teste.tz('America/Sao_Paulo')
-     console.log(teste2)
+    
+     
     result.data &&  setLastApDate(teste2.format('LL'))
     result.data && setLastApHour(teste2.format('HH:mm:ss'))
-
-   result = await api.get(`/employee/${user?.employeeId}/comp_time/year`)
-   result.data && setHoursMonth(result.data)
+    if(!result.data.appointmentTimeEnd && !result.data.appointmentTime){
+      setLastApDate("____")
+      setLastApHour('____')
+    }
+    
+      
+      result = await api.get(`/employee/${user?.employeeId}/comp_time/year`)
+      console.log(result.data)
+      result.data && setHoursMonth(result.data)
     }
   }
   useEffect(() =>{

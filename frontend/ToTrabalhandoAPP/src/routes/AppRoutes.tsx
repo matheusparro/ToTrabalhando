@@ -112,6 +112,21 @@ function UserStack() {
           headerShown:true
         }}
       />
+
+<Screen
+      name="MyAppointmentsDrawer"
+      component={Appointment}
+      
+      options={{
+        title: 'Meus Apontamentos',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+        headerShown:true
+      }}
+    />
     </stackNavigator.Navigator>
   )
 }
@@ -322,6 +337,30 @@ export function AppRoutes() {
       }}
     />
     ):null}
+
+{user?.permissions.id == '3' || user?.permissions.id == '2' ? (
+<Screen
+      name="MyAppointmentsDrawer"
+      component={Appointment}
+      
+      options={{
+        title: 'Meus Apontamentos',
+        
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+        drawerIcon: ({focused, size}) => (
+          <Ionicons
+             name="md-settings-outline"
+             size={size}
+             color={focused ? '#700f81' : '#ccc'}
+          />
+       ),
+      }}
+    />
+    ):null}
+
     {user?.permissions.id == '3' || user?.permissions.id == '2' ? (
     <Screen
       name="CompTimeDrawer"
@@ -344,27 +383,8 @@ export function AppRoutes() {
       }}
     />
     ):null}
-
-<Screen
-      name="AppointmentDrawer"
-      component={Appointment}
+ 
       
-      options={{
-        title: 'Perfil',
-        
-        headerStyle: {
-          backgroundColor: theme.color.background,
-        },
-        headerTintColor: theme.color.heading,
-        drawerIcon: ({focused, size}) => (
-          <Ionicons
-             name="md-settings-outline"
-             size={size}
-             color={focused ? '#700f81' : '#ccc'}
-          />
-       ),
-      }}
-    />
   </Navigator>
   )
 }

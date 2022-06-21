@@ -2,7 +2,7 @@ import React, {  useEffect, useState } from 'react';
 import { Text, View, FlatList, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { styles } from './styles'
 import {useAuth} from '../../contexts/auth';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import { Button, FAB } from 'react-native-paper';
 import api from '../../services/api'
@@ -13,9 +13,16 @@ interface allDepartments{
   data:string,
   situacao:number
 }
+type ParamList = {
+  Detail: {
+    employeeId:string,
+  };
+};
+
 export function Appointment() {
 
 const [allAppointments,setAllAppointments]= useState<allDepartments[] | null>(null)
+const route = useRoute<RouteProp<ParamList, 'Detail'>>();
   const styles2 = StyleSheet.create({
     fab: {
       position: 'absolute',
@@ -30,12 +37,11 @@ const [allAppointments,setAllAppointments]= useState<allDepartments[] | null>(nu
   useEffect(() =>{
     async function allDepartmentsFound(){
       if(isFocused){
-        const result = await api.get(`employee/${user?.employeeId}/appointment`)
+        console.log(route.params.employeeId)
+        const result = await api.get(`employee/${route.params.employeeId ?route.params.employeeId: user?.employeeId}/appointment`)
         if (result.data) {
         
           setAllAppointments(result.data)
-          console.log("AQUIIIIIIIIIIIIIIIIIIIIIIAQUIIIIIIIIIIIIIIIIIIIIII")
-          console.log(allAppointments)
         }
       }
     }
@@ -62,7 +68,7 @@ const [allAppointments,setAllAppointments]= useState<allDepartments[] | null>(nu
           }}>
               <View key={item.data} style={styles.item}>
               
-                <Text style={{marginTop:20,
+                <Text key={item.data}style={{marginTop:20,
                 fontSize: 20,
                 fontWeight:"bold",
                 color: item.situacao ==1?"#0e5525":item.situacao ==2 ?"#ae2222":"#afb42c",paddingLeft:20,
