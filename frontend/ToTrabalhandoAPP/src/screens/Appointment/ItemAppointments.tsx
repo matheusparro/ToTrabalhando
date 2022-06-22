@@ -53,7 +53,6 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
       if(isFocused){
        if(route.params){
         setAllAppointments(route.params)
-        console.log(route.params,"OIiiiiiiiiiiiiiiiiiiiiiiiii")
        }
       }
     }
@@ -81,17 +80,17 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
         data={allAppointments?.appointments}
         renderItem={({item}) =>
         
-          <Pressable onPress={() => {
+          <Pressable key={item.id} onPress={() => {
             navigation.navigate("ItemAppointmentUpdated" as never, {id:item.id,appointmentTime:item.appointmentTime?item.appointmentTime:'',
               appointmentTimeEnd:item.appointmentTimeEnd?item.appointmentTimeEnd:''} as never)
           }}>
-              <View key={item.appointmentTime} style={styles.item2}>
+              <View  style={styles.item2}>
               <Text style={{textAlignVertical:"center",
                 fontSize: 20,
                 fontWeight:"bold",
                 color: route.params.situacao ==1?"#0e5525":route.params.situacao ==2 ?"#ae2222":"#D3D934",paddingLeft:20,
                 
-              }}>{moment(item.appointmentDate).tz('America/Sao_Paulo').format('HH:mm:ss')} Até {moment(item.appointmentDate).tz('America/Sao_Paulo').format('HH:mm:ss')}</Text>
+              }}>{moment(item.appointmentTime).tz('America/Sao_Paulo').format('HH:mm:ss')} Até {moment(item.appointmentTimeEnd).tz('America/Sao_Paulo').format('HH:mm:ss')}</Text>
               </View>
              
             

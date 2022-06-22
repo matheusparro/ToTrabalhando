@@ -52,7 +52,8 @@ export function ItemAppointmentUpdated() {
   
   useEffect(() => {
     async function focusSreen() {
-    
+      console.log("adas")
+      setTimeout(() =>  navigation.navigate("MyAppointmentsDrawer" as never, {} as never), 1)
       if (isFocused) {
         console.log(route.params)
         if(route.params.id){
@@ -72,29 +73,24 @@ export function ItemAppointmentUpdated() {
 
   async function handleUpdateAppoitnment(data: FormData) {
     try {
-      data.id = user?.companyId
-      data.startTime = startTime
-      data.startTimeEnd = startTimeEnd
-      if(route.params &&!route.params.id){
-        const result = await api.post(`/company/${user?.companyId}/appointment-configuration`, data)
-        if (result.status==201) {
-        
-          Alert.alert("Configuração Apontamento", "Criada com sucesso")
-          
-         //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 2));
-        }
-      }else{
-        const result = await api.patch(`/appointment-configuration/${route.params.id}`, data)
-        
-        if (result.status==201) {
-        
-         Alert.alert("Apontamento","Criado com sucesso")
-          //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
-        }
+     console.log("CHAMOUUU")
+      const objectData = {
+				appointmentTime: startTime,
+				appointmentTimeEnd: startTimeEnd,
       }
-      console.log(startTimeEnd)
+      console.log(objectData)
+     
+        const result = await api.put(`/appointment/${route.params.id}`, objectData)
+        if (result.status==201) {
+        
+          Alert.alert("Apontamento", "Atualizado")
+        
+         
+          
+        }
+      
     } catch (error: any) {
-      Alert.alert("Department: ", error.response.data.message);
+      Alert.alert("Apontamento: ", error.response.data.message);
     }
   }
 

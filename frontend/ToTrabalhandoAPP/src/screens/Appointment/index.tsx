@@ -39,7 +39,7 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
     async function allDepartmentsFound(){
       if(isFocused){
         console.log( user?.employeeId)
-        const result = await api.get(`employee/${route.params.employeeId || user?.employeeId}/appointment`)
+        const result = await api.get(`employee/${route.params.employeeId}/appointment`)
         if (result.data) {
           setAllAppointments(result.data)
         }
@@ -63,18 +63,18 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
         data={allAppointments}
         renderItem={({item}) =>
         
-          <Pressable onPress={() => {
+          <Pressable key={item.data} onPress={() => {
             navigation.navigate("ItemAppointment" as never, {data:item.data,appointments:item.appointments,situacao:item.situacao} as never)
           }}>
-              <View key={item.data} style={styles.item}>
+              <View  style={styles.item}>
               
-                <Text key={item.data}style={{marginTop:20,
+                <Text style={{marginTop:20,
                 fontSize: 20,
                 fontWeight:"bold",
                 color: item.situacao ==1?"#0e5525":item.situacao ==2 ?"#ae2222":"#afb42c",paddingLeft:20,
                 
               }}>{moment(item.data).tz('America/Sao_Paulo').format('LL')}</Text>
-                <Text key={item.data} style={{color: item.situacao ==1?"#258543":item.situacao ==2 ?"#ae2222":"#afb42c",paddingLeft:20, fontWeight:"bold"}}>{item.situacao ==1 ? "Concluído": item.situacao == 2 ? "Falta":"Incompleto"}</Text>
+                <Text style={{color: item.situacao ==1?"#258543":item.situacao ==2 ?"#ae2222":"#afb42c",paddingLeft:20, fontWeight:"bold"}}>{item.situacao ==1 ? "Concluído": item.situacao == 2 ? "Falta":"Incompleto"}</Text>
               </View>
              
             
