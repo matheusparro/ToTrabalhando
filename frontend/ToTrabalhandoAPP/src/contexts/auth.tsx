@@ -15,7 +15,8 @@ interface AuthContextData{
   signOut: () =>void;
 }
 interface Employee {
-  name:string
+  name:string,
+  departmentId:string
 }
 interface User {
   id:string,
@@ -26,6 +27,7 @@ interface User {
   company:{
     fantasyName:string
   }
+
   permissions:{
     id:string,
     name:string

@@ -38,10 +38,19 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
   useEffect(() =>{
     async function allDepartmentsFound(){
       if(isFocused){
-        console.log( user?.employeeId)
-        const result = await api.get(`employee/${route.params.employeeId}/appointment`)
+
+        let idToFind =''
+        if(route.params && route.params.employeeId){
+          console.log("asjkdhasmj")
+          idToFind = route.params.employeeId
+        }else{
+          idToFind = String(user?.employeeId)
+        }
+        const result = await api.get(`employee/${idToFind}/appointment`)
+      
         if (result.data) {
           setAllAppointments(result.data)
+        
         }
       }
     }
@@ -64,7 +73,8 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
         renderItem={({item}) =>
         
           <Pressable key={item.data} onPress={() => {
-            navigation.navigate("ItemAppointment" as never, {data:item.data,appointments:item.appointments,situacao:item.situacao} as never)
+            
+            (route.params && route.params.employeeId) && navigation.navigate("ItemAppointment" as never, {data:item.data,appointments:item.appointments,situacao:item.situacao} as never)
           }}>
               <View  style={styles.item}>
               

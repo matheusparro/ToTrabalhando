@@ -117,11 +117,11 @@ function UserStack() {
 
 
       <Screen
-        name="MyAppointmentsDrawer"
+        name="EmployeeAppointments"
         component={Appointment}
 
         options={{
-          title: 'Meus Apontamentos',
+          title: 'Apontamentos',
 
           headerStyle: {
             backgroundColor: theme.color.background,
@@ -283,6 +283,7 @@ export function AppRoutes() {
         <Screen
           name="UsersDrawer"
           component={UserStack}
+          
           options={{
             title: 'Usuários',
             headerShown: false,

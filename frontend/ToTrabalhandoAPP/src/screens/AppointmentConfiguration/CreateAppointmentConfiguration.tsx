@@ -188,7 +188,7 @@ export function CreateAppointmentConfiguration() {
               onCancel={()=>{setIsPickerShow3(false)}}
             />}
 
-            <ControlledInput   value={endTimeEnd &&(String(new Date(endTimeEnd).getHours() +":"+new Date(endTimeEnd).getMinutes()) +" "+ (new Date(endTimeEnd).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="2° Saída" >
+            <ControlledInput   onPressIn={()=>showPicker4()}  value={endTimeEnd &&(String(new Date(endTimeEnd).getHours() +":"+new Date(endTimeEnd).getMinutes()) +" "+ (new Date(endTimeEnd).getHours()>12 ? 'Pm':'Am'))} editable={false} name="startTimeEnd" control={control} labelName="2° Saída" >
             </ControlledInput>
             {isPickerShow4 &&   
               <DateTimePicker

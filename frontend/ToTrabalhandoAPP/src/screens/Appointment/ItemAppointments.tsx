@@ -82,7 +82,7 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
         
           <Pressable key={item.id} onPress={() => {
             navigation.navigate("ItemAppointmentUpdated" as never, {id:item.id,appointmentTime:item.appointmentTime?item.appointmentTime:'',
-              appointmentTimeEnd:item.appointmentTimeEnd?item.appointmentTimeEnd:''} as never)
+              appointmentTimeEnd:item.appointmentTimeEnd?item.appointmentTimeEnd:'',employeeId:item.employeeId} as never)
           }}>
               <View  style={styles.item2}>
               <Text style={{textAlignVertical:"center",

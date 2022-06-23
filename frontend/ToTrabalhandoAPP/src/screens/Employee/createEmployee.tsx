@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { Controller, useForm } from 'react-hook-form'
-import { Picker } from "@react-native-picker/picker";
+import { PickerIOS,Picker } from "@react-native-picker/picker";
 import { styles } from './styles'
 import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
@@ -101,27 +101,28 @@ export function CreateEmployee() {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-        <ControlledInput defaultValue={route.params.name} name="name" control={control} keyboardType="numeric" labelName="Nome" />
-        <ControlledInput defaultValue={route.params.cpf} name="cpf" control={control} labelName="Cpf" />
-        <ControlledInput defaultValue={route.params.pis} name="pis" control={control} labelName="Pis" />
+        <ControlledInput defaultValue={route.params.name} name="name" control={control} keyboardType="default" labelName="Nome" />
+        <ControlledInput defaultValue={route.params.cpf} name="cpf" control={control} keyboardType="number-pad" labelName="Cpf" />
+        <ControlledInput defaultValue={route.params.pis} name="pis" control={control} keyboardType="number-pad" labelName="Pis" />
         <Text style={styles.titleLabel}>Departamento</Text>  
         <Controller
       name={"departmentId"}
       control={control}
       render={({field})=>(
-        <Picker
+        <PickerIOS
         selectedValue={field.value}
         onValueChange={(date) => field.onChange(date)}
-        mode="dropdown" // Android only
+        onTouchStart={()=>"co"}
+        //mode="dialog" // Android only
         style={styles.input}
-        
+        collapsable        
       >
-        <Picker.Item label="Selecione" value="" />
+        <PickerIOS.Item label="Selecione" value="" />
         {allDepartments? allDepartments.map(item=>{
-          return( <Picker.Item  key={item?.id} label={item?.name} value={item?.id} />)
+          return( <PickerIOS.Item  key={item?.id} label={item?.name} value={item?.id} />)
         }):null}
         
-      </Picker>
+      </PickerIOS>
       )}
     />
       <Text style={styles.titleLabel}>Configuração de Apontamento</Text>  
@@ -144,7 +145,7 @@ export function CreateEmployee() {
       </Picker>
       )}
     />
-    <Pressable onPress={()=> navigation.navigate("MyAppointmentsDrawer" as never, {employeeId:route.params.id} as never)}>
+    <Pressable onPress={()=> navigation.navigate("EmployeeAppointments" as never, {employeeId:route.params.id} as never)}>
       <ControlledInput defaultValue={"Vizualiar apontamentos"} editable={false} name="appointments" control={control} keyboardType="numeric" labelName="Apontamentos" />    
     </Pressable>
         <View style={{ marginTop: 20 }}>

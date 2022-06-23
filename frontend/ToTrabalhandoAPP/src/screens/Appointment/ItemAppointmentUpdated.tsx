@@ -24,6 +24,7 @@ type ParamList = {
     id: string
     appointmentTimeEnd:string,
     appointmentTime:string,
+    employeeId:string
   };
 };
 
@@ -52,13 +53,13 @@ export function ItemAppointmentUpdated() {
   
   useEffect(() => {
     async function focusSreen() {
-      console.log("adas")
-      setTimeout(() =>  navigation.navigate("MyAppointmentsDrawer" as never, {} as never), 1)
+      console.log(route.params,"AQUEEeeee")
+     
       if (isFocused) {
         console.log(route.params)
         if(route.params.id){
          
-          setStartTime(String(route.params.appointmentTimeEnd))
+          setStartTime(String(route.params.appointmentTime))
           setStartTimeEnd(String(route.params.appointmentTimeEnd))
         }else{
           setStartTime('')
@@ -73,17 +74,20 @@ export function ItemAppointmentUpdated() {
 
   async function handleUpdateAppoitnment(data: FormData) {
     try {
-     console.log("CHAMOUUU")
+     
       const objectData = {
 				appointmentTime: startTime,
 				appointmentTimeEnd: startTimeEnd,
       }
-      console.log(objectData)
+   
      
         const result = await api.put(`/appointment/${route.params.id}`, objectData)
         if (result.status==201) {
         
-          Alert.alert("Apontamento", "Atualizado")
+          Alert.alert("Apontamento", "Atualizado",[
+            {text: 'OK', onPress: () =>  setTimeout(() =>  navigation.navigate("EmployeeAppointments" as never, {employeeId:route.params.employeeId} as never), 1000)},
+          ],
+          {cancelable: false},)
         
          
           
