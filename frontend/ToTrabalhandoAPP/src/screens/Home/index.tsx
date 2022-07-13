@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, Alert, Platform } from 'react-native';
 import { styles } from './styles'
 import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
@@ -12,6 +12,9 @@ import { DataTable } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import 'moment/locale/pt-br'
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import { Subscription } from 'expo-modules-core';
 import {
   LineChart,
   BarChart,
@@ -22,6 +25,14 @@ import {
 } from "react-native-chart-kit";
 import api from '../../services/api';
 import moment from 'moment-timezone';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export function Home() {
 
@@ -37,25 +48,40 @@ export function Home() {
   const [cameraRollStatus,setCameraRollStatus] = useState('')
   const [cameraStatus,setCameraStatus] = useState('')
   const [testmsg,setTestmsg] = useState('')
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef<Subscription>();
+  const responseListener = useRef<Subscription>();
+
+  async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `Bem vindo ${user?.employee?.name ? user?.employee?.name: "usuário"}! 📬`,
+        body: 'Não esqueça de bater seu ponto ',
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 2 },
+    });
+  }
+  
  
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>console.log(token));
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(Boolean(notification));
+    });
 
-  // const pickImage2 = async () => {
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current as Subscription );
+      Notifications.removeNotificationSubscription(responseListener.current as Subscription);
+    };
     
-  
-
-//    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-//    if (permissionResult.granted === false) {
-//      alert("You've refused to allow this appp to access your camera!");
-//      return;
-//    }
-  
-
-//     let image = await ImagePicker.launchCameraAsync().catch(error => console.log({ error }));
-//     console.log(image);
-// }
-
-
+  }, []);
 
 
 
@@ -185,6 +211,19 @@ export function Home() {
     allFields()
   },[isFocused])
 
+  useEffect(() =>{
+    
+    async function allFields(){
+      if(isFocused){
+        await schedulePushNotification();
+      }
+     
+    }
+    
+    allFields()
+  },[])
+
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -258,4 +297,36 @@ export function Home() {
     </View>
   );
 
+}
+
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
 }

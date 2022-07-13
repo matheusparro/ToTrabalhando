@@ -18,7 +18,9 @@ interface allUsers{
 }
 export function User() {
 
-const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
+const [allUsers,setAllUsers]= useState<allUsers[]>([])
+const [allUsersMaster,setAllUsersMaster]= useState<allUsers[]>([])
+const [search,setSearch]= useState<string>('')
   const styles2 = StyleSheet.create({
     fab: {
       position: 'absolute',
@@ -47,16 +49,34 @@ const [allUsers,setAllUsers]= useState<allUsers[] | null>(null)
         if (result.data) {
         
           setAllUsers(result.data)
+          setAllUsersMaster(result.data)
         }
       }
     }
     allUsersFound()
   },[isFocused])
+  const searchText = (text:string) =>{
+    if(text){
+      const newData = allUsersMaster.filter((item)=>{
+        const itemData = item.email ? item.email.toUpperCase() : ''.toUpperCase()
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+
+
+      })
+      setAllUsers(newData);
+      setSearch(text)
+    } else {
+      setAllUsers(allUsersMaster)
+      setSearch(text)
+    }
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.contentList}>
         <View >
+          <TextInput placeholder='Procure aqui' onChangeText={(text)=> searchText(text)} style={{backgroundColor:'#d390fa',borderWidth:1, paddingLeft:20, margin:5,padding:15,marginHorizontal:10,marginBottom:10}} >{search}</TextInput>
         <FlatList
         data={allUsers}
         renderItem={({item}) =>

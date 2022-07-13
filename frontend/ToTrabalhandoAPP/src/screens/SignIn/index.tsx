@@ -48,8 +48,10 @@ export function SignIn() {
           <TextInput secureTextEntry={true}  onChangeText={setPassword} value={password} style={styles.inputPassword}placeholder="Digite sua senha"></TextInput>
         
           <TouchableOpacity  activeOpacity={0.8}>
-     
+            <View style={{display: 'flex', flexDirection: 'row',justifyContent:"space-between",padding:5}}>
+          <Text onPress={()=>{ navigation.navigate("ForgotPassword" as never, {} as never)}}style={styles.createAccount}>Recuperar senha</Text>
           <Text onPress={()=>{ navigation.navigate("Company" as never, {} as never)}}style={styles.createAccount}>Cadastrar empresa</Text>
+          </View>
         </TouchableOpacity>
         
       

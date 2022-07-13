@@ -16,6 +16,7 @@ type FormData = {
   fantasyName: string
   email: string,
   password: string,
+  password_confirm:string,
 
 
 }
@@ -28,7 +29,10 @@ export function CreateCompany() {
   const navigation = useNavigation()
   async function handleCompanyRegister(data: FormData) {
     try {
-
+      if(data.password != data.password_confirm){
+        Alert.alert("Empresa","As senhas não conferem, por favor tente novamente!")
+        return
+      }
       const companyToCreate = {
         cnpj: data.cnpj,
         fantasyName: data.fantasyName,
@@ -56,6 +60,7 @@ export function CreateCompany() {
         <ControlledInput name="fantasyName" control={control} labelName="Nome da Empresa" />
         <ControlledInput name="email" control={control} labelName="Email" />
         <ControlledInput secureTextEntry={true} name="password" control={control} labelName="Senha" />
+        <ControlledInput secureTextEntry={true} name="password_confirm" control={control} labelName="Confirme a Senha" />
         <View style={{ marginTop: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleCompanyRegister)} color={theme.color.primary} title='Cadastrar' activeOpacity={0.8} />
         </View>

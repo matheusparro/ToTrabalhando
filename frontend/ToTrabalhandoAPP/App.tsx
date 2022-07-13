@@ -8,6 +8,7 @@ import { AppRegistry } from 'react-native';
 import { Background } from './src/components/Background';
 import { expo as appName } from './app.json';
 import {AuthProvider} from './src/contexts/auth'
+
 export default function App() {
   return (
     

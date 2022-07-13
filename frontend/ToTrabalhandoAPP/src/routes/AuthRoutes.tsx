@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { SignIn } from '../screens/SignIn'
 import { CreateCompany } from '../screens/CreateCompany';
 import { theme } from '../global/styles/theme';
+import { ForgotPassword } from '../screens/User/forgotPassword';
 
 
 const { Navigator, Screen } = createStackNavigator()
@@ -31,7 +32,7 @@ export function AuthRoutes() {
       name="Company"
       component={CreateCompany}
       options={{
-        
+        title: 'Empresa',
         headerStyle: {
           backgroundColor: theme.color.background,
         },
@@ -39,6 +40,19 @@ export function AuthRoutes() {
         headerTitleAlign:"left",
       }}
     />
+      <Screen
+      name="ForgotPassword"
+      component={ForgotPassword}
+      options={{
+        title: 'Esqueci a senha',
+        headerStyle: {
+          backgroundColor: theme.color.background,
+        },
+        headerTintColor: theme.color.heading,
+        headerTitleAlign:"left",
+      }}
+    />
+    
     </Navigator>
   )
 }

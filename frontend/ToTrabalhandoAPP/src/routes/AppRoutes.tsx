@@ -21,6 +21,8 @@ import { useAuth } from '../contexts/auth';
 import { CompTime } from '../screens/CompTime';
 import { ItemAppointment } from '../screens/Appointment/ItemAppointments';
 import { ItemAppointmentUpdated } from '../screens/Appointment/ItemAppointmentUpdated';
+import { DepartmentHours } from '../screens/Department/DepartmentHours';
+import { ProfileEmployee } from '../screens/ProfileEmployee/ProfileEmployee';
 
 const stackNavigator = createStackNavigator()
 const { Navigator, Screen } = createDrawerNavigator()
@@ -143,7 +145,7 @@ function UserStack() {
           headerTintColor: theme.color.heading,
         }}
       />
-       <Screen
+      <Screen
         name="ItemAppointmentUpdated"
         component={ItemAppointmentUpdated}
 
@@ -205,8 +207,8 @@ function ProfileStack() {
     <stackNavigator.Navigator>
       <stackNavigator.Screen
         name="Profile"
-        component={Profile}
-        initialParams={{ email: user?.email, id: user?.id, Avatar: user?.Avatar, permissionsID: user?.permissions.id, employeeId: user?.employeeId }}
+        component={ProfileEmployee}
+        initialParams={{ email: user?.email, id: user?.id, Avatar: user?.Avatar, permissionsID: user?.permissions.id, employeeName: user?.employee?.name }}
         options={{
           title: 'Perfil',
           headerStyle: {
@@ -239,6 +241,8 @@ function ProfileStack() {
     </stackNavigator.Navigator>
   )
 }
+
+
 export function AppRoutes() {
   const { signOut, user } = useAuth()
   return (
@@ -264,6 +268,25 @@ export function AppRoutes() {
         }}
 
       />
+      {user?.permissions.id == '1' ? (<Screen
+        name="Departamento Análise"
+        component={DepartmentHours}
+        options={{
+          headerStyle: {
+            backgroundColor: theme.color.background,
+          },
+          headerTintColor: theme.color.heading,
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="md-home"
+              size={size}
+              color={focused ? '#700f81' : '#ccc'}
+            />
+          ),
+        }}
+
+      />) : null}
+
       {/* <Screen
       name="Employee"
       component={Employee}
@@ -283,7 +306,7 @@ export function AppRoutes() {
         <Screen
           name="UsersDrawer"
           component={UserStack}
-          
+
           options={{
             title: 'Usuários',
             headerShown: false,
@@ -415,7 +438,7 @@ export function AppRoutes() {
       ) : null}
 
 
-     
+
 
     </Navigator>
   )

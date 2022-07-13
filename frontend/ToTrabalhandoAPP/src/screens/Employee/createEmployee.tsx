@@ -112,7 +112,7 @@ export function CreateEmployee() {
         <PickerIOS
         selectedValue={field.value}
         onValueChange={(date) => field.onChange(date)}
-        onTouchStart={()=>"co"}
+
         //mode="dialog" // Android only
         style={styles.input}
         collapsable        

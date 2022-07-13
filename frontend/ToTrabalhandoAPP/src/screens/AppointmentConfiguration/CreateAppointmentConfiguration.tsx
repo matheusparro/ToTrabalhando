@@ -12,6 +12,7 @@ import api from '../../services/api';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { onChange } from 'react-native-reanimated';
 import DateTimePicker from "react-native-modal-datetime-picker";
+import moment from 'moment';
 type FormData = {
   name: string,
   companyId: string | undefined,
@@ -100,6 +101,12 @@ export function CreateAppointmentConfiguration() {
       data.startTimeEnd = startTimeEnd
       data.endTime = endTime
       data.endTimeEnd = endTimeEnd
+      if(moment(startTime).utc() > moment(endTime).utc() ) {
+
+        Alert.alert("Configuração Apontamento", `1°${moment(startTime)} Entrada deve ser menor que 2°Entrada${moment(endTime)}`)
+        return
+      }
+      
       if(route.params &&!route.params.id){
         const result = await api.post(`/company/${user?.companyId}/appointment-configuration`, data)
         if (result.status==201) {

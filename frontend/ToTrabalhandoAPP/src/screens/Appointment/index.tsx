@@ -41,7 +41,6 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
 
         let idToFind =''
         if(route.params && route.params.employeeId){
-          console.log("asjkdhasmj")
           idToFind = route.params.employeeId
         }else{
           idToFind = String(user?.employeeId)
@@ -96,14 +95,6 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
         </View>
       
       </View>
-      <FAB
-    style={styles2.fab}
-    small
-    icon="plus"
-    onPress={() => {
-      navigation.navigate("DepartmentInsert" as never, {} as never)
-    }}
-  />
     </View>
   );
 

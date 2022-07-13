@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from 'react';
-import { Text, View, FlatList, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { Text, View, FlatList, TouchableWithoutFeedback, Pressable, TextInput } from 'react-native';
 import { styles } from './styles'
 import {useAuth} from '../../contexts/auth';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -17,7 +17,9 @@ interface allAppointmentsConf{
 }
 export function AppointmentConfiguration() {
 
-const [allAppointmentsConf,setAllAppointmentsConf]= useState<allAppointmentsConf[] | null>(null)
+const [allAppointmentsConf,setAllAppointmentsConf]= useState<allAppointmentsConf[]>([])
+const [allAppointmentsConfMaster,setAllAppointmentsConfMaster]= useState<allAppointmentsConf[]>([])
+const [search,setSearch]= useState<string>('')
   const styles2 = StyleSheet.create({
     fab: {
       position: 'absolute',
@@ -32,19 +34,38 @@ const [allAppointmentsConf,setAllAppointmentsConf]= useState<allAppointmentsConf
   useEffect(() =>{
     async function allAppointmentsConfFound(){
       if(isFocused){
+        setSearch('')
         const result = await api.get(`/company/${user?.companyId}/appointment-configuration/all`)
         if (result.data) {
           setAllAppointmentsConf(result.data)
+          setAllAppointmentsConfMaster(result.data)
         }
       }
     }
     allAppointmentsConfFound()
   },[isFocused])
+  
+  const searchText = (text:string) =>{
+    if(text){
+      const newData = allAppointmentsConfMaster.filter((item)=>{
+        const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase()
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
 
+
+      })
+      setAllAppointmentsConf(newData);
+      setSearch(text)
+    } else {
+      setAllAppointmentsConf(allAppointmentsConfMaster)
+      setSearch(text)
+    }
+  }
   return (
     <View style={styles.container}>
       <View style={styles.contentList}>
         <View >
+        <TextInput placeholder='Procure aqui' onChangeText={(text)=> searchText(text)} style={{backgroundColor:'#d390fa',borderWidth:1, paddingLeft:20, margin:5,padding:15,marginHorizontal:10,marginBottom:10}} >{search}</TextInput>
         <FlatList
         data={allAppointmentsConf}
         renderItem={({item}) =>
@@ -59,7 +80,6 @@ const [allAppointmentsConf,setAllAppointmentsConf]= useState<allAppointmentsConf
         }
       />
         </View>
-      
       </View>
       <FAB
     style={styles2.fab}
