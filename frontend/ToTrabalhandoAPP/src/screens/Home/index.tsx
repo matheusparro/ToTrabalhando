@@ -105,7 +105,6 @@ export function Home() {
 
     if (!result.cancelled) {
       setUserAvatar(result.uri);
-      console.log(userAvatar);
     }
 
   };
@@ -134,10 +133,7 @@ export function Home() {
       Alert.alert("you need to give up permission to work")
     }
    }
-   useEffect(() =>{
-  
-    console.log("MEU LOCAL EFFECT",userAvatar)
-  },[userAvatar])
+
   const config = {
     headers: {
       'content-type': 'multipart/form-data'
@@ -168,7 +164,6 @@ export function Home() {
         await setLastAppointment()
       }
     } catch (error: any) {
-      console.log(error.message)
       Alert.alert("Reconhecimento Facial","Erro tente novamente");
     }
 
@@ -177,10 +172,8 @@ export function Home() {
   async function setLastAppointment(){
     if(user?.employeeId){
     let result= await api.get(`/employee/${user?.employeeId}/appointment/last`)
-    console.log(result.data)
     const data = result.data.appointmentTime
     let teste = moment(data);
-    console.log(data)
     var offset = moment().utcOffset();
 
      const teste2 = teste.tz('America/Sao_Paulo')
@@ -195,7 +188,6 @@ export function Home() {
     
       
       result = await api.get(`/employee/${user?.employeeId}/comp_time/year`)
-      console.log(result.data)
       result.data && setHoursMonth(result.data)
     }
   }
@@ -314,7 +306,6 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
   } else {
     alert('Must use physical device for Push Notifications');
   }

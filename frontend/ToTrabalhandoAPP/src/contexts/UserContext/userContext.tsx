@@ -87,7 +87,6 @@ export function UsersProvider({
     //   alert(error.response.data.message);
     //   return false
     // }
-    console.log("oi")
   }
 
   return (

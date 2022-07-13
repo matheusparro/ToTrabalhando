@@ -54,9 +54,7 @@ export function CompTime() {
   function convertHoursToHoursMinutes(hoursSend:number):string{
     var hours = hoursSend
     var rhours = Math.floor(hours);
-    console.log(rhours)
     var minutes = (hours - rhours) * 60;
-    console.log(minutes)
     var rminutes = Math.round(minutes);
     return rhours + ":" + rminutes;
   }
@@ -73,11 +71,8 @@ export function CompTime() {
           const total = result.data.extraHoursWorked + result.data.hoursWorked
           const comp:CompTime = result.data
           var hours = result.data.extraHoursWorked
-          console.log(hours,"horas")
           var rhours = Math.floor(hours);
-          console.log(rhours)
           var minutes = (hours - rhours) * 60;
-          console.log(minutes)
           var rminutes = Math.round(minutes);
           comp.extraHoursWorked = convertHoursToHoursMinutes(Number(result.data.extraHoursWorked))
           comp.hoursWorked =convertHoursToHoursMinutes(Number(result.data.hoursWorked))

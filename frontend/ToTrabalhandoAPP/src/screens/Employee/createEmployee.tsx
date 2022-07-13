@@ -52,14 +52,12 @@ export function CreateEmployee() {
         data.userId = route.params.userId
         if(!route.params.id){
           const result = await api.post('/employee/', data)
-          console.log(result.data)
           if (result.status==201) {
           
             alert("Funcionário criado com sucesso")
            // new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
           }
         }else{
-          console.log(data)
           const result = await api.put(`/employee/${route.params.id}`, data)
           
           if (result.data) {

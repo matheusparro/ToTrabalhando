@@ -56,7 +56,6 @@ export function DepartmentHours() {
       }
       
     
-     console.log(labelsValues)
     }
     
     allFields()

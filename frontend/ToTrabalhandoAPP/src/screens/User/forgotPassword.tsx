@@ -31,7 +31,6 @@ export function ForgotPassword() {
       
       }
       const result = await api.post('/forgot-password/', companyToCreate)
-      console.log(result.status)
       if (result.status === 201) {
        
         Alert.alert("Esqueci a senha","Verifque seu e-mail para ter acesso a nova senha!")

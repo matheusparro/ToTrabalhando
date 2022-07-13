@@ -91,7 +91,6 @@ export function ProfileEmployee() {
           newPassword: data.newPassword,
        
         }
-        console.log(',AASDASDASD',user?.id)
         const result = await api.patch(`users/${user?.id}/change-password`, dataUpdated)
         
         if (result.status==201) {

@@ -19,8 +19,6 @@ export function SignIn() {
   //     navigation.navigate("Home" as never, {} as never)
   //   }r
   // }
-  console.log(signed)
-  console.log(user)
    async function handleSignIn(){
       
       signIn(email,password)

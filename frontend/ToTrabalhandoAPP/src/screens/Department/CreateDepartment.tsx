@@ -50,7 +50,6 @@ export function CreateDepartment() {
       if(!route.params.id){
        
         const result = await api.post(`/company/${user?.companyId}/department`, data)
-        console.log("oii")
         if (result.status==201) {
           
         
@@ -58,7 +57,6 @@ export function CreateDepartment() {
          //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 2));
         }
       }else{
-        console.log(data)
         const result = await api.patch(`/department/${route.params.id}`, data)
         
         if (result.data) {

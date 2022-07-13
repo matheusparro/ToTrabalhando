@@ -63,7 +63,6 @@ export function CreateUser() {
       aspect: [4, 3],
       quality: 1,
     });
-    //console.log(result);
 
     if (!result.cancelled) {
       setUserAvatar(result.uri);
@@ -94,7 +93,6 @@ export function CreateUser() {
           reset({ email:'', permissionsID: ''})
           setEmployee(null)
           setUserAvatar(null)
-          console.log("oii")
         }
       }
     }
@@ -134,14 +132,20 @@ export function CreateUser() {
 
       if (!route.params.id) {
         result = await await api.post('/users/', formData, config)
+        if (result.status == 201) {
+
+          Alert.alert("Usuário","Criado com sucesso")
+          new Promise((res) => setTimeout(() => navigation.navigate("Users" as never, {} as never), 1));
+        }
       } else {
         result = await await api.put(`/users/${route.params.id}`, formData, config)
-      }
-      if (result.status == 201) {
+        if (result.status == 201) {
 
-        Alert.alert("Usuário","Criado com sucesso")
-        new Promise((res) => setTimeout(() => navigation.navigate("Users" as never, {} as never), 1));
+          Alert.alert("Usuário","Alterado com sucesso")
+          new Promise((res) => setTimeout(() => navigation.navigate("Users" as never, {} as never), 1));
+        }
       }
+      
     } catch (error: any) {
       Alert.alert("Login", error.response.data.message);
     }

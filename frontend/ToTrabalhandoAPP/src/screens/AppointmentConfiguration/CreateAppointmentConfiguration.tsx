@@ -120,11 +120,10 @@ export function CreateAppointmentConfiguration() {
         
         if (result.status==201) {
         
-         Alert.alert("Apontamento","Criado com sucesso")
+         Alert.alert("Apontamento","Atulizado com sucesso")
           //new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
         }
       }
-      console.log(startTimeEnd)
     } catch (error: any) {
       Alert.alert("Department: ", error.response.data.message);
     }
