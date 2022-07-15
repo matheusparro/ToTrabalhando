@@ -46,7 +46,10 @@ export function CreateDepartment() {
 
   async function handleUserRegister(data: FormData) {
     try {
-      
+      if(data.name =='' ||data.name ==null){
+        Alert.alert("Departamento","Digite um nome  *Obrigatório")
+        return
+      }
       if(!route.params.id){
        
         const result = await api.post(`/company/${user?.companyId}/department`, data)

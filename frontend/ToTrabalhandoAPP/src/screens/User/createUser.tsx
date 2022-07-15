@@ -102,7 +102,9 @@ export function CreateUser() {
 
   async function handleUserRegister(data: FormData) {
     try {
-      
+      if(!userAvatar){
+        Alert.alert("Usuário", "Selecione uma imagem de Avatar * Obrigatório")
+      }
       data.userAvatar = {
         uri: userAvatar,
         type: "image/jpeg",

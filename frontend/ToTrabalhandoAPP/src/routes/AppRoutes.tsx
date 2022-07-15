@@ -137,7 +137,7 @@ function UserStack() {
         component={ItemAppointment}
 
         options={{
-          title: 'ItemAppointment',
+          title: 'Apontamentos Detalhados',
 
           headerStyle: {
             backgroundColor: theme.color.background,

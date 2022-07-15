@@ -16,6 +16,7 @@ interface Appointment {
     appointmentTime: string,
     appointmentTimeEnd: string,
     appointmentDate:string,
+    reason:string,
     status: string,
     employeeId: string,
 }
@@ -82,7 +83,7 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
         
           <Pressable key={item.id} onPress={() => {
             navigation.navigate("ItemAppointmentUpdated" as never, {id:item.id,appointmentTime:item.appointmentTime?item.appointmentTime:'',
-              appointmentTimeEnd:item.appointmentTimeEnd?item.appointmentTimeEnd:'',employeeId:item.employeeId} as never)
+              appointmentTimeEnd:item.appointmentTimeEnd?item.appointmentTimeEnd:'',employeeId:item.employeeId, reason:item.reason} as never)
           }}>
               <View  style={styles.item2}>
               <Text style={{textAlignVertical:"center",
@@ -90,7 +91,7 @@ const route = useRoute<RouteProp<ParamList, 'Detail'>>();
                 fontWeight:"bold",
                 color: route.params.situacao ==1?"#0e5525":route.params.situacao ==2 ?"#ae2222":"#D3D934",paddingLeft:20,
                 
-              }}>{moment(item.appointmentTime).tz('America/Sao_Paulo').format('HH:mm:ss')} Até {moment(item.appointmentTimeEnd).tz('America/Sao_Paulo').format('HH:mm:ss')}</Text>
+              }}>{moment(item.appointmentTime).tz('America/Sao_Paulo').format('HH:mm:ss')} Até {item.appointmentTimeEnd ? moment(item.appointmentTimeEnd).tz('America/Sao_Paulo').format('HH:mm:ss'):"--"}</Text>
               </View>
              
             

@@ -16,6 +16,7 @@ type FormData = {
   id: string
   appointmentTimeEnd:string,
   appointmentTime:string,
+ 
 }
 
 
@@ -24,7 +25,8 @@ type ParamList = {
     id: string
     appointmentTimeEnd:string,
     appointmentTime:string,
-    employeeId:string
+    employeeId:string,
+    reason:string,
   };
 };
 
@@ -53,7 +55,6 @@ export function ItemAppointmentUpdated() {
   
   useEffect(() => {
     async function focusSreen() {
-      console.log(route.params,"AQUEEeeee")
      
       if (isFocused) {
         console.log(route.params)
@@ -138,6 +139,7 @@ export function ItemAppointmentUpdated() {
               }}
               onCancel={()=>{setIsPickerShow2(false)}}
             />}
+             <ControlledInput defaultValue={route.params.reason}  editable={false} name="reason" control={control} labelName="Razão" ></ControlledInput>
         <View style={{ marginTop: 20 }}>
           <ButtonIcon onPress={handleSubmit(handleUpdateAppoitnment)} color={theme.color.primary} title='Salvar' activeOpacity={0.8} />
         </View>

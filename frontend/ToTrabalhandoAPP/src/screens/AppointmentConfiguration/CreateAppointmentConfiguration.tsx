@@ -101,12 +101,31 @@ export function CreateAppointmentConfiguration() {
       data.startTimeEnd = startTimeEnd
       data.endTime = endTime
       data.endTimeEnd = endTimeEnd
-      if(moment(startTime).utc() > moment(endTime).utc() ) {
+      if(moment(startTime).format('HH:mm A') > moment(startTimeEnd).format('HH:mm A') ) {
 
-        Alert.alert("Configuração Apontamento", `1°${moment(startTime)} Entrada deve ser menor que 2°Entrada${moment(endTime)}`)
+        Alert.alert("Configuração Apontamento", `1° Entrada deve ser menor que 1°Saída`)
         return
       }
-      
+      if(moment(endTime).format('HH:mm A') > moment(endTimeEnd).format('HH:mm A') ) {
+
+        Alert.alert("Configuração Apontamento", `2° Entrada deve ser menor que 2°Saída`)
+        return
+      }
+      if(moment(endTime).format('HH:mm A') < moment(startTimeEnd).format('HH:mm A') ) {
+
+        Alert.alert("Configuração Apontamento", `2° Entrada deve ser maior que 1°Saída`)
+        return
+      }
+      if(moment(startTime).format('HH:mm A') > moment(endTime).format('HH:mm A') ) {
+
+        Alert.alert("Configuração Apontamento", `1° Entrada deve ser menor que 2°Entrada`)
+        return
+      }
+      if(moment(endTimeEnd).format('HH:mm A') < moment(startTime).format('HH:mm A') ) {
+
+        Alert.alert("Configuração Apontamento", `2° Sáida deve ser maior que 1°Entrada`)
+        return
+      }
       if(route.params &&!route.params.id){
         const result = await api.post(`/company/${user?.companyId}/appointment-configuration`, data)
         if (result.status==201) {

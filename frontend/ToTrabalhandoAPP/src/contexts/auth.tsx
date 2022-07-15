@@ -17,6 +17,7 @@ interface AuthContextData{
 interface Employee {
   name:string,
   departmentId:string
+  appointmentConfigurationId:string
 }
 interface User {
   id:string,

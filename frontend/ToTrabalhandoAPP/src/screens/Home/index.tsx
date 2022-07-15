@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, Alert, Platform } from 'react-native';
+import { Text, View, Image, StatusBar, TextInput, TouchableOpacity, ScrollView, FlatList, Alert, Platform, Modal, TouchableHighlight } from 'react-native';
 import { styles } from './styles'
 import IllustrationImg from '../../assets/illustration2.png'
 import { ButtonIcon } from '../../components/ButtonIcon';
@@ -48,12 +48,12 @@ export function Home() {
   const [cameraRollStatus,setCameraRollStatus] = useState('')
   const [cameraStatus,setCameraStatus] = useState('')
   const [testmsg,setTestmsg] = useState('')
-
+  const [reason,setReason] = useState('')
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef<Subscription>();
   const responseListener = useRef<Subscription>();
-
+  const [modalVisible, setModalVisible] = useState(false);
   async function schedulePushNotification() {
     await Notifications.scheduleNotificationAsync({
       content: {
@@ -108,7 +108,22 @@ export function Home() {
     }
 
   };
+  async function handle(){
+    const useAppConfg = await api.get(`/appointment-configuration/${user?.employee?.appointmentConfigurationId}`)
+    if(useAppConfg.status ==201){
+      const {startTime,startTimeEnd,endTime,endTimeEnd} = useAppConfg.data
+      const dataAgora =new Date(Date.now())
+     
+      if(!( moment(startTime).format('HH:mm A')>= moment(dataAgora).format('HH:mm A') && moment(startTimeEnd).format('HH:mm A')<=moment(dataAgora).format('HH:mm A') )|| !(moment(endTime).format('HH:mm A')>= moment(dataAgora).format('HH:mm A') && moment(endTimeEnd).format('HH:mm A')<=moment(dataAgora).format('HH:mm A') )){
+        setModalVisible(true);
+      }else{
+        pickFromCamera()
+      }
+     
+    }
+  }
   const pickFromCamera = async ()=>{
+  
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if(permissionResult.granted){
        let data =  await ImagePicker.launchCameraAsync({
@@ -130,6 +145,9 @@ export function Home() {
        handleUserRegister(newfile.uri)
       }
     }else{
+      if(modalVisible){
+        setModalVisible(false);
+      }
       Alert.alert("you need to give up permission to work")
     }
    }
@@ -156,14 +174,21 @@ export function Home() {
       formData.append("faceToAnalize", teste);
       formData.append("employeeId", String(user?.employeeId));
       formData.append("appointmentTime", String(new Date(Date.now())));
+      formData.append("reason", String(reason));
       
       const result = await api.post('/appointment', formData, config)
      
       if (result.status == 201) {
+        if(modalVisible){
+          setModalVisible(false);
+        }
         Alert.alert("Apontamento","Realizado com sucesso")
         await setLastAppointment()
       }
     } catch (error: any) {
+      if(modalVisible){
+        setModalVisible(false);
+      }
       Alert.alert("Reconhecimento Facial","Erro tente novamente");
     }
 
@@ -215,10 +240,32 @@ export function Home() {
     allFields()
   },[])
 
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.content}>
+      <Modal
+        transparent
+        animationType="slide"
+        //animationInTiming = {13900}
+       // transparent={true}
+        visible={modalVisible}
+       // animationOut = "slide"
+        
+       
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <Text>Digite o motivo por apontar fora de seu intervalo</Text>
+            <TextInput onChangeText={setReason} collapsable style={styles.modalText}></TextInput>
+            <View style={{marginTop:1, marginBottom:10}}>
+              <ButtonIcon onPress={()=>reason!=''? pickFromCamera():Alert.alert("Apontamento","Digite uma razão *Obrigatório")} color={theme.color.primary}  title='Confirmar' activeOpacity={0.8} />
+            </View>
+           
+            <ButtonIcon onPress={() => {setModalVisible (!modalVisible);}} color={theme.color.cancel} title='Voltar' activeOpacity={0.8} />
+          </View>
+        </View>
+      </Modal>
 
         <Text style={{ color: theme.color.heading }}>Grafíco de Horas Trabalhadas por mês</Text>
         <View style={{ marginBottom: 20 }}>
@@ -281,10 +328,17 @@ export function Home() {
           
         </View>
         <View >
-          <ButtonIcon onPress={pickFromCamera} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
+          <ButtonIcon onPress={handle} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
          
         </View>
-        
+        <TouchableHighlight
+        style={styles.openButton}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </TouchableHighlight>
       </View>
     </View>
   );

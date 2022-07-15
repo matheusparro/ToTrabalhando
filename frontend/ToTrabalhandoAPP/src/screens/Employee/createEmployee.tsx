@@ -48,13 +48,33 @@ export function CreateEmployee() {
   
   async function handleEmployeeRegister(data: FormData) {
     try {
+      if(data.departmentId == 0 ||data.departmentId ==null || isNaN(data.departmentId)){
+        Alert.alert("Funcionário","Selecione um departamento *Obrigatório")
+        return
+      }
+      if(data.appointmentConfigurationId ==0 ||data.appointmentConfigurationId ==null || isNaN(data.appointmentConfigurationId)){
+        Alert.alert("Funcionário","Selecione um apontamento de configuração *Obrigatório")
+        return
+      }
+      if(data.name =='' ||data.name ==null){
+        Alert.alert("Funcionário","Digite um nome *Obrigatório")
+        return
+      }
+      if(data.cpf =='' ||data.cpf ==null){
+        Alert.alert("Funcionário","Digite um cpf  *Obrigatório")
+        return
+      }
+      if(data.pis =='' ||data.pis ==null){
+        Alert.alert("Funcionário","Digite o n° pis *Obrigatório")
+        return
+      }
       if(route.params.userId){
         data.userId = route.params.userId
         if(!route.params.id){
           const result = await api.post('/employee/', data)
           if (result.status==201) {
           
-            alert("Funcionário criado com sucesso")
+           Alert.alert("Funcionário","Funcionário criado com sucesso")
            // new Promise((res) => setTimeout(()=>  navigation.navigate("EmloyeeInsert" as never, {} as never) , 1));
           }
         }else{
