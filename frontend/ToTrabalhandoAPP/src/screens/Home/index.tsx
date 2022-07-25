@@ -98,7 +98,7 @@ export function Home() {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [16, 9],
+      aspect: [4, 3],
       quality: 1,
     });
     //console.log(result);
@@ -113,11 +113,13 @@ export function Home() {
     if(useAppConfg.status ==201){
       const {startTime,startTimeEnd,endTime,endTimeEnd} = useAppConfg.data
       const dataAgora =new Date(Date.now())
-     
-      if(!( moment(startTime).format('HH:mm A')>= moment(dataAgora).format('HH:mm A') && moment(startTimeEnd).format('HH:mm A')<=moment(dataAgora).format('HH:mm A') )|| !(moment(endTime).format('HH:mm A')>= moment(dataAgora).format('HH:mm A') && moment(endTimeEnd).format('HH:mm A')<=moment(dataAgora).format('HH:mm A') )){
-        setModalVisible(true);
-      }else{
+     console.log(moment(startTime).format('HH:mm A'), moment(dataAgora).format('HH:mm A'))
+     console.log(moment(startTimeEnd).format('HH:mm A'), moment(dataAgora).format('HH:mm A'))
+      if(( moment(startTime).format('HH:mm A') <= moment(dataAgora).format('HH:mm A') && moment(startTimeEnd).format('HH:mm A') >= moment(dataAgora).format('HH:mm A') )|| (moment(endTime).format('HH:mm A')<= moment(dataAgora).format('HH:mm A') && moment(endTimeEnd).format('HH:mm A')>=moment(dataAgora).format('HH:mm A') )){
         pickFromCamera()
+      }else{
+        setModalVisible(true);
+     
       }
      
     }
@@ -331,14 +333,7 @@ export function Home() {
           <ButtonIcon onPress={handle} color={theme.color.primary} title='Bater Ponto' activeOpacity={0.8} />
          
         </View>
-        <TouchableHighlight
-        style={styles.openButton}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </TouchableHighlight>
+      
       </View>
     </View>
   );

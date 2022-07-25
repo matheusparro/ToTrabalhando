@@ -163,7 +163,7 @@ export function CreateEmployee() {
       </Picker>
       )}
     />
-    <Pressable onPress={()=> navigation.navigate("EmployeeAppointments" as never, {employeeId:route.params.id} as never)}>
+    <Pressable onPress={()=> navigation.navigate("EmployeeAppointments" as never, {employeeId:route.params.id,name:route.params.name} as never)}>
       <ControlledInput defaultValue={"Vizualiar apontamentos"} editable={false} name="appointments" control={control} keyboardType="numeric" labelName="Apontamentos" />    
     </Pressable>
         <View style={{ marginTop: 20 }}>
